@@ -101,7 +101,7 @@ Type GameService Extends IInjectable
 	Method update(delta:Float)
 	End Method
 	
-	''' <summary>Called during the kernel's renderloop.</summary>
+	''' <summary>Called during the kernel's render loop.</summary>
 	Method render(delta:Float)
 	End Method
 	
