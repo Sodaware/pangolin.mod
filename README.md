@@ -15,6 +15,14 @@ git clone https://github.com/sodaware/pangolin.mod.git
 ```
 
 
+## Included modules
+
+The following modules are included as part of **pangolin**:
+
+- *core.mod* -- The game kernel and base services.
+- *profiler.mod* -- Ultra-simple profiling functionality.
+
+
 ## Licence
 
 Copyright (C) 2009-2017 Phil Newton
