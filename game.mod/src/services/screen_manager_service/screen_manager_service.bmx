@@ -14,12 +14,10 @@
 SuperStrict
 
 Import pangolin.core
-Import pangolin.gfx
 Import sodaware.blitzmax_injection
-Import brl.max2d
 
-import "screen_manager.bmx"
-import "game_screen.bmx"
+Import "screen_manager.bmx" 
+Import "game_screen.bmx"
 
 Type ScreenManagerService extends GameService .. 
 	{ implements = "update, render" }

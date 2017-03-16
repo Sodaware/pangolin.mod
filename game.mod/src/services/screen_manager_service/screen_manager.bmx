@@ -13,11 +13,10 @@
 
 SuperStrict
 
-import brl.linkedlist
+Import brl.linkedlist
 Import brl.reflection
 
-include "igame_screen.bmx"
-'import "../../game_screen.bmx"
+Include "igame_screen.bmx"
 
 
 Type ScreenManager

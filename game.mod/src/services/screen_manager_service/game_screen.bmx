@@ -13,11 +13,9 @@
 
 SuperStrict
 
-import brl.linkedlist
-import pub.freejoy
-import pangolin.gfx
+Import pangolin.gfx
 
-import "screen_manager.bmx"
+Import "screen_manager.bmx"
 
 
 Type GameScreen extends IGameScreen
