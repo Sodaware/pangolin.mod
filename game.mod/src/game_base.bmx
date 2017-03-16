@@ -27,22 +27,23 @@ Import pangolin.gfx
 Type GameBase
 
 	' -- Core event identifiers
-	Const EVENT_LOOP_TICK:Int			= -1001
+	Const EVENT_LOOP_TICK:Int   = -1001
 	
 	' -- Common parts of all game Pangolin based enginee
-	Field _finished:Int 				= False
-	Field _frameRate:Int				= 60
-	Field _kernel:GameKernel			= New GameKernel
+	Field _finished:Int         = False
+	Field _frameRate:Int        = 60
+	Field _kernel:GameKernel    = New GameKernel
 	
 	
 	' ------------------------------------------------------------
 	' -- Configuration
 	' ------------------------------------------------------------
 	
-	''' <summary>Sets the game's framerate.</summary>
+	''' <summary>Set the game's framerate.</summary>
 	''' <param name="frames">The number of frames per second to display.</param>
 	Method setFrameRate(frames:Int)
 		' TODO: Throw an exception here if the game is running
+		' TODO: Or at least update the timer?
 		Self._frameRate = frames
 	End Method
 	
@@ -51,12 +52,16 @@ Type GameBase
 	' -- Querying
 	' ------------------------------------------------------------
 	
-	Method getFrameRate:int()
-		Return self._frameRate
+	''' <summary>Get the game's set framerate. Does not calculate the actual fps.</summary>
+	''' <return>The number of frames-per-second this game is set to display.</return>
+	Method getFrameRate:Int()
+		Return Self._frameRate
 	End Method
 
+	''' <summary>Check if the main loop has finished.</summary>
+	''' <return>True if finished, false if not.</return>
 	Method isFinished:Byte()
-		return self._finished
+		Return Self._finished
 	End Method
 	
 	
@@ -132,11 +137,19 @@ Type GameBase
 	' -- Kernel Helpers
 	' ------------------------------------------------------------
 
+	''' <summary>Add a service to the game's kernel.</summary>
+	''' <param name="service">The GameService object to add to the kernel.</param>
+	''' <param name="serviceType">
+	''' Optional TTypeId of the service to add. This can be used to create a base 
+	''' service type (such as AudioService), and then replace it with specific
+	''' versions as needed. Uses the type for the `service` param if not provided.
+	''' </param>
 	Method addServiceToKernel(service:GameService, serviceType:TTypeId = Null)
-		self._kernel.addService(serviceType, service)
+		Assert service, "Cannot add a Null service to the kernel"
+		Self._kernel.addService(serviceType, service)
 	End Method
 
-	' TODO: Rename this (addServiceToKernel?)
+	''' <deprecated>Use `addServiceToKernel` instead.</deprecated>
 	Method _addKernelService(service:GameService, serviceType:TTypeId = Null)
 		DebugLog "Deprecated: Use `addServiceToKernel` instead"
 		self.addServiceToKernel(service, serviceType)
