@@ -37,7 +37,6 @@ Type GameScreen extends IGameScreen
 	' -- Internal info	
 	Field _isPopup:Int						= False
 	Field _noFocus:Int						= False
-	Field _isCovered:Int					= False
 	Field _isExiting:Int					= False
 	Field _transitionOffTime:Int
 	

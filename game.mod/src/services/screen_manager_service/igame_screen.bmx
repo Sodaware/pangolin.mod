@@ -35,8 +35,10 @@
 	End Method
 
 	''' <summary>Check if the screen is hidden.</summary>
-	Method isHidden:Int() Abstract
-	Method isPopup:Int() Abstract
+	Method isHidden:Byte() Abstract
+	
+	Method isPopup:Byte() Abstract
+	
 	Method inputEnabled:Byte()
 		Return Self._inputEnabled
 	End Method
