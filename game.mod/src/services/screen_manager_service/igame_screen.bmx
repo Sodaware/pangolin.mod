@@ -50,13 +50,13 @@
 	Method isExiting:byte()
 		Return Self._isExiting
 	End Method
-	
-	' [todo] - Rename this to "setManager"
-	
+
+	''' <summary>Set the ScreenManager this screen belongs to.</summary>	
 	Method setParentManager(parent:ScreenManager)
 		Self._parentManager = parent
 	End Method
 	
+	''' <summary>Get the ScreenManager this screen belongs to.</summary>
 	Method getParentManager:ScreenManager()
 		Return Self._parentManager
 	End Method
@@ -66,8 +66,21 @@
 	' -- Resource Management
 	' ------------------------------------------------------------
 	
-	Method loadResources()	; End Method
-	Method freeResources()	; End Method
+	''' <summary>
+	''' Load resources required by the screen. Should be overridden by 
+	''' child screen types.
+	''' </summary>
+	Method loadResources()
+	
+	End Method
+	
+	''' <summary>
+	''' Free any resources loaded by the screen. Should be overridden 
+	''' by child screen types.
+	''' </summary>
+	Method freeResources()
+	
+	End Method
 	
 	
 	' ------------------------------------------------------------
@@ -76,8 +89,13 @@
 
 	Method exitScreen() Abstract
 	
-	Method enter()			; End Method
-	Method leave()			; End Method
+	'''' <summary>Called when the screen is entered (after loading).</summary>
+	Method enter()
+	End Method
+	
+	'''' <summary>Called when the screen is exited (before resources are freed).</summary>
+	Method leave()
+	End Method
 	
 	
 	' ------------------------------------------------------------
@@ -92,9 +110,14 @@
 		Self._inputEnabled = True
 	End Method
 	
-	Method handleInput()	; End Method
+	Method handleInput()
+	End Method
 	
-
+	
+	' ------------------------------------------------------------
+	' -- Screen Management
+	' ------------------------------------------------------------
+	
 	''' <summary>
 	''' Push another screen onto the global stack. Use this to put one screen
 	''' on top of another, such as a menu popup.
@@ -115,11 +138,14 @@
 	' -- Updating & Rendering
 	' ------------------------------------------------------------
 	
-	''' <summary>Update the current screen.</summary>
+	''' <summary>Update the screen.</summary>
 	''' <param name="delta">Delta time in millisecs</param>
 	''' <param name="noFocus">Does this screen have focus?</param>
 	''' <param name="covered">Is this screen covered</param>
 	Method update(delta:Float = 0, noFocus:Int = False, covered:Int = False) Abstract
+	
+	''' <summary>Render the screen.</summary>
+	''' <param name="delta">Delta time in millisecs</param>
 	Method render(delta:Float = 0) Abstract
 	
 End Type

@@ -182,6 +182,7 @@ Type ScreenManager
 		
 	End Method
 	
+	' TODO: Might even remove this, seeing as it's all handled by the renderer now...
 	Method render(gameTime:Int)
 		
 		For Local screen:IGameScreen = EachIn Self.m_Screens
@@ -201,6 +202,5 @@ Type ScreenManager
 		Local this:ScreenManager = New ScreenManager
 		Return this
 	End Function
-	
 	
 End Type
