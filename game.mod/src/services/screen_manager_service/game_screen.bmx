@@ -115,7 +115,8 @@ Type GameScreen extends IGameScreen
 		
 		If Self._transitionOffTime <= 0 Then
 			
-			Self.getParent().RemoveScreen(Self)
+			' Remove the screen from its parent screen manager.
+			Self.getParentManager().RemoveScreen(Self)
 			
 			' Clear items from the renderer.
 			Self._group.clear()

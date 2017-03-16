@@ -51,11 +51,11 @@
 	
 	' [todo] - Rename this to "setManager"
 	
-	Method setParent(parent:ScreenManager)
+	Method setParentManager(parent:ScreenManager)
 		Self._parentManager = parent
 	End Method
 	
-	Method getParent:ScreenManager()
+	Method getParentManager:ScreenManager()
 		Return Self._parentManager
 	End Method
 	

@@ -50,7 +50,7 @@ Type ScreenManager
 		
 		' 
 		screen.setIsExiting(False)
-		screen.setParent(self)
+		screen.setParentManager(self)
 		screen.loadresources()
 		Self.m_Screens.AddLast(screen)
 		screen.Enter()
