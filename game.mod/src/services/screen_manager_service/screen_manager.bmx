@@ -24,8 +24,7 @@ Type ScreenManager
 '	Field parentGame:GameBase
 
 	' TODO: Change to "IGameScreenCollection"?
-	' TODO: Rename these to be in-line with coding standards
-	Field m_Screens:TList			= New TList
+	Field _screens:TList			= New TList
 	Field screensToUpdate:TList		= New TList
 
 	Field traceEnabled:Int			= False
@@ -57,12 +56,12 @@ Type ScreenManager
 			screen.loadResources()
 		EndIf
 		
-		Self.m_Screens.AddLast(screen)
+		Self._screens.AddLast(screen)
 		screen.Enter()
 	End Method
 	
 	Method popScreen:IGameScreen()
-		IGameScreen(Self.m_Screens.Last()).exitScreen()
+		IGameScreen(Self._screens.Last()).exitScreen()
 	End Method
 	
 	''' <summary>
@@ -77,7 +76,7 @@ Type ScreenManager
 		screen.FreeResources()
 		
 		' Remove from lists
-		Self.m_Screens.Remove(screen)
+		Self._screens.Remove(screen)
 		Self.screensToUpdate.Remove(screen)
 		
 		Return screen
@@ -89,13 +88,13 @@ Type ScreenManager
 	''' </summary>
 	Method clearScreens()
 		
-		For Local screen:IGameScreen	= EachIn Self.m_Screens
+		For Local screen:IGameScreen = EachIn Self._screens
 			screen.FreeResources()
-			Self.m_Screens.Remove(screen)
+			Self._screens.Remove(screen)
 			Self.screensToUpdate.Remove(screen)
 		Next
 	
-		Self.m_Screens.Clear()
+		Self._screens.Clear()
 		
 	End Method
 
@@ -105,7 +104,7 @@ Type ScreenManager
 	''' or removed using the AddScreen and RemoveScreen methods.
 	''' </summary>
 	Method getScreens:IGameScreen[]()
-		Return IGameScreen[](Self.m_Screens.ToArray())
+		Return IGameScreen[](Self._screens.ToArray())
 	End Method
 	
 	
@@ -116,7 +115,7 @@ Type ScreenManager
 	Method traceScreens()
 		
 		DebugLog "ScreenManager.TraceScreens {"
-		For Local screen:IGameScreen = EachIn Self.m_Screens
+		For Local screen:IGameScreen = EachIn Self._screens
 			Local t:TTypeId = TTypeId.ForObject(screen)
 			DebugLog "    " + t.Name() 
 		Next
@@ -146,7 +145,7 @@ Type ScreenManager
 		' the process of updating one screen adds or removes others.
         Self.screensToUpdate.Clear()
 		
-		For Local screen:IGameScreen = EachIn Self.m_Screens
+		For Local screen:IGameScreen = EachIn Self._screens
 			Self.screensToUpdate.AddLast(screen)
 		Next
 		
@@ -190,7 +189,7 @@ Type ScreenManager
 	' TODO: Might even remove this, seeing as it's all handled by the renderer now...
 	Method render(gameTime:Int)
 		
-		For Local screen:IGameScreen = EachIn Self.m_Screens
+		For Local screen:IGameScreen = EachIn Self._screens
 			If screen.IsHidden() = False Then
 				screen.Render(gameTime)
 			EndIf
