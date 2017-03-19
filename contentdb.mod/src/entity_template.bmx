@@ -16,10 +16,8 @@ SuperStrict
 
 Import brl.map
 Import brl.linkedlist
-import brl.filesystem
 
 Import "component_template.bmx"
-
 
 Type EntityTemplate
 	
@@ -150,7 +148,7 @@ Type EntityTemplate
 	' -- Internal DEBUG
 	' ------------------------------------------------------------
 	
-	Method _dump:string(fileName:String = "")
+	Method _dump:String()
 		
 		local output:string
 		
@@ -169,13 +167,6 @@ Type EntityTemplate
 		Next
 
 		output :+ "}"
-		
-		if fileName <> "" then 
-			local fileOut:TStream = writefile(fileName)
-			fileOut.writeString(output)
-			fileOut.close()
-		
-		EndIf
 		
 		return output
 		
