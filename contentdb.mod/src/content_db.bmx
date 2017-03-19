@@ -501,11 +501,15 @@ debuglog " :: " + fileName
 		Return Self._componentSchemaList.count()
 	End Method	
 	
-	Method _dumpAll(toFile:Int = False)
+	Method _dumpAll:String()
 		
+		Local output:String
+	
 		For Local t:EntityTemplate = EachIn Self._objectTemplates.Values()
-			t._dump(t.getName() + "_dump.txt")	
+			output :+ t._dump() + "~n~n"
 		Next
+		
+		Return output
 	
 	End Method
 	
