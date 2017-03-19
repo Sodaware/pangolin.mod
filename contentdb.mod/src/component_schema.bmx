@@ -1,8 +1,7 @@
 ' --------------------------------------------------------------------------------
-' -- 
-' -- Objects/ComponentSchema.bb
-' -- 
-' -- Describes the STRUCTURE of a component.
+' -- src/component_schema.bmx
+' --
+' -- Describes the STRUCTURE of an EntityComponent.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
 ' -- Copyright (c) 2009-2017 Phil Newton
@@ -40,18 +39,14 @@ Type ComponentSchema
 	' -- Checking for items
 	' --------------------------------------------------
 	
-	Method hasProperty:Int(propertyName$)
+	Method hasProperty:Byte(propertyName:String)
 		Return (Self._fields.ValueForKey(propertyName.ToLower()) <> Null)
 	End Method
 	
-	Method hasRequirement:Int(name:String)
-		
+	Method hasRequirement:Byte(name:String)
 		For Local requirement:String = EachIn Self._requires
 			If requirement.ToLower() = name.ToLower() Then Return True
 		Next
-		
-		Return False
-		
 	End Method
 		
 	
@@ -102,6 +97,7 @@ Type ComponentSchema
 	Method getInternals:TList()
 		Return Self._internals
 	End Method
+	
 	
 	' --------------------------------------------------
 	' -- Adding / Setting Information

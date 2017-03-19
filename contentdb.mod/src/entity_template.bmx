@@ -30,12 +30,101 @@ Type EntityTemplate
 	
 	' -- Internal organisation
 	Field _category:String
+	
+	' TODO: Replace this with a StringList
 	Field _tags:TList
 	
 	' -- Component Templates
 	Field _componentTemplates:TMap
 	Field _componentTemplatesList:TList	'< List of ComponentTemplate
 	
+	
+	' ------------------------------------------------------------
+	' -- Getting Component Information
+	' ------------------------------------------------------------
+	
+	''' <summary>Get the name of the template.</summary>
+	Method getName:String()
+		Return Self._name
+	End Method
+	
+	''' <summary>Get the full identifier of the template.</summary>
+	Method getIdentifier:String()
+		Return Self._name.ToLower()
+	End Method
+	
+	''' <summary>Get the docstring of the template.</summary>
+	Method getDescription:String()
+		Return Self._description
+	End Method
+
+	''' <summary>Get the identifier of the parent template, if it has one .</summary>	
+	Method getParentTemplate:String()
+		Return Self._inherits
+	End Method
+	
+	''' <summary>Get the optional category this .</summary>	
+	Method getCategory:String()
+		Return Self._category
+	End Method
+	
+	
+	' ------------------------------------------------------------
+	' -- Setting data
+	' ------------------------------------------------------------
+	
+	Method setCategory:EntityTemplate(category:String)
+		Self._category = category
+		Return Self
+	End Method
+	
+	
+	' ------------------------------------------------------------
+	' -- Structure Queries
+	' ------------------------------------------------------------
+	
+	''' <summary>Check if this template is a child of `parentName`.</summary>
+	Method inherits:Byte(parentName:String)
+		Return (Lower(parentName) = Lower(Self._inherits))
+	End Method
+	
+	''' <summary>Check if this template contains a specific component.</summary>
+	Method hasComponentTemplate:Int(templateName:String)
+		Return (Self.getComponentTemplate(templateName) <> Null)
+	End Method
+	
+	''' <summary>Count the number of components in this template.</summary>
+	Method countComponents:Int()
+		' TODO: Slow -- room for optimisation
+		Return Self._componentTemplatesList.Count()
+	End Method
+
+	''' <summary>Get all ComponentTemplate objects that make up this entity.</summary>
+	Method getComponentTemplates:TList()
+		Return Self._componentTemplatesList
+	End Method
+	
+	Method getComponentTemplate:ComponentTemplate(templateName:String)
+		If templateName = "" Then Return Null	
+		Return ComponentTemplate(Self._componentTemplates.ValueForKey(templateName.ToLower()))
+	End Method
+	
+	Method getTemplateString:String(path:String)
+		Local component:ComponentTemplate = Self.getComponentTemplate(Left(path, path.Find(".")))
+		If component = Null Then Throw "Could not find ComponentTemplate ~q" + Left(path, path.Find(".")) + "~q"
+		Return component.GetFieldValue(Right(path, path.Length - path.Find(".") - 1))
+	End Method
+		
+	Method addComponentTemplate(newComponent:ComponentTemplate)
+		Self._componentTemplates.Insert(newComponent.getSchemaIdentifier(), newComponent)	'Lower(newComponent\m_Schema\m_Name), 
+		Self._componentTemplatesList.AddLast(newComponent)
+	End Method
+	
+	
+	' ------------------------------------------------------------
+	' -- Copying Templates
+	' ------------------------------------------------------------
+		
 	Method clone:EntityTemplate()
 		
 		Local template:Entitytemplate = New EntityTemplate
@@ -58,96 +147,8 @@ Type EntityTemplate
 	
 	
 	' ------------------------------------------------------------
-	' -- Component Information
-	' ------------------------------------------------------------
-	
-	Method getName:String()
-		Return Self._name
-	End Method
-	
-	Method getIdentifier:String()
-		Return Self._name.ToLower()
-	End Method
-	
-	Method getDescription:String()
-		Return Self._description
-	End Method
-	
-	Method getParentTemplate:String()
-		Return Self._inherits
-	End Method
-	
-	Method getCategory:String()
-		Return Self._category
-	End Method
-	
-	' TODO: Should this step up the tree?
-	Method inherits:Int(parentName:String)
-		Return Lower(parentName) = Lower(Self._inherits)
-	End Method
-	
-	Method setCategory:EntityTemplate(category:String)
-		Self._category = category
-		Return Self
-	End Method
-	
-	' ------------------------------------------------------------
-	' -- Structure Queries
-	' ------------------------------------------------------------
-	
-	Method hasComponentTemplate:Int(templateName:String)
-		Return (Self.getComponentTemplate(templateName) <> Null)
-	End Method
-
-	Method countComponents:Int()
-		' TODO: Slow -- room for optimisation
-		Return Self._componentTemplatesList.Count()
-	End Method
-
-	Method getComponentTemplates:TList()
-		Return Self._componentTemplatesList
-	End Method
-	
-	Method getComponentTemplate:ComponentTemplate(templateName:String)
-		If templateName = "" Then Return Null	
-		Return ComponentTemplate(Self._componentTemplates.ValueForKey(templateName.ToLower()))
-	End Method
-	
-	Method getTemplateString:String(path:String)
-		Local component:ComponentTemplate = Self.getComponentTemplate(Left(path, path.Find(".")))
-		If component = Null Then Throw "Could not find ComponentTemplate ~q" + Left(path, path.Find(".")) + "~q"
-		Return component.GetFieldValue(Right(path, path.Length - path.Find(".") - 1))
-	End Method
-		
-	Method addComponentTemplate(newComponent:ComponentTemplate)
-		Self._componentTemplates.Insert(newComponent.getSchemaIdentifier(), newComponent)	'Lower(newComponent\m_Schema\m_Name), 
-		Self._componentTemplatesList.AddLast(newComponent)
-	End Method
-	
-	
-	' --------------------------------------------------
-	' -- Creation / Destruction
-	' --------------------------------------------------
-	
-	Method New()
-		Self._Tags						= New TList
-		Self._ComponentTemplates		= New TMap
-		Self._ComponentTemplatesList	= New TList
-	End Method
-	
-	''' <summary>Creates and initialises a new GameObjectTemplate object and returns it.</summary>
-	''' <returns>The newly created GameObjectTemplate object.</returns>
-	Function Create:EntityTemplate(name:String, doc:String = "", inherits:String = "")
-		Local this:EntityTemplate = New EntityTemplate
-		this._name			= name
-		this._inherits		= inherits
-		this._description	= doc
-		Return this
-	End Function
-		
-	' --------------------------------------------------
 	' -- Internal DEBUG
-	' --------------------------------------------------
+	' ------------------------------------------------------------
 	
 	Method _dump:string(fileName:String = "")
 		
@@ -179,5 +180,26 @@ Type EntityTemplate
 		return output
 		
 	End Method
+	
+	
+	' ------------------------------------------------------------
+	' -- Creation / Destruction
+	' ------------------------------------------------------------
+	
+	Method New()
+		Self._tags                      = New TList
+		Self._componentTemplates        = New TMap
+		Self._componentTemplatesList    = New TList
+	End Method
+	
+	''' <summary>Creates and initialises a new EntityTemplate object and returns it.</summary>
+	''' <returns>The newly created EntityTemplate object.</returns>
+	Function Create:EntityTemplate(name:String, doc:String = "", inherits:String = "")
+		Local this:EntityTemplate = New EntityTemplate
+		this._name			= name
+		this._inherits		= inherits
+		this._description	= doc
+		Return this
+	End Function
 	
 End Type
