@@ -27,8 +27,15 @@ Import "base_resource.bmx"
 Import "resource_definition.bmx"
 Import "resource_file_serializer.bmx"
 
-
+''' <summary>
+''' Main resource manager type. A resource manager can load resource 
+''' definitions either from an external definition or via code. Normally a 
+''' game will have only one resource manager wrapped inside a service.
+''' </summary>
 Type ResourceManager
+
+	' -- Options
+	Field _isStrictCheckingEnabled:Byte = False
 
 	Field _resources:TMap     	'''< Map of all resources
 	Field _loadCallbacks:TList 	'''< List of functions to be called when file loaded
@@ -57,12 +64,31 @@ Type ResourceManager
 	
 	
 	' ------------------------------------------------------------
+	' -- Setting Options
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Enable strict checking for the resource manager. When enabled, the
+	''' manager will throw exceptions when resources are not found.
+	''' </summary>
+	Method enableStrictChecking()
+		Self._isStrictCheckingEnabled = True
+	End Method
+	
+	''' <summary>Disable strict checking for the resource manager.</summary>
+	Method disableStrictChecking()
+		Self._isStrictCheckingEnabled = False
+	End Method
+	
+	
+	' ------------------------------------------------------------
 	' -- Getting Resources
 	' ------------------------------------------------------------
 	
 	''' <summary>Get a resource.</summary>
 	''' <param name="resourceName">name of the resource to load</param>
 	''' <param name="doNotLoad">If true, will not load file (if not already loaded)</param>
+	''' <return>The loaded result, or Null if the resource was not found.</return>
 	Method getResource:BaseResource(resourceName:String, doNotLoad:Byte = False)
 		
 		Local resource:BaseResource = Self._getResource(resourceName)
@@ -71,6 +97,10 @@ Type ResourceManager
 			resource._increaseCount()
 		Else
 			DebugLog "ResourceManager->getResource() - Could not find: " + resourceName
+			If Self._isStrictCheckingEnabled Then
+				' TODO: Replace with a proper exception.
+				Throw "ResourceManager->getResource() - Could not find: " + resourceName
+			End If
 			Return Null
 		EndIf
 		
@@ -81,11 +111,17 @@ Type ResourceManager
 		
 	End Method
 	
+	''' <summary>
+	''' Free a resource by name. This unloads any data it has loaded, but does 
+	''' not remove it from the resource manager.
+	''' </summary>
 	Method freeResource(resourceName:String)
 		Local resource:BaseResource = Self._getResource(resourceName)
 		If resource Then resource.free()
 	End Method
 	
+	''' <summary>Get a list of all resource names that have been added to the manager.</summary>
+	''' <return>A list of resource names that the resource manager contains.</return>
 	Method getResourceList:TList()
 		Local resources:TList = New TList
 		
@@ -100,6 +136,10 @@ Type ResourceManager
 		Return BaseResource(Self._resources.ValueForKey(resourceName))
 	End Method
 	
+	''' <summary>Remove a resource from the manager by name.</summary>
+	Method removeResource(name:String)
+		Self._resources.Remove(name)
+	End Method
 	
 	' ------------------------------------------------------------
 	' -- Resource Loading
