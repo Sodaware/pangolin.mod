@@ -30,10 +30,15 @@ Type ScreenManagerService extends GameService ..
 	' -- Adding / Removing screens
 	' ------------------------------------------------------------
 	
-	''' <summary>Adds a screen to the manager and enters it.</summary>
-	Method addScreen(screen:GameScreen, loadResources:Int = True)
+	''' <summary>Add a screen to the manager and enter it.</summary>
+	''' <param name="screen">The screen to add.</param>
+	''' <param name="loadResources">If false, the screen will skip loading its resources.</param>
+	Method addScreen(screen:GameScreen, loadResources:Byte = True)
 
-		' Inject dependencies
+		' Check screen is valid.
+		Assert screen, "Cannot add a Null screen to the ScreenManager"
+	
+		' Inject any dependencies.
 		DependencyInjector.addInjectableFields(screen)
 		If DependencyInjector.hasDependencies(screen)	
 			For Local dependency:TTypeId = EachIn DependencyInjector.getDependencies(screen)
@@ -41,15 +46,18 @@ Type ScreenManagerService extends GameService ..
 			Next
 		End If
 		
-        ' Add the screen's group to the renderer
+        ' Add the screen's group to the renderer (if the renderer is present).
 		Local renderer:SpriteRenderingService = Self.getRenderer()
 		If renderer <> Null Then
 			renderer.add(screen._group)
 			screen.__renderer = renderer
 		EndIf
 		
-		' Add to the manager
+		' Add screen to the screen manager. 
+		' This will load the screen's resources (unless `loadResources` is false) and call the `enter` method.
 		Self._screenManager.addScreen(screen)
+		
+		' Call the `afterAdd` hook for the new screen.
 		screen.afterAdd()
 		
 	End Method

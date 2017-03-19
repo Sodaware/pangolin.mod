@@ -44,14 +44,19 @@ Type ScreenManager
 		
 	''' <summary>Add a screen to the manager and enter it.</summary>
 	''' <param name="screen">The screen to add.</param>
-	Method addScreen(screen:IGameScreen)
+	Method addScreen(screen:IGameScreen, loadResources:Byte = True)
 
 		' TODO: Check inputs
 		
 		' 
 		screen.setIsExiting(False)
 		screen.setParentManager(self)
-		screen.loadresources()
+		
+		' Load resources (unless skipped)
+		If loadResources Then
+			screen.loadResources()
+		EndIf
+		
 		Self.m_Screens.AddLast(screen)
 		screen.Enter()
 	End Method
