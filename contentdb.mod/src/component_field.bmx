@@ -46,18 +46,18 @@ Type ComponentField
 	''' <summary>Sets the description of the ComponentField object.</summary>
 	''' <param name="this">ComponentField object to set the description of.</param>
 	''' <param name="componentDescription">The description of the component field</param>
-	Method setDescription:ComponentField(componentDescription$)
+	Method setDescription:ComponentField(componentDescription:String)
 		Self._description = componentDescription
 		Return Self
 	End Method
 	
-	Method setDefaultValue:ComponentField(defaultValue$)
+	Method setDefaultValue:ComponentField(defaultValue:String)
 		Self._defaultValue = defaultValue
 		Return Self
 	End Method
 	
-	Method setDataType:ComponentField(dataType$)
-		Self._dataType	= dataType
+	Method setDataType:ComponentField(dataType:String)
+		Self._dataType = dataType
 		Return Self
 	End Method
 	

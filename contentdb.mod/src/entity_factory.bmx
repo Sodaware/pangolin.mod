@@ -146,10 +146,12 @@ Type EntityFactory
 			' Check field exists and isn't internal / private
 			If fieldDefinition And Not(fieldDefinition.Name().StartsWith("m_") Or fieldDefinition.Name().StartsWith("_"))
 				
-				If fieldData.GetType() = "bool" Then ..
-					fieldDefinition.Set(instance, String(template.GetFieldValue(fieldData.getName()) = "true")) Else ..
+				If fieldData.GetType() = "bool" Then
+					fieldDefinition.Set(instance, String(template.GetFieldValue(fieldData.getName()) = "true")) 
+				Else
 					fieldDefinition.Set(instance, template.GetFieldValue(fieldData.getName()))
-			
+				EndIf
+				
 			EndIf	
 		
 		Next
