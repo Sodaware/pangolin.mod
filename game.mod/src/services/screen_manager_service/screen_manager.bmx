@@ -149,10 +149,10 @@ Type ScreenManager
 			Self.screensToUpdate.AddLast(screen)
 		Next
 		
-		Local otherScreenHasFocus:Int	= False ' Not(Game.IsActive)
+		Local otherScreenHasFocus:Int	= False
 		Local coveredByOtherScreen:Int	= False
 		
-		' Loop as Long as there are screens waiting To be updated.
+		' Loop as long as there are screens waiting to be updated.
 		While Self.screensToUpdate.Count() > 0
 			
 			' Pop screen & update
