@@ -155,7 +155,6 @@ Type ScreenManagerService extends GameService ..
 		Return this
 	End Function
 
-    ''' <
 	Method New()
 		Self._screenManager = New ScreenManager
 		Self._addInjectableFields()

@@ -71,7 +71,7 @@ Type GameBase
 	
 	''' <summary>Handles game events and passes them to the appropriate class.</summary>
 	''' <param name="id">The event ID.</param>
-	''' <param name="date">A TEvent object.</param>
+	''' <param name="data">A TEvent object.</param>
 	''' <param name="context">The GameBase that emitted this event.</param>
 	''' <return>Any data generated. Basically nothing.</return>
 	Function handleEvents:Object(id:Int, data:Object, context:Object)

@@ -266,7 +266,7 @@ Type GameKernel
 	''' <summary>
 	''' Check if a service provider implements a function by checking its
 	''' "implements" meta data field.
-	''' </sumary>
+	''' </summary>
 	''' <param name="serviceProvider">The service to check.</param>
 	''' <param name="functionName">Name to check for.</param>
 	''' <returns>True if the service has this functionality, false if not.</returns>
