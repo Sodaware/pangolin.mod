@@ -58,6 +58,10 @@ Type TileMap
 		Return count
 	End Method
 	
+	Method getMetaKeys:TMapEnumerator()
+		Return Self._metaData.Keys()
+	End Method
+	
 	Method getHeight:Int() 
 		Return Self._height
 	End Method

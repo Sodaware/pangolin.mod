@@ -128,17 +128,19 @@ Type BinaryTileMapSerializer Extends BaseTileMapSerializer
 		
 		fileOut.WriteShort(map.CountMetaFields())
 		
-		For Local Key:String = EachIn map._metaData.Keys()
+		For Local metaName:String = EachIn map.getMetaKeys()
 			
 			' Key
-			fileOut.WriteShort(Key.Length)
-			fileOut.WriteString(Key)
+			fileOut.WriteShort(metaName.Length)
+			fileOut.WriteString(metaName)
 			
 			' Value
-			fileOut.WriteInt(String(map._metaData.ValueForKey(Key)).Length)
-			fileOut.WriteString(String(map._metaData.ValueForKey(Key)))
+			
+			fileOut.WriteInt(map.getMeta(metaName).Length)
+			fileOut.WriteString(map.getMeta(metaName))
 			
 		Next
 	
 	End Method
+	
 End Type
