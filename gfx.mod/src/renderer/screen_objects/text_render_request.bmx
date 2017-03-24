@@ -103,32 +103,55 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		Return Self
 	End Method
 	
+	''' <summary>Set the font this render request will use.</summary>
+	''' <param name="font">The image font to use.</param>
 	Method setFont:TextRenderRequest(font:TImageFont)
 		Self._font = font
 		Return Self
 	End Method
 	
+	''' <summary>Set the color of the text.</summary>
+	''' <param name="r">Red value of the text colour.</param>
+	''' <param name="g">Green value of the text colour.</param>
+	''' <param name="b">Blue value of the text colour.</param>
 	Method setFontColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
 		Self._fontColor = PangolinGfx.rgbToInt(r, g, b)
 		Return Self
 	End Method
 	
+	''' <summary>Set the color of the shadow.</summary>
+	''' <param name="r">Red value of the shadow colour.</param>
+	''' <param name="g">Green value of the shadow colour.</param>
+	''' <param name="b">Blue value of the shadow colour.</param>
 	Method setShadowColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
 		Self._shadowColor = PangolinGfx.rgbToInt(r, g, b)
 		Return Self
 	End Method
 	
+	''' <summary>Set the alpha (opacity) of the text shadow.</summary>
+	''' <param name="alpha">
+	''' Shadow alpha value value between 0 and 1. 0 is totally transparent
+	''' and 1 is completely opaque.
+	''' </param>
 	Method setShadowAlpha:TextRenderRequest(alpha:Float)
 		Self._shadowAlpha = alpha
 		Return Self
 	End Method
 
+	''' <summary>Set the shadow distance.</summary>
+	''' <param name="xDistance">X distance of the shadow in pixels.</param>
+	''' <param name="yDistance">Y distance of the shadow in pixels.</param>
 	Method setShadowDistance:TextRenderRequest(xDistance:Int, yDistance:Int)
 		Self._shadowXDistance = xDistance
 		Self._shadowYDistance = yDistance
 		Return Self
 	End Method
 	
+	''' <summary>
+	''' Set the width of the text render request. If wrapping is enabled, text
+	''' will wrap once it hits the set width.
+	''' </summary>
+	''' <param name="width">Width of the request in pixels.</param>
 	Method setWidth:TextRenderRequest(width:Float)
 		Self._width = width
 		Return Self
@@ -139,6 +162,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	' -- Querying
 	' ------------------------------------------------------------
 
+	''' <summary>Get the text that will be displayed.</summary>
 	Method getText:String()
 		Return Self._text	
 	End Method
