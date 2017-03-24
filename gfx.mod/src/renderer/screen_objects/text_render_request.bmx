@@ -40,8 +40,6 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	Field _shadowYDistance:Short	= 1
 	Field _alignment:Byte			= ALIGN_LEFT
 	
-	Field _traceEnabled:Byte = False
-	
 	
 	' ------------------------------------------------------------
 	' -- Configuration
@@ -250,10 +248,6 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		
 		Return wrappedText
 		
-	End Method
-
-	Method enableTrace()
-		Self._traceEnabled = True
 	End Method
 	
 	
