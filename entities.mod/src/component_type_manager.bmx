@@ -23,10 +23,10 @@ Import "component_type.bmx"
 Type ComponentTypeManager
 	
 	''' <summary>Map of TTypeId to ComponentType objects.</summary>
-	Global _componentTypes:TMap    	= New TMap
+	Global _componentTypes:TMap = New TMap
 	
 	''' <summary>Map of meta names to ComponentType objects.</summary>
-	Global _componentTypesMeta:TMap = New TMap
+	Global _componentTypesMeta:TMap
 	
 	
 	' ------------------------------------------------------------
@@ -67,12 +67,7 @@ Type ComponentTypeManager
 		
 		' Load types
 		If ComponentTypeManager._componentTypesMeta = Null Then
-			ComponentTypeManager._componentTypesMeta = New TMap
-			Local baseType:TTypeId = TTypeId.ForName("EntityComponent")
-			For Local childType:TTypeId = EachIn baseType.DerivedTypes()
-				If childType.MetaData("name") = Null Then Throw "Type " + childType.Name() + " is missing ~qname~q metadata"
-				ComponentTypeManager._componentTypesMeta.Insert(childType.MetaData("name"), childType)
-			Next
+			ComponentTypeManager._initializeMetaLookup()
 		End If
 		
 		Local t:TTypeId = TTypeId(ComponentTypeManager._componentTypesMeta.ValueForKey(metaName))
@@ -82,6 +77,18 @@ Type ComponentTypeManager
 		End If
 		
 		Return t
+		
+	End Function
+	
+	Function _initializeMetaLookup()
+		
+		' Create map of meta_name => ComponentType
+		ComponentTypeManager._componentTypesMeta = New TMap
+		Local baseType:TTypeId = TTypeId.ForName("EntityComponent")
+		For Local childType:TTypeId = EachIn baseType.DerivedTypes()
+			If childType.MetaData("name") = Null Then Throw "Type " + childType.Name() + " is missing ~qname~q metadata"
+			ComponentTypeManager._componentTypesMeta.Insert(childType.MetaData("name"), childType)
+		Next
 		
 	End Function
 	
