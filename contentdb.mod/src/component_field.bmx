@@ -44,7 +44,6 @@ Type ComponentField
 	End Method
 	
 	''' <summary>Sets the description of the ComponentField object.</summary>
-	''' <param name="this">ComponentField object to set the description of.</param>
 	''' <param name="componentDescription">The description of the component field</param>
 	Method setDescription:ComponentField(componentDescription:String)
 		Self._description = componentDescription

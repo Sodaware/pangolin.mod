@@ -31,7 +31,7 @@ Type ComponentSchema
 	Field _requires:TList
 	Field _internals:TList
 	
-	Field _fields:TMap				''' ObjectHash of fields.
+	Field _fields:TMap				'''< ObjectHash of fields.
 	Field _fieldsList:TList			'''< List of fields for iterating
 	
 	

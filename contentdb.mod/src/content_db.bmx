@@ -121,7 +121,6 @@ Type ContentDb
 	End Method
 	
 	''' <summary>Gets a list of all of the GameObjectTemplate names within the ContentDb.</summary>
-	''' <param name="this">The ContentDb object to explore.</param>
 	''' <returns>A list of GameObjectTemplate names.</returns>
 	Method getObjectTemplateList:TList()
 	
@@ -136,8 +135,7 @@ Type ContentDb
 	End Method
 
 	''' <summary>Gets a list of all the ContentSchema names within the ContentDb.</summary>
-	''' <param name="this">The ContentDb object to explore.</param>
-	''' <returns>A DDS_StringList of ComponentSchema names.</returns>
+	''' <returns>A TList of ComponentSchema names.</returns>
 	Method getComponentSchemaList:TList()
 		Return Self._componentSchemaList
 	End Method
@@ -292,7 +290,6 @@ Type ContentDb
 	End Method
 
 	''' <summary>Registers a ComponentSchema with the content database.</summary>
-	''' <param name="this">The ContentDb to add to.</param>
 	''' <param name="newSchema">The ComponentSchema object to add.</param>
 	Method registerComponentSchema:Int(newSchema:ComponentSchema)
 	

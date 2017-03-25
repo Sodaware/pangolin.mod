@@ -40,7 +40,7 @@ Type EntityFactory
 
 	''' <summary>Spawns a new object from a template.</summary>
 	''' <param name="template">The template to use for the new object.</param>
-	''' <param name="instanceName">Optional unique ID for this game object.
+	''' <param name="instanceName">Optional unique ID for this game object.</param>
 	''' <return>The created object, or null if there was an error.</return>
 	Function spawnObject:Entity(template:EntityTemplate, instanceName:String = "")
 		
@@ -171,7 +171,7 @@ Type EntityFactory
 	' -- Internal type id helpers
 	' ------------------------------------------------------------
 	
-	''' <summary>Get the BlitzMax Type data for a component template.</summary
+	''' <summary>Get the BlitzMax Type data for a component template.</summary>
 	Function _getTemplateTypeId:TTypeId(template:ComponentTemplate)
 		If EntityFactory._TypeIdLookup = Null Then EntityFactory._setup()		
 		Return TTypeId(EntityFactory._TypeIdLookup.ValueForKey(template.getSchemaName()))

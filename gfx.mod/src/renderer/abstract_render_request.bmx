@@ -61,7 +61,7 @@ Type AbstractRenderRequest Abstract
 	''' <summary>
 	''' Set the sprite's z-index. Requests with a higher z-index are rendered in
 	''' front of requests with lower numbers,
-	''' <summary>
+	''' </summary>
 	Method setZIndex(zIndex:Short)
 		Self._zIndex = zIndex
 	End Method

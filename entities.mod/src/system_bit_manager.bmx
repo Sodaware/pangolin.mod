@@ -29,7 +29,7 @@ Type SystemBitManager
 	
 	''' <summary>
 	''' Fetch a unique bit identifier for an entity system type.
-	''' <summary>
+	''' </summary>
 	''' <param name="entitySystemType">The TTypeId for the EntitySystem to add.</param>
 	''' <returns>Unique bit for this type.</returns>
 	Function getBitFor:Long(entitySystemType:TTypeId)

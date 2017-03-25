@@ -57,7 +57,7 @@ Type RenderState
 	' -- Capturing / Using states
 	' ------------------------------------------------------------
 	
-	''' <summary>Captures and stores the current render state.</sumnary>
+	''' <summary>Captures and stores the current render state.</summary>
 	Method capture()
         
 	    self._alpha        = GetAlpha()
@@ -79,7 +79,7 @@ Type RenderState
 		
 	End Method
 	
-	''' <summarys>Restores the render state.</summary>
+	''' <summary>Restores the render state.</summary>
 	Method restore()
         
 	    SetAlpha(self._alpha)

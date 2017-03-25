@@ -29,7 +29,7 @@ Type PangolinGfx
 	''' <summary>
 	''' Initialize the graphics engine. Sets up the width, scale, refresh-rate, 
 	''' colour depth and driver type.
-	''' </summary
+	''' </summary>
 	''' <param name="width">The width of the graphics area in pixels.</param>
 	''' <param name="height">The height of the graphics area in pixels.</param>
 	''' <param name="scale">Use this to enlarge pixels. For example, a scale of 2.0 will scale everything 2x its original size.</param>

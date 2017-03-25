@@ -139,8 +139,6 @@ Type ComponentTemplate
 	' --------------------------------------------------
 
 	''' <summary>Initialises the internals of a ComponentTemplate object.</summary>
-	''' <param name="this">The ComponentTemplate object to initialise.</param>
-	''' <subsystem></subsystem>
 	Method New()
 		Self._fieldValues = New TMap
 	End Method

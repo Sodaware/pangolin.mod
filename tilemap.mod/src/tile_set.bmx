@@ -24,8 +24,8 @@ Import "animated_tile.bmx"
 Type TileSet
 	
 	Field _imageName:String
-	Field _tileWidth:Int						''' The width of a single tile
-	Field _tileHeight:Int						''' The height of a single tile
+	Field _tileWidth:Int						'''< The width of a single tile
+	Field _tileHeight:Int						'''< The height of a single tile
 
 	Field _tiles:TList
 	Field _animatedTiles:TList
@@ -115,7 +115,7 @@ Type TileSet
 		Return Self._animatedTiles.Count() - 1
 	End Method
 	
-	''' <summary>Refresh internal counters
+	''' <summary>Rebuild internal lookups.</summary>
 	Method _updateInternals()
 		
 		Self._tileCount             = Self._tiles.Count()
