@@ -19,7 +19,7 @@ Type ConsoleCommand Extends IInjectable
 	Field HelpText:String
 		
 	' Private
-	Field m_ParentConsole:IConsole
+	Field _parentConsole:IConsole
 	
 	' Write some help text to the console
 	Method writeHelpText()
@@ -27,16 +27,16 @@ Type ConsoleCommand Extends IInjectable
 	End Method
 	
 	Method write(text:String = "")
-		Self.m_ParentConsole.Write(text)
+		Self._parentConsole.Write(text)
 	End Method
 	
 	Method writeLine(line:String = "")
-		Self.m_ParentConsole.WriteLine(line)
+		Self._parentConsole.WriteLine(line)
 	End Method
 	
 	' Private
 	Method _setParent(parent:IConsole)
-		Self.m_ParentConsole = parent
+		Self._parentConsole = parent
 	End Method
 
 	Method execute:Int(args:TList) Abstract

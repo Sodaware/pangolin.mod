@@ -46,40 +46,37 @@ Type DebugConsole Extends IConsole
 	Const STATE_APPEARING:Int		= 3
 	Const STATE_DISAPPEARING:Int	= 4
 
-	' Appearance
-	Field _fontName:String		''' The name of the font this console uses
-	Field _speed:Int			''' The speed at which the console moves (During transitions)
+	' -- Appearance
+	Field _fontName:String      '''< The name of the font this console uses
+	Field _speed:Int            '''< The speed at which the console moves (During transitions)
 	
-	' Dimensions & Location
-	Field xPos:Int				''' The X position of the console on screen.
-	Field yPos:Int				''' The Y position of the console on screen.
-	Field m_Width:Int			''' The width of the console image.
-	Field m_Height:Int			''' The height of the console image.
-	Field m_TextRows:Int		''' The number of rows of text to display.
+	' -- Dimensions & Location
+	Field xPos:Int              '''< The X position of the console on screen.
+	Field yPos:Int              '''< The Y position of the console on screen.
+	Field _width:Int            '''< The width of the console image.
+	Field _height:Int           '''< The height of the console image.
+	Field _textRows:Int         '''< The number of rows of text to display.
 	
 	' Input / Output
-	Field m_InputBuffer:String	''' Text contained in the input buffer.
-	Field m_OutputBuffer:TList	''' StringList containing output from operations
-	Field m_CommandLog:TList	''' StringList of all commands that have been entered.
-	Field m_CommandPos:Int		''' Position in the command log
+	Field _inputBuffer:String   '''< Text contained in the input buffer.
+	Field _outputBuffer:TList   '''< StringList containing output from operations
+	Field _commandLog:TList     '''< StringList of all commands that have been entered.
+	Field _commandPos:Int       '''< Position in the command log
 	
 	' State
-	Field m_State:Int			''' The state the current console is in.
-	Field m_Visible:Int			''' Whether or not the console is visible
-	Field m_Active:Int			''' Whether or not the console is active.
+	Field _state:Int            '''< The state the current console is in.
+	Field _visible:Int          '''< Whether or not the console is visible
+	Field _active:Int           '''< Whether or not the console is active.
 	
 	' Commands / Variables
-	Field m_Commands:TMap		''' Map of commands -> function handles
+	Field _commands:TMap        '''< Map of commands -> function handles
 	
 	' Internal Resources
-	Field gfx_Console:TImage	''' The image displayed by the console
-	Field gfx_Background:TImage	''' The default background.
-	Field m_Font:TImageFont		''' The font used by the console
-	Field snd_Appear:TSound		''' Handle to the source played when the console appears
-	Field snd_Disappear:TSound	''' Handle to the source played when the console disappears
-	
-	
-
+	Field gfx_Console:TImage	'''< The image displayed by the console
+	Field gfx_Background:TImage	'''< The default background.
+	Field _font:TImageFont      '''< The font used by the console
+	Field snd_Appear:TSound		'''< Handle to the source played when the console appears
+	Field snd_Disappear:TSound	'''< Handle to the source played when the console disappears
 	
 	
 	' --------------------------------------------------
@@ -87,39 +84,28 @@ Type DebugConsole Extends IConsole
 	' --------------------------------------------------
 	
 	''' <summary>Sets the font used by the Console.</summary>
-	''' <param name="this">Console to modify.</param>
-	''' <param name="p_FontName">The name of the font.</param>
-	''' <param name="p_Size">The size of the font.</param>
-	''' <param name="p_Bold">If true, the font will be bold.</param>
-	''' <param name="p_Italic">Italic or not.</param>
-	''' <param name="p_Underline"></param>
-	''' <remarks></remarks>
-	''' <returns></returns>
-	''' <subsystem></subsystem>
-	''' <example></example>
-	Method setFont(p_FontName:String, p_Size:Int, p_Bold:Int = False, p_Italic:Int = False)
+	Method setFont(name:String, size:Int, isBold:Byte = False, isItalic:Byte = False)
 		
 		' Cleanup existing font if present
-		If (Self.m_font) Then Self.m_Font = Null
+		If Self._font Then 
+			Self._Font = Null
+		EndIf
 		
 		Local fntStyle:Int	= 0
 		
-		If p_Bold Then fntStyle = BOLDFONT
-		If p_Italic Then fntStyle = fntStyle & ITALICFONT
+		If isBold Then fntStyle = BOLDFONT
+		If isItalic Then fntStyle = fntStyle & ITALICFONT
 		
 		' Set font name & load it
-		Self._fontName	= p_FontName
-		Self.m_Font		= LoadImageFont(p_FontName, p_Size, fntStyle)
+		Self._fontName	= name
+		Self._font		= LoadImageFont(name, size, fntStyle)
 		
 		' Update internal vars
-		If Self.m_Font = Null Then 
-			Self.m_TextRows = (Self.m_Height - 10) / 10 - 2
+		If Self._font = Null Then 
+			Self._textRows = (Self._height - 10) / 10 - 2
 		Else
-			'		SetFont(this\m_Font)
-			Self.m_TextRows = (Self.m_Height - 10) / Self.m_Font.Height() - 2
-		EndIf		
-		' Re-render
-	'	Self.RenderImage()
+			Self._textRows = (Self._height - 10) / Self._font.Height() - 2
+		EndIf
 		
 	End Method
 	
@@ -128,20 +114,20 @@ Type DebugConsole Extends IConsole
 		If backgroundImage <> Null Then
 			
 			Self.gfx_Background	= backgroundImage
-			Self.m_Height		= Self.gfx_Background.height
-			Self.m_Width		= Self.gfx_Background.width
+			Self._height		= Self.gfx_Background.height
+			Self._width			= Self.gfx_Background.width
 			
 			' Free old console image
 			If Self.gfx_Console Then Self.gfx_Console = Null
 			
 			' Create new console image & mask
-			Self.gfx_Console = CreateImage(Self.m_Width, Self.m_Height, 1, DYNAMICIMAGE )
+			Self.gfx_Console = CreateImage(Self._width, Self._height, 1, DYNAMICIMAGE )
 		'	MaskImage this\gfx_Console, 255, 0 ,255
 		
 			' Update internal vars
-			Self._speed = Self.m_Height / 10
+			Self._speed = Self._height / 10
 			
-			If Self.m_Font Then
+			If Self._font Then
 			'	SetFont(this\m_Font)
 			'	this\m_TextRows = (this\m_Height - 10) / FontHeight() - 2
 			EndIf
@@ -160,7 +146,7 @@ Type DebugConsole Extends IConsole
 
 	Method handleInput:Int(currentKey:Int = 0)
 		
-		Local keyHandled:Int 	= False
+		Local keyHandled:Byte = False
 		
 		If KeyHit(KEY_LEFT) Then
 			keyHandled = True
@@ -168,11 +154,11 @@ Type DebugConsole Extends IConsole
 		EndIf
 		
 		If KeyHit(KEY_UP)  Then
-			If Self.m_CommandLog.Count() > 0 And Self.m_CommandPos >= 0 Then 
-				Self.m_InputBuffer = String(Self.m_CommandLog.ValueAtIndex(Self.m_CommandPos))
+			If Self._commandLog.Count() > 0 And Self._commandPos >= 0 Then 
+				Self._inputBuffer = String(Self._commandLog.ValueAtIndex(Self._commandPos))
 
-				If Self.m_CommandPos > 0 Then
-					Self.m_CommandPos:- 1
+				If Self._commandPos > 0 Then
+					Self._commandPos:- 1
 				EndIf
 				
 			EndIf
@@ -181,52 +167,45 @@ Type DebugConsole Extends IConsole
 		EndIf
 	
 		If KeyHit(KEY_DOWN) Then
-			If Self.m_CommandPos < Self.m_CommandLog.Count() - 1 Then 
-				Self.m_CommandPos = Self.m_CommandPos + 1
-				Self.m_InputBuffer = String(Self.m_CommandLog.ValueAtIndex(Self.m_CommandPos))
+			If Self._commandPos < Self._commandLog.Count() - 1 Then 
+				Self._commandPos = Self._commandPos + 1
+				Self._inputBuffer = String(Self._commandLog.ValueAtIndex(Self._commandPos))
 			Else
-				Self.m_InputBuffer	= ""
+				Self._inputBuffer	= ""
 			EndIf
 			FlushKeys() 
 			Return True			
 		EndIf	
 
 		' Not a system key - try something else		
-		Local currentChar:Int	= GetChar()
-
-		
-			
+		Local currentChar:Int = GetChar()
 		
 		' Backspace
 		Select currentChar
 			
 			Case KEY_BACKSPACE
-				Self.m_InputBuffer = Left(Self.m_InputBuffer, Len(Self.m_InputBuffer) - 1) 
-				keyHandled = True		
+				Self._inputBuffer = Left(Self._inputBuffer, Len(Self._inputBuffer) - 1)
+				keyHandled = True
 			
 			Case KEY_ENTER
 				
 				' Run the command
-				Self.m_CommandLog.AddLast(Self.m_InputBuffer)
-				Self.m_CommandPos = Self.m_CommandLog.Count() - 1
+				Self._commandLog.AddLast(Self._inputBuffer)
+				Self._commandPos = Self._commandLog.Count() - 1
 			
-				Self.m_OutputBuffer.AddLast(Self.m_InputBuffer)
-			'		Self.RenderImage()	
-				' Console_WriteLine(this, "]" + this\m_InputBuffer)
-				' Console_Process(this)
-				Self.RunCommand(Self.m_InputBuffer)
-			
-				Self.m_InputBuffer = ""
+				Self._outputBuffer.AddLast(Self._inputBuffer)
+				Self.runCommand(Self._inputBuffer)
+				
+				Self._inputBuffer = ""
 				keyHandled = True
 					
 		End Select
-	
-	
+		
 		If keyHandled = False And currentChar > 0 Then 
-			Self.m_InputBuffer = Self.m_InputBuffer + Chr(currentChar)
+			Self._inputBuffer = Self._inputBuffer + Chr(currentChar)
 			keyHandled = True
 		EndIf
-	
+		
 		If keyHandled Then FlushKeys()
 		FlushKeys()
 		Return keyHandled
@@ -238,15 +217,15 @@ Type DebugConsole Extends IConsole
 	' -- Output handling
 	' --------------------------------------------------
 	
-	Method Write(text:String)
-		Self.m_OutputBuffer.AddLast(text)
+	Method write(text:String)
+		Self._outputBuffer.AddLast(text)
 	'	Self.RenderImage()
 	End Method
 	
-	Method WriteLine(line:String)
-		Self.m_OutputBuffer.AddLast(line)
+	Method writeLine(line:String)
+		Self._outputBuffer.AddLast(line)
 	'	Self.RenderImage()
-	debuglog line
+		DebugLog line
 	End Method
 	
 		
@@ -254,19 +233,20 @@ Type DebugConsole Extends IConsole
 	' -- Command handling
 	' --------------------------------------------------
 	
-	Function Handle_DlogWrite:Object(id:Int,data:Object,context:Object )
+	Function Handle_DlogWrite:Object(id:Int, data:Object, context:Object)
 		Local this:DebugConsole = DebugConsole(context)
 		If this <> Null Then this.WriteLine("dlog: " + String(data))
 	End Function
 	
-	Method AddCommandHandler:Int(commandName:String, parentObject:Object, handler:Int(parent:Object, console:IConsole, args:TList))
-		Self.m_Commands.Insert( ..
+	Method addCommandHandler:Int(commandName:String, parentObject:Object, handler:Int(parent:Object, console:IConsole, args:TList))
+		Self._commands.Insert( ..
 			commandName.ToLower(), ..
 			ConsoleCommandHandler.Create(parentObject, handler) ..
 		)
 	End Method
 	
-	Method AddCommandHandlerObject:Int(handler:Object) 
+	' TODO: Remove this?
+	Method addCommandHandlerObject:Int(handler:Object) 
 		' Get a list of functions in the object that match the signature
 		' Add them
 	End Method
@@ -280,12 +260,12 @@ Type DebugConsole Extends IConsole
 		Local commandName:String = Lower(Mid(line, 0, line.Find(" ") + 1))
 		If commandName = "" Then commandName = Lower(line)
 		
-		If Self.HasCommand(commandName)
-			Self.ExecuteCommand(commandName, DebugConsole.SplitCommand(line))
+		If Self.hasCommand(commandName)
+			Self.executeCommand(commandName, DebugConsole.SplitCommand(line))
 			Return
 		End If
 		
-		Local handler:ConsoleCommandHandler = ConsoleCommandHandler(Self.m_Commands.ValueForKey(commandName))
+		Local handler:ConsoleCommandHandler = ConsoleCommandHandler(Self._commands.ValueForKey(commandName))
 		If handler <> Null Then 
 			' Split args in a friendly way (ie obeying strings etc)
 			Local args:TList = DebugConsole.SplitCommand(line)
@@ -298,18 +278,19 @@ Type DebugConsole Extends IConsole
 		
 	End Method
 	
+	
 	' --------------------------------------------------
 	' -- Updating & Rendering
 	' --------------------------------------------------
 	
-	Method Update()
+	Method update()
 	
-		Select Self.m_State
+		Select Self._state
 			
 			Case DebugConsole.STATE_HIDDEN
 				If KeyDown( KEY_GRAVE ) Then
-					Self.m_Visible = True
-					Self.m_State = DebugConsole.STATE_APPEARING
+					Self._visible = True
+					Self._state = DebugConsole.STATE_APPEARING
 					'Self.RenderImage()
 					If Self.snd_Appear <> Null Then PlaySound(Self.snd_Appear)
 					FlushKeys()
@@ -320,23 +301,23 @@ Type DebugConsole Extends IConsole
 					Self.yPos = Self.yPos + Self._speed
 				Else
 					Self.yPos = 0
-					Self.m_State = DebugConsole.STATE_ACTIVE
+					Self._state = DebugConsole.STATE_ACTIVE
 				EndIf
 				
 			Case DebugConsole.STATE_DISAPPEARING
-				If Self.yPos > 1 - Self.m_Height Then
+				If Self.yPos > 1 - Self._height Then
 					Self.yPos = Self.yPos - Self._speed
 				Else
-					Self.m_State = DebugConsole.STATE_HIDDEN
-					Self.m_Visible = False
+					Self._state = DebugConsole.STATE_HIDDEN
+					Self._visible = False
 				EndIf
 			
 			Case DebugConsole.STATE_ACTIVE
 				If KeyDown( KEY_GRAVE ) Then
-					Self.m_State = DebugConsole.STATE_DISAPPEARING
+					Self._state = DebugConsole.STATE_DISAPPEARING
 					If Self.snd_Disappear <> Null Then PlaySound(Self.snd_Disappear)
 				Else
-					Self.HandleInput()
+					Self.handleInput()
 				EndIf
 			
 		End Select
@@ -344,17 +325,17 @@ Type DebugConsole Extends IConsole
 		
 	End Method
 	
-	Method Render()
+	Method render()
 		
-		If Self.m_Visible = False Then Return
+		If Self._visible = False Then Return
 		
 		DrawImage Self.gfx_Console, Self.xPos, Self.yPos
 		DrawImage Self.gfx_Background, Self.xPos, Self.yPos
-		Self.RenderText()
+		Self.renderText()
 		
 	End Method
 	
-	Method RenderImage()
+	Method renderImage()
 		
 		
 		If brl.Graphics.GraphicsHeight() = 0 Then Return
@@ -367,7 +348,7 @@ Type DebugConsole Extends IConsole
 
 		'	If Self.gfx_Background <> Null Then
 		DrawImage(Self.gfx_Background, 0, 0)
-		Self.RenderText()
+		Self.renderText()
 				
 		
 		GrabImage(Self.gfx_Console, 0, 0)
@@ -400,37 +381,37 @@ Type DebugConsole Extends IConsole
 		' If currentBuffer Then SetBuffer(currentBuffer)
 	End Method
 	
-	Method RenderText:Int()
+	Method renderText:Int()
 		
 		Local oldFont:TImageFont = GetImageFont()
-		SetImageFont(Self.m_Font)
+		SetImageFont(Self._font)
 		
 		SetColor(255, 255, 255)
 
-		Local listSize%		''' The size of the output buffer
-		Local listPos%		''' Position within the output buffer
-		Local xPos%			''' X Position To draw current line at
-		Local yPos%			''' Y Position To draw current line at
-		Local currentLine$	''' Current line To draw.
+		Local listSize:Int			' The size of the output buffer
+		Local listPos:Int			' Position within the output buffer
+		Local xPos:Int				' X Position To draw current line at
+		Local yPos:Int				' Y Position To draw current line at
+		Local currentLine:String	' Current line To draw.
 	
 		' TODO: Cache this
 		Local fntHeight:Int = TextHeight("`j") / 2
 	
 	
 		' Get list size
-		listSize = Self.m_OutputBuffer.Count() - 1
+		listSize = Self._outputBuffer.Count() - 1
 	
 		' TODO: Scale should depend on virtual resolution
 		SetScale 0.5, 0.5
 		
 		' Iterate through output	
-		For listPos = 0 To Self.m_TextRows
+		For listPos = 0 To Self._textRows
 		
 			If listSize - listPos > -1 Then
 			
 				xPos 		= 0 + 9
-				yPos 		= Self.yPos + Self.m_Height - 35 - (listPos * fntHeight)
-				currentLine = String(Self.m_OutputBuffer.ValueAtIndex(listSize - listPos))
+				yPos 		= Self.yPos + Self._height - 35 - (listPos * fntHeight)
+				currentLine = String(Self._outputBuffer.ValueAtIndex(listSize - listPos))
 				
 				SetColor 0, 0, 0		; DrawText currentLine, xPos + 1, yPos + 1
 				SetColor 255, 255, 255	; DrawText currentLine, xPos,  yPos
@@ -445,15 +426,15 @@ Type DebugConsole Extends IConsole
 		';Font_Draw(this\xPos + 5, this\yPos + this\m_Height - 12, "]" + this\m_InputBuffer + "_")
 '		SetColor 0, 0, 0		; DrawText "]" + Self.m_InputBuffer + "_", Self.xPos + 5, Self.yPos + Self.m_Height - 13
 '		SetColor 255, 255, 255	; DrawText "]" + Self.m_InputBuffer + "_", Self.xPos + 4, Self.yPos + Self.m_Height - 14
-		SetColor 0, 0, 0		; DrawText "]" + Self.m_InputBuffer + "_", 10, Self.m_Height - 18 + Self.yPos
-		SetColor 255, 255, 255	; DrawText "]" + Self.m_InputBuffer + "_", 9, Self.m_Height - 19 + Self.yPos
+		SetColor 0, 0, 0		; DrawText "]" + Self._inputBuffer + "_", 10, Self._height - 18 + Self.yPos
+		SetColor 255, 255, 255	; DrawText "]" + Self._inputBuffer + "_", 9, Self._height - 19 + Self.yPos
 	
 		
 		SetScale 1.0, 1.0
 		SetImageFont oldfont
 		
 	End Method
-	
+
 	Function SplitCommand:TList(line:String)
 		
 		Local args:TList		= New TList
@@ -495,21 +476,21 @@ Type DebugConsole Extends IConsole
 	''' <param name="p_Background">HANDLE to the image for this console.</param>
 	''' <returns>A newly create and initialised Console object.</returns>
 	''' <subsystem></subsystem>
-	Function Create:DebugConsole(p_Background:TImage, p_FontName:String = "MS Dialog", p_FontSize:Int = 10)
+	Function Create:DebugConsole(backgroundImage:TImage, consoleFontName:String = "MS Dialog", consoleFontSize:Int = 10)
 		
 		' - Check inputs
-		if p_Background = null then return null
+		If backgroundImage = Null Then Return Null
 		
 		Local this:DebugConsole = New DebugConsole
 		
 		' Initialise resources
-		this.SetBackground(p_Background)
-		this.SetFont(p_FontName, p_FontSize)
+		this.setBackground(backgroundImage)
+		this.setFont(consoleFontName, consoleFontSize)
 		
 		' Set location & speed
-		this._speed	= this.m_Height / 10
+		this._speed	= this._height / 10
 		this.xPos 	= 0
-		this.yPos 	= 0 - this.m_Height
+		this.yPos 	= 0 - this._height
 		
 		Return this
 		
@@ -518,13 +499,13 @@ Type DebugConsole Extends IConsole
 	Method New()
 		
 		' Initialise lists
-		Self.m_OutputBuffer	= New TList
-		Self.m_CommandLog	= New TList
-		Self.m_Commands	 	= New TMap
+		Self._outputBuffer	= New TList
+		Self._commandLog	= New TList
+		Self._commands	 	= New TMap
 	
 		' Setup state
-		Self.m_State		= DebugConsole.STATE_HIDDEN
-		Self.m_Active		= False
+		Self._state			= DebugConsole.STATE_HIDDEN
+		Self._active		= False
 		
 	End Method
 

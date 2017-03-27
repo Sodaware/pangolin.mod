@@ -12,19 +12,6 @@
 
 SuperStrict
 
-' Blitz imports
-Import brl.audio
-Import brl.linkedlist
-Import brl.map
-Import brl.standardio
-Import brl.font
-Import brl.freetypefont
-Import brl.keycodes
-Import brl.retro
-Import brl.max2d
-
-Import brl.reflection
-
 Import pangolin.core
 
 Import "../base/debug_console.bmx"
@@ -40,18 +27,6 @@ Type DebugConsoleService Extends GameService ..
 	' ------------------------------------------------------------
 	' -- Adding commands
 	' ------------------------------------------------------------
-	
-	Method _autoloadConsole:DebugConsoleService()
-		
-		' TODO: Allow commands to be active / inactive for debug & release mode (use meta?)
-	
-		Local cmd:TTypeId = TTypeId.ForName("ConsoleCommand")
-		For Local subCommand:TTypeId = EachIn cmd.DerivedTypes()
-			Self.addCommand(ConsoleCommand(subCommand.NewObject()))
-		Next
-		Return Self
-		
-	End Method
 	
 	Method addCommand:Int(handler:ConsoleCommand)
        
@@ -72,10 +47,23 @@ Type DebugConsoleService Extends GameService ..
 		
 	End Method
 	
+	Method _autoloadConsole:DebugConsoleService()
+		
+		' TODO: Allow commands to be active / inactive for debug & release mode (use meta?)
+	
+		Local cmd:TTypeId = TTypeId.ForName("ConsoleCommand")
+		For Local subCommand:TTypeId = EachIn cmd.DerivedTypes()
+			Self.addCommand(ConsoleCommand(subCommand.NewObject()))
+		Next
+		Return Self
+		
+	End Method
+	
 	Method start()
 		Super.start()
 		Self._autoloadConsole()
 	End Method
+	
 	
 	' ------------------------------------------------------------
 	' -- Updating & Rendering
@@ -98,10 +86,10 @@ Type DebugConsoleService Extends GameService ..
 		Self._addInjectableFields()
 	End Method
 	
-	Function Create:DebugConsoleService(p_Background:TImage, p_FontName:String = "MS Dialog", p_FontSize:Int = 10)
+	Function Create:DebugConsoleService(backgroundImage:TImage, consoleFontName:String = "MS Dialog", consoleFontSize:Int = 10)
 
 		Local this:DebugConsoleService = New DebugConsoleService
-		this._console = DebugConsole.Create(p_Background, p_FontName, p_FontSize)
+		this._console = DebugConsole.Create(backgroundImage, consoleFontName, consoleFontSize)
 		this._priority = 5
 		this._renderPriority = 255
 		this._updatePriority = 1
