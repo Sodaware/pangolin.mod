@@ -21,6 +21,10 @@ Type ConsoleCommand Extends IInjectable
 	' Private
 	Field _parentConsole:IConsole
 	
+	Method getParentConsole:IConsole()
+		Return Self._parentConsole
+	End Method
+	
 	' Write some help text to the console
 	Method writeHelpText()
 		
