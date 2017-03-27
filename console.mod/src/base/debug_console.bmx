@@ -382,6 +382,8 @@ Type DebugConsole Extends IConsole
 	End Method
 	
 	Method renderText:Int()
+	
+		' TODO: Add some padding rather than hard-coding everything
 		
 		Local oldFont:TImageFont = GetImageFont()
 		SetImageFont(Self._font)
@@ -405,7 +407,7 @@ Type DebugConsole Extends IConsole
 		SetScale 0.5, 0.5
 		
 		' Iterate through output	
-		For listPos = 0 To Self._textRows
+		For listPos = 0 To Self._textRows / 0.5
 		
 			If listSize - listPos > -1 Then
 			
@@ -413,8 +415,11 @@ Type DebugConsole Extends IConsole
 				yPos 		= Self.yPos + Self._height - 35 - (listPos * fntHeight)
 				currentLine = String(Self._outputBuffer.ValueAtIndex(listSize - listPos))
 				
-				SetColor 0, 0, 0		; DrawText currentLine, xPos + 1, yPos + 1
-				SetColor 255, 255, 255	; DrawText currentLine, xPos,  yPos
+				' TODO: Replace this with a method to draw text with a shadow
+				SetColor 0, 0, 0
+				DrawText currentLine, xPos + 1, yPos + 1
+				SetColor 255, 255, 255
+				DrawText currentLine, xPos,  yPos
 				
 			EndIf
 			
@@ -426,9 +431,16 @@ Type DebugConsole Extends IConsole
 		';Font_Draw(this\xPos + 5, this\yPos + this\m_Height - 12, "]" + this\m_InputBuffer + "_")
 '		SetColor 0, 0, 0		; DrawText "]" + Self.m_InputBuffer + "_", Self.xPos + 5, Self.yPos + Self.m_Height - 13
 '		SetColor 255, 255, 255	; DrawText "]" + Self.m_InputBuffer + "_", Self.xPos + 4, Self.yPos + Self.m_Height - 14
-		SetColor 0, 0, 0		; DrawText "]" + Self._inputBuffer + "_", 10, Self._height - 18 + Self.yPos
-		SetColor 255, 255, 255	; DrawText "]" + Self._inputBuffer + "_", 9, Self._height - 19 + Self.yPos
-	
+		
+		
+
+		' Draw shadow
+		SetColor 0, 0, 0
+		DrawText "]" + Self._inputBuffer + "_", 10, Self._height - 10 + Self.yPos
+		
+		' Draw text
+		SetColor 255, 255, 255
+		DrawText "]" + Self._inputBuffer + "_", 9, Self._height - 9 + Self.yPos
 		
 		SetScale 1.0, 1.0
 		SetImageFont oldfont
@@ -472,10 +484,9 @@ Type DebugConsole Extends IConsole
 	' -- Object Creation & Destruction
 	' ------------------------------------------------------------
 	
-	''' <summary>Creates, initialises And returns a New Console Object.</summary>
-	''' <param name="p_Background">HANDLE to the image for this console.</param>
-	''' <returns>A newly create and initialised Console object.</returns>
-	''' <subsystem></subsystem>
+	''' <summary>Creates, initialises And returns a new DebugConsole object.</summary>
+	''' <param name="backgroundImage">Image for this console.</param>
+	''' <returns>A newly create and initialised DebugConsole object.</returns>
 	Function Create:DebugConsole(backgroundImage:TImage, consoleFontName:String = "MS Dialog", consoleFontSize:Int = 10)
 		
 		' - Check inputs
