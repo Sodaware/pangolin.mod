@@ -93,7 +93,7 @@
 	Method enter()
 	End Method
 	
-	'''' <summary>Called when the screen is exited (before resources are freed).</summary>
+	'''' <summary>Called when the screen is exited (after resources are freed).</summary>
 	Method leave()
 	End Method
 	
