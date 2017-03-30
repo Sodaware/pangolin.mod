@@ -41,6 +41,7 @@ Type TileMapRequest Extends AbstractSpriteRequest
 	Field _yScale:Float
 	Field _layer:Int
 	Field _tilesetFrameCount:int
+	Field _hasAnimatedTiles:Byte
 	
 	Field _cachedCamera:AbstractRenderCamera
 	
@@ -171,6 +172,7 @@ Type TileMapRequest Extends AbstractSpriteRequest
 	
 	Method hasAnimatedTiles:Byte()
 		Return Self._tileset.countAnimatedTiles() > 0
+		Return Self._hasAnimatedTiles
 	End Method
 	
 	
@@ -191,6 +193,7 @@ Type TileMapRequest Extends AbstractSpriteRequest
 
 		' Update internal cache
 		this._tilesetFrameCount = tilesetImage.frames.length
+		this._hasAnimatedTiles  = ( this._tileset.countAnimatedTiles() > 0 )
 		
 		' Update animations
 		this._animations = New TList
