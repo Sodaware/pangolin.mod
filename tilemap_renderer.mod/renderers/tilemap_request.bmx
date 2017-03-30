@@ -178,23 +178,23 @@ Type TileMapRequest Extends AbstractSpriteRequest
 	''' <summary>Update the internal animations cache.
 	Method _updateAnimationInternals()
 		
-		' Do nothing if no animated tiles
-		if self.hasAnimatedTiles() = False Then Return
+		' Do nothing if no animated tiles.
+		If Self.hasAnimatedTiles() = False Then Return
 		
-		' Get each animated tile from the tileset and create an animation handler for it
+		' Get each animated tile from the tileset and create an animation handler for it.
 		For Local t:AnimatedTile = EachIn Self._tileset._animatedTileLookup
 			Local handler:TileAnimationHandler = New TileAnimationHandler
 			
 			' TODO: Don't access internals!
-			handler._frames = New Int[t.m_TileList.Count()]
-			For Local i:Int = 0 To handler._frames.length - 1
-				handler._frames[i] = Int(t.m_TileList.ValueAtIndex(i).ToString())
+			handler._frames = New Int[t.countFrames()]
+			For Local i:Int = 0 To handler.countFrames() - 1
+				handler._frames[i] = t.getFrame(i)
 			Next
 			
 			' TODO: Don't access internals!
-			handler._frameTimers = New Int[t.m_TimerList.Count()]
-			For Local i:Int = 0 To handler._frameTimers.length - 1
-				handler._frameTimers[i] = Int(t.m_TimerList.ValueAtIndex(i).ToString())
+			handler._frameTimers = New Int[t.countTimers()]
+			For Local i:Int = 0 To handler.countTimers() - 1
+				handler._frameTimers[i] = t.getTimer(i)
 			Next
 				
 			handler.play()

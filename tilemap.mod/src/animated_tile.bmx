@@ -36,6 +36,18 @@ Type AnimatedTile Extends Tile
 		Return Self.m_TileList.Count()
 	End Method
 	
+	Method getFrame:Int(offset:Int)
+		Return Int(Self.m_TileList.ValueAtIndex(offset).ToString())
+	End Method
+	
+	Method getTimer:Int(offset:Int)
+		Return Int(Self.m_TimerList.ValueAtIndex(offset).ToString())
+	End Method
+
+	Method countTimers:Int()
+		Return Self.m_TimerList.Count()
+	End Method
+	
 	Method getName:String()
 		Return String(self.getMeta("name"))
 	End Method

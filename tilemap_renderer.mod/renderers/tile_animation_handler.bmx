@@ -30,6 +30,13 @@ Type TileAnimationHandler
 	Field _loopCount:Int
 	Field _loopPosition:Int
 	
+	Method countFrames:Int()
+		Return Self._frames.Length
+	End Method
+	
+	Method countTimers:Int()
+		Return Self._frameTimers.Length
+	End Method
 	
 	Method update(delta:Float)
 		
