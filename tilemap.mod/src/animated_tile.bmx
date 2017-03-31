@@ -20,8 +20,8 @@ Type AnimatedTile Extends Tile
 	Field _frameList:TList
 	
 	
-	Field m_TileList:TList
-	Field m_TimerList:TList
+	Field _tileList:TList
+	Field _timerList:TList
 	
 	Field AnimPosition:Int
 	Field AnimTimer:Int	
@@ -32,30 +32,35 @@ Type AnimatedTile Extends Tile
 	
 	Field isLooped:Byte = False
 	
-	Method countFrames:Short()
-		Return Self.m_TileList.Count()
-	End Method
-	
-	Method getFrame:Int(offset:Int)
-		Return Int(Self.m_TileList.ValueAtIndex(offset).ToString())
-	End Method
-	
-	Method getTimer:Int(offset:Int)
-		Return Int(Self.m_TimerList.ValueAtIndex(offset).ToString())
-	End Method
-
-	Method countTimers:Int()
-		Return Self.m_TimerList.Count()
-	End Method
-	
 	Method getName:String()
 		Return String(self.getMeta("name"))
 	End Method
 	
+	Method countFrames:Short()
+		Return Self._tileList.Count()
+	End Method
+
+	Method countTimers:Int()
+		Return Self._timerList.Count()
+	End Method
+	
+	Method getFrame:Int(offset:Int)
+		Return Int(Self._tileList.ValueAtIndex(offset).ToString())
+	End Method
+	
+	Method getTimer:Int(offset:Int)
+		Return Int(Self._timerList.ValueAtIndex(offset).ToString())
+	End Method
+	
+	Method addFrame(frameId:Int, timer:Int)
+		Self._tileList.AddLast(String(frameId))
+		Self._timerList.AddLast(String(timer))
+	End Method
+
 	Method New()
 		Self._frameList = New TList
-		Self.m_TileList = New TList
-		Self.m_TimerList = New TList
+		Self._tileList  = New TList
+		Self._timerList = New TList
 	End Method
 	
 End Type

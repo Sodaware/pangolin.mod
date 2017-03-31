@@ -40,8 +40,8 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 		Self._readAnimatedTiles(fileIn, set, animCount)
 		Self._readMetaData(fileIn, set)
 		
-		If set.getMeta("width") <> Null Then set._tileWidth = Int(set.GetMeta("width"))
-		If set.getMeta("height") <> Null Then set._tileheight = Int(set.GetMeta("height"))
+		If set.getMeta("width") <> Null Then set._tileWidth = Int(set.getMeta("width"))
+		If set.getMeta("height") <> Null Then set._tileheight = Int(set.getMeta("height"))
 		
 		Return set
 	
@@ -150,8 +150,7 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 		Local frameCount:Short = fileIn.ReadShort()
 		
 		For Local i:Int = 0 To frameCount - 1
-			this.m_TileList.AddLast(String(fileIn.ReadInt()))
-			this.m_TimerList.AddLast(String(fileIn.ReadInt()))
+			this.addFrame(fileIn.ReadInt(), fileIn.ReadInt())
 		Next
 		
 		Return this
@@ -233,11 +232,11 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 			fileOut.WriteByte(t.isLooped)
 			
 			' Write each frame
-			fileOut.WriteShort(t.m_TileList.Count())
+			fileOut.WriteShort(t.countFrames())
 			
-			For Local frameId:Int = 0 To t.m_TileList.Count() - 1
-				fileOut.WriteInt(Int(String(t.m_TileList.ValueAtIndex(frameId))))
-				fileOut.WriteInt(Int(String(t.m_TimerList.ValueAtIndex(frameId))))
+			For Local frameId:Int = 0 To t.countFrames() - 1
+				fileOut.WriteInt(t.getFrame(frameId))
+				fileOut.WriteInt(t.getTimer(frameId))
 			Next
 			
 		Next
