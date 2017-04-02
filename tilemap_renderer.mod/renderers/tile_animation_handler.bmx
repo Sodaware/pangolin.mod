@@ -23,12 +23,15 @@ Type TileAnimationHandler
 	
 	Field _elapsedFrameTime:Float		'''< Current time elapsed in the frame
 	Field _animationFrameTime:Float		'''< Current max frame time
-
-	Field _animDirection:Int
 	
 	Field _playing:Int
 	Field _loopCount:Int
 	Field _loopPosition:Int
+	
+	
+	' ------------------------------------------------------------
+	' -- Animation Information
+	' ------------------------------------------------------------
 	
 	Method countFrames:Int()
 		Return Self._frames.Length
@@ -38,15 +41,40 @@ Type TileAnimationHandler
 		Return Self._frameTimers.Length
 	End Method
 	
+	
+	' ------------------------------------------------------------
+	' -- Starting / Stopping
+	' ------------------------------------------------------------
+	
+	Method play()
+		Self._playing            = True
+		Self._framePos           = 0
+		Self._currentFrame       = Self._frames[Self._framePos]
+		Self._animationFrameTime = Self._frameTimers[Self._framePos]
+		
+		Self._loopCount = -1
+		Self._loopPosition = 0
+	End Method
+	
+	Method stop()
+		Self._playing = False
+	End Method
+	
+	
+	' ------------------------------------------------------------
+	' -- Updating
+	' ------------------------------------------------------------
+	
 	Method update(delta:Float)
 		
-		' Do nothing if not playing
-		If 0 = Self._frames.length Then Return
+		' Do nothing if not playing or if the animation is empty.
 		If False = Self._playing Then Return
+		If 0 = Self._frames.length Then Return
 		
 		' Update current frame time
 		Self._elapsedFrameTime:+ delta
 		
+		' Check if animation has moved to the next frame.
 		If Self._elapsedFrameTime >= Self._animationFrameTime Then
 					
 			' Move to the next frame
@@ -79,36 +107,7 @@ Type TileAnimationHandler
 			
 		End If
 		
-		
-		
 	End Method
-	
-	Method New()
-		
-	End Method
-	
-	Method play()
-		Self._playing            = True
-		Self._framePos           = 0
-		Self._currentFrame       = Self._frames[Self._framePos]
-		Self._animationFrameTime = Self._frameTimers[Self._framePos]
-		
-		Self._loopCount = -1
-		Self._loopPosition = 0
-		Rem
-	
-		If name = Self._currentAnim Then Return
-		
-		' Reset the animation
-		Self._currentAnim        = name
-		Self._frames             = Self._parent._animation.getFrameset(name)
-		Self._framePos           = 0
-		Self._currentFrame       = Self._frames[Self._framePos]
-		Self._loopCount          = Self._parent._animation._loopCount
-		Self._animationFrameTime = Self._parent._animation._frameTime
-		Self._loopPosition       = 0
-		Self._playing            = True
-		End rem
-	End Method
+
 	
 End Type
