@@ -19,6 +19,7 @@ Import "tile_animation_handler.bmx"
 
 Type TileMapRequest Extends AbstractSpriteRequest
 	
+	' -- Tilemap and tileset data
 	Field _tileImage:TImage	'''< Image to render
 	Field _tileset:TileSet
 	Field _map:Tilemap
@@ -175,31 +176,29 @@ Type TileMapRequest Extends AbstractSpriteRequest
 		
 	End Method
 	
-	''' <summary>Update the internal animations cache.
+	''' <summary>Update the internal animations cache.</summary>
 	Method _updateAnimationInternals()
 		
 		' Do nothing if no animated tiles.
 		If Self.hasAnimatedTiles() = False Then Return
 		
+		' Clear out existing animation handlers.
+		Self._animations.Clear()
+		Self._animationLookups.Clear()
+		
 		' Get each animated tile from the tileset and create an animation handler for it.
 		For Local t:AnimatedTile = EachIn Self._tileset._animatedTileLookup
-			Local handler:TileAnimationHandler = New TileAnimationHandler
 			
-			' TODO: Don't access internals!
-			handler._frames = New Int[t.countFrames()]
-			For Local i:Int = 0 To handler.countFrames() - 1
-				handler._frames[i] = t.getFrame(i)
-			Next
+			' Create a handler for the animated tile.
+			Local handler:TileAnimationHandler = TileAnimationHandler.Create(t)
 			
-			' TODO: Don't access internals!
-			handler._frameTimers = New Int[t.countTimers()]
-			For Local i:Int = 0 To handler.countTimers() - 1
-				handler._frameTimers[i] = t.getTimer(i)
-			Next
-				
-			handler.play()
+			' Add to the internal lookup.
 			Self._animations.AddLast(handler)
 			Self._animationLookups.Insert(t.getName(), handler)
+			
+			' Play animation.
+			handler.play()
+			
 		Next
 		
 	End Method

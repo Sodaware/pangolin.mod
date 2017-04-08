@@ -12,6 +12,9 @@
 
 SuperStrict
 
+Import pangolin.TileMap
+
+
 Type TileAnimationHandler
 		
 	Field _frames:Int[]
@@ -103,11 +106,34 @@ Type TileAnimationHandler
 			Self._animationFrameTime = Self._frameTimers[Self._framePos]
 			
 			Self._elapsedFrameTime   = Self._elapsedFrameTime - Self._animationFrameTime
-
 			
 		End If
 		
 	End Method
-
+	
+	
+	' ------------------------------------------------------------
+	' -- Construction / Destruction
+	' ------------------------------------------------------------
+	
+	Function Create:TileAnimationHandler(t:AnimatedTile)
+		
+		Local this:TileAnimationHandler = New TileAnimationHandler
+		
+		' Add frames.
+		this._frames = New Int[t.countFrames()]
+		For Local i:Int = 0 To this.countFrames() - 1
+			this._frames[i] = t.getFrame(i)
+		Next
+		
+		' Add frame timers
+		this._frameTimers = New Int[t.countTimers()]
+		For Local i:Int = 0 To this.countTimers() - 1
+			this._frameTimers[i] = t.getTimer(i)
+		Next
+		
+		Return this
+		
+	End Function
 	
 End Type
