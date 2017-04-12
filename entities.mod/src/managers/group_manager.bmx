@@ -19,7 +19,7 @@
 ''' </summary>
 Type GroupManager Extends BaseManager
 	
-	Field _entitiesByGroup:TMap			'''< A map of Group Name => ObjectBag of Entities
+	Field _entitiesByGroup:TMap			'''< A map of Group Name => EntityBag of Entities
 	Field _groupByEntity:ObjectBag		'''< A lookup of EntityId => Group Name
 	
 
@@ -29,8 +29,8 @@ Type GroupManager Extends BaseManager
 	
 	''' <summary>Get all entities that belong to a group.</summary>
 	''' <param name="groupName">The name of the group to fetch entities for.</param>
-	Method getEntities:ObjectBag(groupName:String)
-		Return ObjectBag(Self._entitiesByGroup.ValueForKey(groupName))
+	Method getEntities:EntityBag(groupName:String)
+		Return EntityBag(Self._entitiesByGroup.ValueForKey(groupName))
 	End Method
 	
 	''' <summary>Get an entity's group name.</summary>
@@ -69,9 +69,9 @@ Type GroupManager Extends BaseManager
 		If Self.isGrouped(e) Then Self.remove(e)
 		
 		' Get group bag
-		Local entityList:ObjectBag = ObjectBag(Self._entitiesByGroup.ValueForKey(groupName))
+		Local entityList:EntityBag = EntityBag(Self._entitiesByGroup.ValueForKey(groupName))
 		If entityList = Null Then
-			entityList = New ObjectBag
+			entityList = New EntityBag
 			Self._entitiesByGroup.Insert(groupName, entityList)
 		End If
 		entityList.add(e)
@@ -95,7 +95,7 @@ Type GroupManager Extends BaseManager
 		If groupName <> "" Then
 				
 			Self._groupByEntity.set(e.getId(), Null)
-			Local entityList:ObjectBag = ObjectBag(Self._entitiesByGroup.ValueForKey(groupName))
+			Local entityList:EntityBag = EntityBag(Self._entitiesByGroup.ValueForKey(groupName))
 			If entityList Then
 				entityList.removeObject(e)
 			End If
