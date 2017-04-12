@@ -41,6 +41,9 @@ Type ResourceManager
 	Field _loadCallbacks:TList 	'''< List of functions to be called when file loaded
 	Field _totalFiles:Int = 0	'''< Number of files loaded
 	
+	' -- Caches
+	Field _resourceTypes:TMap	'''< Map of string -> ttypeId
+	
 	Field _callbackCaller:Object
 	Field _startCallback:Object(called:Object, file:String)
 	
@@ -203,6 +206,7 @@ Type ResourceManager
 '		Next
 	End Method
 	
+	
 	' ------------------------------------------------------------
 	' -- Load a single resource
 	' ------------------------------------------------------------
@@ -215,21 +219,18 @@ Type ResourceManager
 	''' <return>Loaded resource</return>
 	Method addResource:BaseResource(definition:ResourceDefinition)
 		
-		' Get all available resources
-		Local baseType:TTypeId = TTypeId.ForName("BaseResource")
-		For Local resourceType:TTypeId = EachIn baseType.DerivedTypes()
+		' Get the BlitzMax type for this resource name.
+		Local resourceType:TTypeId = Self.getResourceTypeByName(definition.getType())
 		
-			' If resource type maps to definition.type then create the resource
-			If resourceType.MetaData("resource_type").Contains(definition.getType()) Then
-				
-				Local resource:BaseResource = BaseResource(resourceType.NewObject())
-				resource.init(definition)
-				Return resource
-				
-			End If
-		Next
+		' If resource type is invalid, throw an exception.
+		If Null = resourceType Then
+			Throw "Resource type ~q" + definition.getType() + "~q does not exist"
+		EndIf
 		
-		Throw "Resource type ~q" + definition.getType() + "~q does not exist"
+		' Load the resource and return it.
+		Local resource:BaseResource = BaseResource(resourceType.NewObject())
+		resource.init(definition)
+		Return resource
 		
 	End Method
 	
@@ -264,12 +265,49 @@ Type ResourceManager
 	
 	
 	' ------------------------------------------------------------
+	' -- Resource type helpers
+	' ------------------------------------------------------------
+	
+	Method isValidResourceType:Byte(name:String)
+		Return Self._resourceTypes.ValueForKey(name) <> Null
+	End Method
+	
+	Method getResourceTypeByName:TTypeId(name:String)
+		Return TTypeId(Self._resourceTypes.ValueForKey(name))
+	End Method
+	
+	
+	' ------------------------------------------------------------
+	' -- Cache Helpers
+	' ------------------------------------------------------------
+	
+	Method _initializeTypeCaches()
+		
+		' Get all available resource types
+		Local baseType:TTypeId = TTypeId.ForName("BaseResource")
+		For Local resourceType:TTypeId = EachIn baseType.DerivedTypes()
+		
+			' Type name meta may be comma separated, so split the name and add each item.
+			Local typeNames:String[] = resourceType.MetaData("resource_type").Split(",")
+			For Local typeName:String = EachIn typeNames
+				Self._resourceTypes.Insert(typeName.ToLower().Trim(), resourceType)
+			Next
+			
+		Next
+		
+	End Method
+	
+	
+	' ------------------------------------------------------------
 	' -- Construction / Destruction
 	' ------------------------------------------------------------
 	
 	Method New()
 		Self._resources 	= New TMap
 		Self._loadCallbacks = New TList
+		Self._resourceTypes = New TMap
+		
+		Self._initializeTypeCaches()
 	End Method
 			
 End Type
