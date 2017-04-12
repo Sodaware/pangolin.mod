@@ -15,7 +15,7 @@ Type IntervalEntityProcessingSystem Extends IntervalEntitySystem Abstract
 
 	Method processEntity(e:Entity) Abstract
 	
-	Method processEntities(entities:ObjectBag)
+	Method processEntities(entities:EntityBag)
 		For Local e:Entity = EachIn entities
 			Self.processEntity(e)
 		Next

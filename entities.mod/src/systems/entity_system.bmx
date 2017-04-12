@@ -26,7 +26,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	Field _systemBit:Long
 	Field _typeFlags:Long
 	Field _world:World
-	Field _actives:ObjectBag
+	Field _actives:EntityBag
 	
 	
 	' ------------------------------------------------------------
@@ -89,7 +89,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' -- Processing
 	' ------------------------------------------------------------
 	
-	Method processEntities(entities:ObjectBag) Abstract
+	Method processEntities(entities:EntityBag) Abstract
 	
 	Method checkProcessing:Short() Abstract
 	
@@ -221,7 +221,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' ------------------------------------------------------------
 	
 	Method New()
-		Self._actives	= ObjectBag.Create()
+		Self._actives	= EntityBag.Create()
 		Self._isEnabled	= True
 	End Method
 	

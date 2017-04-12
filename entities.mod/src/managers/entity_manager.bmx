@@ -13,8 +13,8 @@
 
 Type EntityManager Extends BaseManager
 
-	Field _activeEntities:ObjectBag   '< Collection of all active entities
-	Field _entityPool:ObjectBag       '< Pool of entities will be spawned from
+	Field _activeEntities:EntityBag   '< Collection of all active entities
+	Field _entityPool:EntityBag       '< Pool of entities will be spawned from
 	
 	Field _nextAvailableId:Int        '< Next available global id
 	Field _count:Int                  '< Count of all entities in the World
@@ -66,19 +66,19 @@ Type EntityManager Extends BaseManager
 	End Method
 	
 	''' <summary>
-	''' Get an ObjectBag containing all entities that have a 
+	''' Get an EntityBag containing all entities that have a 
 	''' specific component.
 	''' </summary>
 	''' <param name="t">The type of component to search for.</param>
 	''' <return>A collection of entities. May be empty.</return>
-	Method getEntitiesWithComponent:ObjectBag(t:ComponentType)
-		Return ObjectBag(Self._entitiesByComponent.get(t.getId()))
+	Method getEntitiesWithComponent:EntityBag(t:ComponentType)
+		Return EntityBag(Self._entitiesByComponent.get(t.getId()))
 	End Method
 	
 	''' <summary>
-	''' Get an ObjectBag of all entities that are currently active.
+	''' Get an EntityBag of all entities that are currently active.
 	''' </summary>
-	Method getActiveEntities:ObjectBag()
+	Method getActiveEntities:EntityBag()
 		Return Self._activeEntities
 	End Method
 	
@@ -183,7 +183,7 @@ Type EntityManager Extends BaseManager
 		e.addTypeBit(t.getBit())
 		
 		' Add to component->entities lookup
-		Local entities:ObjectBag = Self.getComponentsToEntityLookup(t) 
+		Local entities:EntityBag = Self.getComponentsToEntityLookup(t) 
 		entities.add(e)
 		
 		' Add to entity's internal lookup and map 
@@ -224,7 +224,7 @@ Type EntityManager Extends BaseManager
 		e.removeTypeBit(c.getBit())
 
 		' Remove this entity from the list of entities with a component.
-		Local entities:ObjectBag = ObjectBag(Self._entitiesByComponent.get(c.getId()))
+		Local entities:EntityBag = EntityBag(Self._entitiesByComponent.get(c.getId()))
 		entities.removeObject(e)	
 		
 	End Method
@@ -260,10 +260,10 @@ Type EntityManager Extends BaseManager
 		
 	End Method
 	
-	Method getComponentsToEntityLookup:ObjectBag(t:ComponentType)
-		Local entities:ObjectBag = ObjectBag(Self._entitiesByComponent.get(t.getId()))
+	Method getComponentsToEntityLookup:EntityBag(t:ComponentType)
+		Local entities:EntityBag = EntityBag(Self._entitiesByComponent.get(t.getId()))
 		If entities = Null Then
-			entities = ObjectBag.Create()
+			entities = EntityBag.Create()
 			Self._entitiesByComponent.set(t.getId(), entities)
 		End If
 		Return entities
@@ -302,8 +302,8 @@ Type EntityManager Extends BaseManager
 	End Function
 		
 	Method New()
-		Self._activeEntities      = New ObjectBag
-		Self._entityPool          = New ObjectBag
+		Self._activeEntities      = New EntityBag
+		Self._entityPool          = New EntityBag
 		Self._componentsByType    = New ObjectBag
 		Self._entitiesByComponent = New ObjectBag
 		

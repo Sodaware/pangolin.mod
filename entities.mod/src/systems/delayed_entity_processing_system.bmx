@@ -14,7 +14,7 @@ Type DelayedEntityProcessingSystem Extends DelayedEntitySystem Abstract
 	
 	Field _accumulatedDelta:Float
 	
-	Method _processEntities(entities:ObjectBag, accumulatedDelta:Float) Final
+	Method _processEntities(entities:EntityBag, accumulatedDelta:Float) Final
 		Self._accumulatedDelta = accumulatedDelta
 		For Local e:Entity = EachIn entities
 			Self.processEntity(e)

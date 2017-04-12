@@ -25,8 +25,8 @@ Type World
 	Field _delta:Float
 	
 	' -- Collection of refreshed / deleted entities
-	Field _refreshed:ObjectBag
-	Field _deleted:ObjectBag
+	Field _refreshed:EntityBag
+	Field _deleted:EntityBag
 	
 	
 	' ------------------------------------------------------------
@@ -140,7 +140,7 @@ Type World
 	''' <summary>Count the number of active entities that have a specific component.</summary>
 	''' <param name="t">The component type to check for.</param>
 	Method countEntitiesWithComponent:Int(t:ComponentType)
-		Local entities:ObjectBag = Self._entityManager.getEntitiesWithComponent(t)
+		Local entities:EntityBag = Self._entityManager.getEntitiesWithComponent(t)
 		If entities = Null Then Return 0
 		Return entities.getSize()
 	End Method
@@ -238,8 +238,8 @@ Type World
 		Self._tagManager    = TagManager.Create(Self)
 		Self._groupManager  = GroupManager.Create(Self)
 		
-		Self._refreshed     = New ObjectBag
-		Self._deleted       = New ObjectBag
+		Self._refreshed     = New EntityBag
+		Self._deleted       = New EntityBag
 		
 		Self._managers      = New TMap
 

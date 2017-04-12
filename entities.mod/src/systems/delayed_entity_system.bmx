@@ -18,12 +18,12 @@ Type DelayedEntitySystem Extends EntitySystem Abstract
 	
 	Method processEntity(e:Entity) Abstract
 	
-	Method processEntities(entities:ObjectBag)
+	Method processEntities(entities:EntityBag)
 		Self._processEntities(entities, Self._acc)
 		Self.stop()
 	End Method
 	
-	Method _processEntities(entities:ObjectBag, acc:Float) Abstract
+	Method _processEntities(entities:EntityBag, acc:Float) Abstract
 	
 	Method checkProcessing:Short() Final
 		

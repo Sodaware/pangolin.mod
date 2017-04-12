@@ -15,7 +15,7 @@ Type EntityProcessingSystem Extends EntitySystem
 	
 	Method processEntity(e:Entity) Abstract
 	
-	Method processEntities(entities:ObjectBag) Final
+	Method processEntities(entities:EntityBag) Final
 		For Local e:Entity = EachIn entities
 			Self.processEntity(e)
 		Next

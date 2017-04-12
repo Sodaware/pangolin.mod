@@ -25,7 +25,7 @@ Type InitializerEntityProcessingSystem Extends EntitySystem Abstract
 		Self.processEntity(e)
 	End Method
 	
-	Method processEntities(entities:ObjectBag)
+	Method processEntities(entities:EntityBag)
 		
 	End Method
 	
