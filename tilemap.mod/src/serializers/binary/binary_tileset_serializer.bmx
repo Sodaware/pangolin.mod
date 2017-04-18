@@ -161,31 +161,6 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 	' -- Internal save methods
 	' ------------------------------------------------------------
 	
-	rem
-	Method _writeLayers(fileOut:TStream, map:TileSet)
-	
-		Local xPos:Short
-		Local yPos:Short
-		
-		For Local layer:Short = 1 To map.m_LayerCount
-			
-			' write each layer
-			Local offset:Int = map.m_LayerOffset * (layer - 1)
-			
-			For yPos = 1 To map.GetHeight() 
-				
-				For xPos = 1 To map.GetWidth() 
-					fileOut.WriteShort(map.m_MapData.PeekShort(offset))
-					offset:+ 2
-				Next
-			
-			Next
-
-		Next
-		
-	End Method
-	end rem
-	
 	Method _writeTiles(fileOut:TStream, set:TileSet)
 		
 		For Local t:Tile = EachIn set._tiles
