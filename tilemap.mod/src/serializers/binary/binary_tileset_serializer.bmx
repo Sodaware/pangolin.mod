@@ -52,6 +52,8 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 		' Write header
 		fileOut.WriteString(HEADER)
 		
+		' TODO: Write a version number here.
+		
 		' Write tile counts
 		fileOut.WriteShort(set.countTiles())
 		fileOut.WriteShort(set.countAnimatedTiles())
@@ -150,7 +152,9 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 		Local frameCount:Short = fileIn.ReadShort()
 		
 		For Local i:Int = 0 To frameCount - 1
-			this.addFrame(fileIn.ReadInt(), fileIn.ReadInt())
+			Local frameNumber:Int = fileIn.ReadInt()
+			Local frameTimer:Int  = fileIn.ReadInt()
+			this.addFrame(frameNumber, frameTimer)
 		Next
 		
 		Return this
