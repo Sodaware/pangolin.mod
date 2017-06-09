@@ -20,7 +20,13 @@ git clone https://github.com/sodaware/pangolin.mod.git
 The following modules are included as part of **pangolin**:
 
 - *core.mod* -- The game kernel and base services.
+- *game.mod* -- Base game type and screen setup.
+- *gfx.mod* -- 2D graphics render queue.
 - *profiler.mod* -- Ultra-simple profiling functionality.
+- *resources.mod* -- Resource loader and manager.
+- *tilemap.mod* -- 2D tilemaps. Supports multiple layers, animated tiles and
+  more.
+- *tilemap_renderer.mod* -- Render 2D tilemaps.
 
 
 ## Licence
