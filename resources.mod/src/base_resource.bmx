@@ -4,10 +4,11 @@
 ' -- The base type for all game resources. All resources (images, sounds etc)
 ' -- should inherit from this and contain the following:
 ' --
-' -- 	* Creation from a ResourceDefinition
-' --	* A "_load" method to load / reload the resource
-' --	* a "_free" method to delete internal resources
-' --	* A "_getHandle" method that returns internal resource data
+' --  * Creation from a ResourceDefinition
+' --  * A "_load" method to load / reload the resource
+' --  * A "_free" method to delete internal resources
+' --  * A "_loadDefinition" method to load the resource's definition
+' --  * A "_getHandle" method that returns internal resource data
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
 ' -- Copyright (c) 2009-2017 Phil Newton
@@ -25,7 +26,6 @@ Type BaseResource Abstract
 	Field _definition:ResourceDefinition	'''< Definition of resource
 
 	Field _name:String						'''< Identifier for this resource
-	
 	Field _fileName:String					'''< Full path to load from
 	Field _isLoaded:Int						'''< True if resource loaded, false if not
 	Field _referenceCount:Int				'''< Number of places resource is referenced
