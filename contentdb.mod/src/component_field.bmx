@@ -18,18 +18,18 @@ Import brl.retro
 
 Type ComponentField
 
-	Const PROTECTIONLEVEL_PRIVATE:Int   = 1
-	Const PROTECTIONLEVEL_PROTECTED:Int = 2
-	Const PROTECTIONLEVEL_PUBLIC:Int    = 3
+	Const PROTECTIONLEVEL_PRIVATE:Byte   = 1
+	Const PROTECTIONLEVEL_PROTECTED:Byte = 2
+	Const PROTECTIONLEVEL_PUBLIC:Byte    = 3
 	
-	' --  About
-	Field _name:String				'''< The name of the field
-	Field _description:String		'''< Optional description of the field
+	'  About
+	Field _name:String              '''< The name of the field
+	Field _description:String       '''< Optional description of the field
 	
 	' Structure
-	Field _defaultValue:String		'''< The default value for the field
-	Field _protectionLevel:Int		'''< The protection level for this type.
-	Field _dataType:String			'''< The name of the data type for this field (e.g. int, bool, string)
+	Field _defaultValue:String      '''< The default value for the field
+	Field _protectionLevel:Byte     '''< The protection level for this type.
+	Field _dataType:String          '''< The name of the data type for this field (e.g. int, bool, string)
 	
 	
 	' ------------------------------------------------------------
@@ -88,6 +88,7 @@ Type ComponentField
 		Return Self._defaultValue
 	End Method
 	
+
 	' ------------------------------------------------------------
 	' -- Creation & Destruction
 	' ------------------------------------------------------------

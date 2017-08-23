@@ -27,7 +27,7 @@ Type ComponentSchema
 	Field _sourceFile:String		'''< The name of the file this component is declared in.
 	
 	' Internal data
-	Field _isInternal:Int			'''< Is this an internal (ie BlitzMax) component or a script component
+	Field _isInternal:Byte          '''< Is this an internal (ie BlitzMax) component or a script component
 	Field _requires:TList
 	Field _internals:TList
 	

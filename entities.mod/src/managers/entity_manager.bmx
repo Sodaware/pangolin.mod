@@ -93,7 +93,7 @@ Type EntityManager Extends BaseManager
 	''' </summary>
 	''' <param name="entityId">ID of the entity to check.</param>
 	''' <return>True if entity is active, false if not.</return>
-	Method isActive:Int(entityId:Int)
+	Method isActive:Byte(entityId:Int)
 		Return (Self._activeEntities.get(entityId) <> Null)
 	End Method
 	

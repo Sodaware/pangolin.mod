@@ -149,8 +149,8 @@ Type ScreenManager
 			Self.screensToUpdate.AddLast(screen)
 		Next
 		
-		Local otherScreenHasFocus:Int	= False
-		Local coveredByOtherScreen:Int	= False
+		Local otherScreenHasFocus:Byte  = False
+		Local coveredByOtherScreen:Byte = False
 		
 		' Loop as long as there are screens waiting to be updated.
 		While Self.screensToUpdate.Count() > 0

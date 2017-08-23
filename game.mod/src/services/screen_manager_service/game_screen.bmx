@@ -27,17 +27,17 @@ Import "screen_manager.bmx"
 Type GameScreen extends IGameScreen
 
 	' -- Screen states
-	Const STATE_TransitionOn:Int			= 1		'''< Screen is appearing
-	Const STATE_Active:Int		 			= 2		'''< Screen is running
-	Const STATE_TransitionOff:Int			= 3		'''< Screen is disappearing
-	Const STATE_Hidden:Int					= 4		'''< Screen is not visible
+	Const STATE_TransitionOn:Byte			= 1		'''< Screen is appearing
+	Const STATE_Active:Byte		 			= 2		'''< Screen is running
+	Const STATE_TransitionOff:Byte			= 3		'''< Screen is disappearing
+	Const STATE_Hidden:Byte					= 4		'''< Screen is not visible
 
-	Field State:Int									'''< Current state of this screen
+	Field State:Byte								'''< Current state of this screen
 	
 	' -- Internal info	
-	Field _isPopup:Int						= False
-	Field _noFocus:Int						= False
-	Field _isExiting:Int					= False
+	Field _isPopup:Byte						= False
+	Field _noFocus:Byte						= False
+	Field _isExiting:Byte					= False
 	Field _transitionOffTime:Int
 	
 	Field _group:RenderGroup
