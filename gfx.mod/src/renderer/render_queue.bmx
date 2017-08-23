@@ -48,10 +48,10 @@ Type RenderQueue
 	''' <summary>Add a render request to the queue.</summary>
 	''' <return>The added request.</return>
 	Method add:AbstractRenderRequest(obj:AbstractRenderRequest, name:String = "")
-		If obj <> Null Then
-			Self._renderObjects.add(obj)
-			Self._addLookup(obj, name)
-		EndIf
+		If obj = Null Then return Null
+		
+		Self._renderObjects.add(obj)
+		Self._addLookup(obj, name)
 		Return obj
 	End Method
 	
