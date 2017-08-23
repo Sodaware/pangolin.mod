@@ -43,7 +43,7 @@ Type EntityManager Extends BaseManager
 	''' <param name="entityId">ID of the entity to retrieve.</param>
 	''' <return>The found entity, or null if not found.</return>
 	Method getEntity:Entity(entityId:Int)
-		Return Entity(Self._activeEntities.get(entityId))
+		Return Self._activeEntities.get(entityId)
 	End Method
 	
 	''' <summary>Get a component with a specific component type from an entity.</summary>
@@ -275,7 +275,7 @@ Type EntityManager Extends BaseManager
 	' ------------------------------------------------------------
 	
 	Method _getEntityFromPool:Entity()
-		Local e:Entity = Entity(Self._entityPool.removeLast())
+		Local e:Entity = Self._entityPool.removeLast()
 		If e = Null Then
 			e = Entity.Create(Self._world, Self._nextAvailableId)
 			Self._nextAvailableId:+ 1
