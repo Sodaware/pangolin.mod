@@ -30,7 +30,7 @@ Type GameBase
 	Const EVENT_LOOP_TICK:Int   = -1001
 	
 	' -- Common parts of all game Pangolin based enginee
-	Field _finished:Int         = False
+	Field _finished:Byte        = False
 	Field _frameRate:Int        = 60
 	Field _kernel:GameKernel    = New GameKernel
 	
@@ -121,7 +121,7 @@ Type GameBase
 			delta		= MilliSecs() - lastTime 
 			lastTime 	= MilliSecs()
 			
-		Until Self.isFinished()
+		Until Self._finished
 
 		' Stop the kernel and return
 		Self._kernel.stop()
