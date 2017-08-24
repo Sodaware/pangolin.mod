@@ -60,6 +60,8 @@ Type GroupManager Extends BaseManager
 	' ------------------------------------------------------------
 
 	''' <summary>Set an entity's group.</summary>
+	''' <param name="groupName">The name of the entity's group.</param>
+	''' <param name="e">The entity to set a group for.</param>
 	Method set(groupName:String, e:Entity)
 	
 		' Group name cannot be a blank string
@@ -68,8 +70,9 @@ Type GroupManager Extends BaseManager
 		' Remove entity from its current group
 		If Self.isGrouped(e) Then Self.remove(e)
 		
-		' Get group bag
-		Local entityList:EntityBag = EntityBag(Self._entitiesByGroup.ValueForKey(groupName))
+		' Get a list of all entities in the group.
+		' If there's no existing container, create and add a new one.
+		Local entityList:EntityBag = self.getEntities(groupName)
 		If entityList = Null Then
 			entityList = New EntityBag
 			Self._entitiesByGroup.Insert(groupName, entityList)
@@ -81,21 +84,21 @@ Type GroupManager Extends BaseManager
 
 	''' <summary>Remove an entity from its current group.</summary>
 	Method remove(e:Entity)
-		
+
 		' If entity is NOT in a group, don't bother removing
 		If False = Self.isGrouped(e) Then Return
-			
+
 		' Get the group name for this entity
 		Local group:Object = Self._groupByEntity.get(e.getId())
 		
 		' Do nothing if entity does not belong to a group.
 		If group = Null Then Return
 		
-		Local groupName:String = group.tostring()
+		Local groupName:String = group.toString()
 		If groupName <> "" Then
 				
 			Self._groupByEntity.set(e.getId(), Null)
-			Local entityList:EntityBag = EntityBag(Self._entitiesByGroup.ValueForKey(groupName))
+			Local entityList:EntityBag = self.getEntities(groupName)
 			If entityList Then
 				entityList.removeObject(e)
 			End If
@@ -108,7 +111,7 @@ Type GroupManager Extends BaseManager
 	' ------------------------------------------------------------
 	' -- Creation and Destruction
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Create a new group manager and assign it to a world.</summary>
 	Function Create:GroupManager(w:World)
 		Local this:GroupManager = New GroupManager
@@ -117,5 +120,5 @@ Type GroupManager Extends BaseManager
 		this._groupByEntity = New ObjectBag
 		Return this
 	End Function
-			
+
 End Type
