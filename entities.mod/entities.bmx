@@ -64,3 +64,6 @@ Include "src/systems/sweeper_entity_system.bmx"
 Include "src/systems/sweeper_entity_processing_system.bmx"
 Include "src/systems/initializer_entity_system.bmx"
 Include "src/systems/initializer_entity_processing_system.bmx"
+
+' -- Services
+Include "src/services/game_entity_service.bmx"
