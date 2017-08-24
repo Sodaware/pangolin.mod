@@ -65,7 +65,7 @@ Type GameEntityService Extends GameService ..
 
 	''' <summary>Remove an entity from the world.</summary>	
 	Method removeEntity(e:Entity)
-		Self._world.getEntityManager().remove(e)
+		Self.getEntityManager().remove(e)
 	End Method
 	
 	''' <summary>Remove all entities in a collection.</summary>
@@ -78,7 +78,7 @@ Type GameEntityService Extends GameService ..
 	End Method
 
 	Method removeEntitiesInGroup(groupName:String)
-		Self.removeEntities(Self._world.getGroupManager().getEntities(groupName))
+		Self.removeEntities(Self.getGroupManager().getEntities(groupName))
 	End Method
 	
 	
@@ -91,19 +91,19 @@ Type GameEntityService Extends GameService ..
 	End Method
 		
 	Method getEntityByTag:Entity(name:String)
-		Return Self._world.getTagManager().getEntity(name)
+		Return Self.getTagManager().getEntity(name)
 	End Method
 	
 	Method getEntitiesWithComponentName:EntityBag(name:String)
-		Return Self._world.getEntityManager().getEntitiesWithComponent(ComponentTypeManager.getTypeForMetaName(name))
+		Return Self.getEntityManager().getEntitiesWithComponent(ComponentTypeManager.getTypeForMetaName(name))
 	End Method
 	
 	Method getEntitiesWithComponent:EntityBag(t:ComponentType)
-		Return Self._world.getEntityManager().getEntitiesWithComponent(t)
+		Return Self.getEntityManager().getEntitiesWithComponent(t)
 	End Method
 	
 	Method getEntitiesInGroup:EntityBag(groupName:String)
-		Return Self._world.getGroupManager().getEntities(groupName)
+		Return Self.getGroupManager().getEntities(groupName)
 	End Method
 	
 	' ------------------------------------------------------------
@@ -122,7 +122,7 @@ Type GameEntityService Extends GameService ..
 	Method addSystem(system:EntitySystem)
 		
 		' Set the system in the world
-		Self._world.getSystemManager().setSystem(system)
+		Self.getSystemManager().setSystem(system)
 		
 		' Set the kernel
 		system.setKernel(Self._kernelInformation.getKernel())
@@ -130,7 +130,7 @@ Type GameEntityService Extends GameService ..
 	End Method
 	
 	Method getSystem:EntitySystem(name:String)
-		Return Self._world.getSystemManager().getSystem(TTypeId.ForName(name))
+		Return Self.getSystemManager().getSystem(TTypeId.ForName(name))
 	End Method
 	
 	
@@ -146,7 +146,7 @@ Type GameEntityService Extends GameService ..
 		Local systemType:TTypeId = TTypeId.ForName(name)
 		If Null = systemType Then DebugLog "stopSystem failed - Unknown system type: " + name
 		
-		Local system:EntitySystem = Self._world.getSystemManager().getSystem(systemType)
+		Local system:EntitySystem = Self.getSystemManager().getSystem(systemType)
 		If system = Null Then Return False
 		
 		system.disableSystem()
@@ -157,7 +157,7 @@ Type GameEntityService Extends GameService ..
 		Local systemType:TTypeId = TTypeId.ForName(name)
 		If Null = systemType Then DebugLog "startSystem failed - Unknown system type: " + name
 		
-		Local system:EntitySystem = Self._world.getSystemManager().getSystem(systemType)
+		Local system:EntitySystem = Self.getSystemManager().getSystem(systemType)
 		If system = Null Then Return False
 		
 		system.enableSystem()
@@ -198,6 +198,5 @@ Type GameEntityService Extends GameService ..
 		Self.init()
 		Self._world = New World
 	End Method
-	
 	
 End Type
