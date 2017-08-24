@@ -179,18 +179,14 @@ Type GameEntityService Extends GameService ..
 	' ------------------------------------------------------------
 	
 	Method clearSystems()
-		DebugLog "clearSystems - before: " + Self._world._systemManager.getSystems().getSize()
 		Self._world.getSystemManager().clearSystems()
-		DebugLog "clearSystems - after: " + Self._world._systemManager.getSystems().getSize()
 	End Method
 	
 	''' <summary>Remove ALL entities...</summary>
 	Method clearEntities()
-		DebugLog "clearEntities - before: " + Self._world.countEntities()
-		For Local e:Entity = EachIn Self._world._entityManager.getActiveEntities()
-			Self._world._entityManager.remove(e)
+		For local e:Entity = EachIn self.getEntityManager().getActiveEntities()
+			Self._world.deleteEntity(e)
 		Next
-		DebugLog "clearEntities - after: " + Self._world.countEntities()
 	End Method
 	
 	
