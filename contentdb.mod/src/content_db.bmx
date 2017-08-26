@@ -341,9 +341,13 @@ Type ContentDb
 				pathName = path
 			Else
 			
-				pathName= File_Util.PathCombine(CurrentDir(), path)
-				If pathName.EndsWith("/") Or pathName.EndsWith("\") Then
-					pathName = Left(pathName, pathName.Length - 1)
+				If RealPath(path) <> path Then
+					pathName = File_Util.PathCombine(CurrentDir(), path)
+					If pathName.EndsWith("/") Or pathName.EndsWith("\") Then
+						pathName = Left(pathName, pathName.Length - 1)
+					End If
+				Else
+					pathName = path
 				End If
 				
 			End If
