@@ -38,6 +38,9 @@ Type DebugConsoleService Extends GameService ..
         If Self._kernelInfo = Null Then Throw "Console has not been added to kernel"
 		If handler = Null Then Throw "Cannot add null command"
 
+		' Don't hadd if this handler has already been registered
+		If Self._console.hasCommandHandler(handler) Then Return False
+
         ' Update injectable fields
         handler._addInjectableFields()
 

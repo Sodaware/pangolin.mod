@@ -76,6 +76,14 @@ Type IConsole
 		Return (Self._commandHandlers.ValueForKey(commandName.ToLower()) <> Null)
 	End Method
 	
+	''' <summary>Checks to see if a handler has already been registered.</summary>
+	''' <param name="handler">The handler object to check for.</param>
+	''' <returns>True if handler exists, false if not.</returns>
+	Method hasCommandHandler:Byte(handler:ConsoleCommand)
+		If handler = Null Then Return False
+		Return Self.hasCommand(handler.Name)
+	End Method
+
 	''' <summary>Executes a command and sends it a list of arguments.</summary>
 	''' <param name="commandName">The name of the command to execute.</param>
 	''' <param name="args">A list of arguments to pass to the command.</param>
