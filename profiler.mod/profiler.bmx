@@ -126,8 +126,10 @@ Type PangolinProfiler
 
 		Local fileOut:TStream = WriteFile(filename)
 
+		fileOut.WriteLine("Name~tCalls~tTotal~tAverage")
+
 		For Local timer:ProfileTimer = EachIn Self._timers.Values()
-			fileOut.WriteLine(timer._name + " " + timer._calls + " " + timer._totalTime + " " + (timer._totalTime / timer._calls))
+			fileOut.WriteLine(timer._name + "~t" + timer._calls + "~t" + timer._totalTime + "~t" + (timer._totalTime / timer._calls))
 		Next
 
 		fileOut.Close()
