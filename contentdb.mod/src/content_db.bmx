@@ -352,9 +352,6 @@ Type ContentDb
 				
 			End If
 
-			debuglog "Loading template: " + pathName
-
-
 			' [todo] - This doesn't work so great when the template is in a zip file
 			Select FileType(pathName)
 				Case FILETYPE_DIR  ; Self._loadTemplatesFromDirectory(pathName)
@@ -434,8 +431,6 @@ Type ContentDb
 			If archiveDir <> "/" And fileName.StartsWith(archiveDir) = False Then Continue
 			If fileName.EndsWith("/") Then Continue
 			
-debuglog " :: " + fileName
-
 			ContentDbLoader.LoadTemplateFromArchive(Self, fileIn, fileName)
 			
 		Next
