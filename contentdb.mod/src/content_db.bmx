@@ -407,7 +407,8 @@ Type ContentDb
 		
 		' Extract path & filename
 		If path.StartsWith("zip::") Then
-			archiveFile = ZipHelper._getZipName(path).Replace("zip::", "")
+			path = Right(path, path.Length - 5)
+			archiveFile = ZipHelper._getZipName(path)
 			archiveDir  = ZipHelper._getFileName(path)
 		End If
 		
