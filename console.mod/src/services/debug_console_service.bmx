@@ -20,18 +20,24 @@ Import "../base/debug_console.bmx"
 Type DebugConsoleService Extends GameService .. 
 	{ implements = "update, render" }
 
-	field _console:DebugConsole
+	Field _console:DebugConsole
 	Field _kernelInfo:KernelInformationService	{ injectable }
 	
 	
 	' ------------------------------------------------------------
 	' -- Adding commands
 	' ------------------------------------------------------------
-	
-	Method addCommand:Int(handler:ConsoleCommand)
+
+	''' <summary>
+	''' Add a command to the console. Commands are wrapped in a ConsoleCommand
+	''' object.
+	''' </summary>
+	''' <seealso cref="ConsoleCommand"></seealso>
+	Method addCommand:Byte(handler:ConsoleCommand)
        
         If Self._kernelInfo = Null Then Throw "Console has not been added to kernel"
-	
+		If handler = Null Then Throw "Cannot add null command"
+
         ' Update injectable fields
         handler._addInjectableFields()
 
