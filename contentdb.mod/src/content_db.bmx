@@ -302,15 +302,6 @@ Type ContentDb
 		
 	End Method
 
-	Method registerComponentTemplate(newTemplate:ComponentTemplate)
-		RuntimeError("Whoops!")
-	'	If this = Null Then Return False
-'		If newTemplate = Null Then Return False
-		
-'		Return False
-		
-	End Method
-	
 	Method addComponentsFile(fileName:String)
 		
 		' Can't add a file that doesn't exist and isn't a special type of stream
