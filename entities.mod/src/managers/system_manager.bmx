@@ -46,7 +46,7 @@ Type SystemManager Extends BaseManager
 		' Check system is valid
 		If system = Null Then Throw "Cannot add a null system"
 	
-		' Cache the TTypeId for this system
+		' Get the TTypeId for this system for the fetching system bits
 		Local systemType:TTypeId = TTypeId.ForObject(system)
 		
 		' Register component interests for the system.
@@ -58,7 +58,7 @@ Type SystemManager Extends BaseManager
 		' Add as a sweeper if needed
 		If system.isSweeper() Then Self._addSweeperSystem(system)
 		
-		' Add all systems to the internal list and lookup
+		' Add system to the internal list and lookup
 		Self._addSystem(system, systemType)
 		
 		' Setup bit for fast access

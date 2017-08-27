@@ -257,8 +257,9 @@ Type Entity
 	
 	''' <summary>Set the group name for Entity.</summary>
 	''' <seealso cref="GroupManager">See GroupManager for more information on groups.</seealso>
-	Method setGroup(groupName:String)
+	Method setGroup:Entity(groupName:String)
 		Self._world.getGroupManager().set(groupName, Self)
+		Return Self
 	End Method
 	
 	

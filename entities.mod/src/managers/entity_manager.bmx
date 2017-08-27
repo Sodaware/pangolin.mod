@@ -162,8 +162,8 @@ Type EntityManager Extends BaseManager
 		Self._addEntityToPool(e)
 		
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Managing Entity Components
 	' ------------------------------------------------------------

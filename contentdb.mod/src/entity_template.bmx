@@ -34,7 +34,7 @@ Type EntityTemplate
 	
 	' -- Component Templates
 	Field _componentTemplates:TMap
-	Field _componentTemplatesList:TList	'< List of ComponentTemplate
+	Field _componentTemplatesList:TList		'< List of ComponentTemplate
 	
 	
 	' ------------------------------------------------------------

@@ -408,6 +408,7 @@ Type ContentDb
 		Local fileIn:ZipReader = New ZipReader
 		fileIn.OpenZip(archiveFile)
 		
+		' TODO: Extract this
 		If fileIn.m_zipFileList.getFileCount() = 0 Then 
 			DebugLog "No files in archive"
 			Return
