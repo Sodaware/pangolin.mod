@@ -41,3 +41,6 @@ Import "src/resource_types/tilemap_resource.bmx"
 Import "src/resource_types/tileset_resource.bmx"
 ' Import "src/resource_types/font_style_resource.bmx"
 Import "src/resource_types/file_resource.bmx"
+
+' -- Services
+Import "src/services/resource_db_service.bmx"
