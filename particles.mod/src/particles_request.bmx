@@ -18,10 +18,15 @@ Import "particle_bag.bmx"
 
 Type ParticlesRequest Extends AbstractRenderRequest
 
-	Field _xPos:Float
-	Field _yPos:Float
-	Field _particles:ParticleBag
-	
+	Field _xPos:Float               '''< X position of the particle emitter. Usually ignored.
+	Field _yPos:Float               '''< Y position of the particle emitter. Usually ignored.
+	Field _particles:ParticleBag    '''< Collection of all particles to be rendered.
+
+
+	' ------------------------------------------------------------
+	' -- Public API
+	' ------------------------------------------------------------
+
 	Method getX:Float()
 		Return Self._xPos
 	End Method
@@ -29,7 +34,13 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	Method getY:Float()
 		Return Self._yPos
 	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Rendering and updating
+	' ------------------------------------------------------------
 	
+	''' <summary>Render basic pixel particles.</summary>
 	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Int = False)
 		For Local p:BaseParticle = EachIn Self._particles
 			SetColor p.colorRed, p.colorGreen, p.colorBlue
@@ -42,6 +53,11 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	Method update(delta:Float)
 		
 	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Creation + Destruction
+	' ------------------------------------------------------------
 	
 	Method New()
 		Self._zIndex 	= 1
