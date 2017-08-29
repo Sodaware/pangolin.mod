@@ -44,6 +44,8 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	End Method
 	
 	Method New()
+		Self._zIndex 	= 1
+		Self._isVisible = True
 		Self._particles = ParticleBag.Create()
 	End Method
 
