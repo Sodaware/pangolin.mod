@@ -106,7 +106,7 @@ Type ParticleBag
 	''' bag if it is not big enough.
 	''' </summary>
 	''' <param name="obj">The object to add to the bag.</param>
-	Method add(obj:BaseParticle, doSort:Byte = True)
+	Method add(obj:BaseParticle, doSort:Byte = False)
 		
 		' Grow the bag if required
 		If Self._size = Self._objects.Length Then Self._grow()
@@ -231,7 +231,7 @@ Type ParticleBag
 	''' <summary>Remove the first occurance of an object instance.</summary>
 	''' <param name="obj">The object instance to remove.</param>
 	''' <return>True if removed, false if not.</return>
-	Method removeObject:Short(obj:BaseParticle, doSort:Byte = True)
+	Method removeObject:Short(obj:BaseParticle, doSort:Byte = False)
 		Local result:Short = (Self.remove(Self.findObject(obj)) <> Null)
 		If doSort Then Self.sort(ParticleBag.SORT_DESC)
 		Return result
