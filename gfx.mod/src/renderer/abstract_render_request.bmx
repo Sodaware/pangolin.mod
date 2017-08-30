@@ -26,6 +26,23 @@ Type AbstractRenderRequest Abstract
 	
 	
 	' ------------------------------------------------------------
+	' -- Required Methods
+	' ------------------------------------------------------------
+
+	''' <summary>Get the X position of this render item.</summary>
+	Method getX:Float() Abstract
+
+	''' <summary>Get the Y position of this render item.</summary>
+	Method getY:Float() Abstract
+
+	''' <summary>Update this render item.</summary>
+	Method update(delta:Float) Abstract
+
+	''' <summary>Render the render item.</summary>
+	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False) Abstract
+
+
+	' ------------------------------------------------------------
 	' -- Public API
 	' ------------------------------------------------------------
 	
@@ -79,20 +96,15 @@ Type AbstractRenderRequest Abstract
     	' Do nothing (should be overridden)
 	End Method
 	
-	Method getX:Float() Abstract
-	Method getY:Float() Abstract
-	
 			
 	' ------------------------------------------------------------
-	' -- Abstract Methods
+	' -- Hooks
 	' ------------------------------------------------------------
-	
-	Method update(delta:Float) Abstract
-	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Int = False) Abstract
 	
 	Method onRemoved()
 		
 	End Method
+
 		
 	' ------------------------------------------------------------
 	' -- Sorting Functions
