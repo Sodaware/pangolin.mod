@@ -61,7 +61,7 @@ Type ClippedRenderGroup Extends RenderGroup
 	' -- Rendering
 	' ------------------------------------------------------------
 
-	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		Local x:Int, y:Int, w:Int, h:Int
 		
 		If Self._boundingBox Then

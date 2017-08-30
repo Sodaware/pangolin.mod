@@ -75,7 +75,7 @@ Type ImageSprite Extends AbstractSpriteRequest
 		Self._animationRunner.update(delta)
 	End Method
 	
-	Method render(delta:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(delta:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
 		Self._interpolate(0)
 		Self.setRenderState()

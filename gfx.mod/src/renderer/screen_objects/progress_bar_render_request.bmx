@@ -82,7 +82,7 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	' -- Rendering
 	' ------------------------------------------------------------
 	
-	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
 		Self._interpolate(tween)
 		

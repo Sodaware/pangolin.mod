@@ -112,7 +112,7 @@ Type RenderGroup Extends AbstractRenderRequest
 		Next
 	End Method
 
-	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		If Self._identifier Then PangolinProfiler.startProfile("RenderGroup[" + Self._identifier + "]")
 		For Local item:AbstractRenderRequest = EachIn Self._items
 			If item._isVisible Then

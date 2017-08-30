@@ -125,7 +125,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 	' -- Rendering
 	' ------------------------------------------------------------
 	
-	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
 		' Calculate new position
 		Self._interpolate(1)
@@ -140,7 +140,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		
 	End Method
 	
-	Method renderBackground(camera:AbstractRenderCamera = null, isFixed:Int = False)
+	Method renderBackground(camera:AbstractRenderCamera = Null, isFixed:Byte = False)
 
 		Local xPos:Float = Self._tweenedPosition._xPos
 		Local yPos:Float = Self._tweenedPosition._yPos
@@ -172,7 +172,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		
 	End Method
 	
-	Method renderBorder(camera:AbstractRenderCamera = null, isFixed:Int = False)
+	Method renderBorder(camera:AbstractRenderCamera = null, isFixed:Byte = False)
 	
 		Local xPos:Float = Self._tweenedPosition._xPos
 		Local yPos:Float = Self._tweenedPosition._yPos

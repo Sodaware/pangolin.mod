@@ -225,7 +225,7 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	' ------------------------------------------------------------
 	
 
-	Method render(delta:Double, camera:AbstractRenderCamera, isFixed:Int) Abstract
+	Method render(delta:Double, camera:AbstractRenderCamera, isFixed:Byte) Abstract
 				
 	Method update(delta:Float)
 		self._previousPosition.setPositionObject(self._currentPosition)

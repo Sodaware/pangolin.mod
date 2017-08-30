@@ -41,7 +41,7 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	' ------------------------------------------------------------
 	
 	''' <summary>Render basic pixel particles.</summary>
-	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		For Local p:BaseParticle = EachIn Self._particles
 			SetColor p.colorRed, p.colorGreen, p.colorBlue
 			brl.max2d.SetAlpha(p._alpha)

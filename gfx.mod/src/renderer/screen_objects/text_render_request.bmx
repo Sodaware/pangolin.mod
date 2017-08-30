@@ -174,7 +174,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	
 	' [todo] - Needs to take the camera into account
 	
-	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
 		' Don't render if no text or set to invisible
 		If Self._text = "" Or Self.isVisible() = False Then

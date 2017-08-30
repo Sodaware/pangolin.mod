@@ -56,7 +56,7 @@ Type TileImageRequest Extends AbstractSpriteRequest
 	' -- Rendering
 	' ------------------------------------------------------------
 	
-	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Int = false)
+	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = false)
 		
 		Self._interpolate(tween)
 		Self.setRenderState()
