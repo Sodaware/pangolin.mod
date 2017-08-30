@@ -64,7 +64,7 @@ Type TileMapRequest Extends AbstractSpriteRequest
 		
 	End Method
 	
-	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Int = False)
+	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
 		' Update the camera cache
 		If Self._cachedCamera <> camera Then
