@@ -35,8 +35,12 @@ Type TileMap
 	' ------------------------------------------------------------
 	' -- Public access methods
 	' ------------------------------------------------------------
-	
-	''' <summary>Get the ID of a tile using its full position.</summary> 
+
+	''' <summary>Get the ID of a tile using its full position.</summary>
+	''' <param name="layer">The map layer for the tile.</param>
+	''' <param name="xPos">The X (horizontal) position of the tile.</param>
+	''' <param name="yPos">The Y (vertical) position of the tile.</param>
+	''' <returns>The TileID for the position, or -1 if the tile is out of bounds.</returns> 
 	Method getTile:Short(layer:Int, xPos:Int, yPos:Int)
 		
 		' Check inputs
@@ -49,6 +53,34 @@ Type TileMap
 		
 	End Method
 	
+	''' <summary>Get the height of the map in tiles.</summary>
+	Method getHeight:Int() 
+		Return Self._height
+	End Method
+	
+	''' <summary>Get the width of the map in tiles.</summary>
+	Method getWidth:Int()
+		Return Self._width
+	End Method
+
+	''' <summary>Get the number of layers for the map.</summary>
+	Method countLayers:Int()
+		Return Self._layerCount
+	End Method
+
+	''' <summary>Get a piece of meta data about the map by name.</summary>
+	Method getMeta:String(fieldName:String)
+		Return String(Self._metaData.ValueForKey(fieldName))
+	End Method
+
+	Method getMetaKeys:TMapEnumerator()
+		Return Self._metaData.Keys()
+	End Method
+
+	Method setMeta(fieldName:String, fieldData:String)
+		Self._metaData.Insert(fieldName, fieldData)
+	End Method
+
 	' TODO: REWRITE THIS!
 	Method countMetaFields:Int()
 		Local count:Int = 0
@@ -57,33 +89,13 @@ Type TileMap
 		Next
 		Return count
 	End Method
-	
-	Method getMetaKeys:TMapEnumerator()
-		Return Self._metaData.Keys()
-	End Method
-	
-	Method getHeight:Int() 
-		Return Self._height
-	End Method
-	
-	Method getWidth:Int()
-		Return Self._width
-	End Method
-	
-	Method getMeta:String(fieldName:String)
-		Return String(Self._metaData.ValueForKey(fieldName))
-	End Method
-	
-	Method countLayers:Int()
-		Return Self._layerCount
-	End Method
-		
-	
+
+
 	' ------------------------------------------------------------
-	' -- Public setters
+	' -- Manipulating tiles
 	' ------------------------------------------------------------
 
-	Method setTile:Byte(layer:Int, xPos:Int, yPos:Int, tileID:Int)
+	Method setTile:Byte(layer:Int, xPos:Int, yPos:Int, tileID:Short)
 		
 		' Check inputs
 		If layer < 0 Or layer >= Self._layerCount Then Return False
@@ -114,12 +126,6 @@ Type TileMap
 	
 	Method removeLayer(layerID:Int)
 		
-	End Method
-	
-	
-	
-	Method setMeta(fieldName:String, fieldData:String)
-		Self._metaData.Insert(fieldName, fieldData)
 	End Method
 
 	
