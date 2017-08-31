@@ -96,12 +96,13 @@ Type TileMap
 		Return True
 		
 	End Method
-	
-			
-	Method FillRange(layer:Int, xPos:Int, yPos:Int, width:Int, height:Int, tileID:Int)
-	
-		' TODO: This method fills a rectangle with a tile ID
-		
+
+	Method fillRange(layer:Int, xPos:Int, yPos:Int, width:Int, height:Int, tileID:Short)
+		For Local x:Int = xPos To xPos + width
+			For Local y:Int	= yPos To yPos + height
+				self.setTile(layer, x, y, tileID)
+			Next
+		Next
 	End Method
 	
 	Method addLayer()
