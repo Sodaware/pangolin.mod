@@ -17,35 +17,32 @@ Import "sprite_behaviour.bmx"
 
 Type ParallelSpriteBehaviour Extends SpriteBehaviour
 
-	Field m_Animations:TList
+	Field _animations:TList
+	Field _animCount:Int = 0
 	
-	' ----- Constructors
-	 
-	Function Create:ParallelSpriteBehaviour()
-		Local this:ParallelSpriteBehaviour	= New ParallelSpriteBehaviour
-		Return this
-	End Function
+
+	' ----------------------------------------------------------------------
+	' -- Adding Items
+	' ----------------------------------------------------------------------
 	
-	Method New()
-		Self.m_Animations	= New TList
+	Method add(anim:AbstractSpriteBehaviour)
+		Self._animations.AddLast(anim)
+		Self._animCount :+ 1
 	End Method
-	
-	' ----- API Methods
-	
-	Method Add(anim:AbstractSpriteBehaviour)
-		Self.m_Animations.AddLast(anim)
-	End Method
-	
-	' ----- Interface Implementation
+
+
+	' ----------------------------------------------------------------------
+	' -- Updating
+	' ----------------------------------------------------------------------
 
 	Method update(delta:Float)
 
-		' Check we have something to display
-		If Self.m_Animations.Count() = 0 Then Return
+		' Do nothing if this group contains no animations.
+		If Self._animCount = 0 Then Return
 
 		Local finishedCount:Int = 0
-		
-		For Local anim:AbstractSpriteBehaviour = EachIn Self.m_Animations
+
+		For Local anim:AbstractSpriteBehaviour = EachIn Self._animations
 			If anim.isFinished() = False Then
 				anim.update(delta)
 			Else
@@ -53,11 +50,41 @@ Type ParallelSpriteBehaviour Extends SpriteBehaviour
 			End If
 		Next
 
-		If Self.m_Animations.Count() = finishedCount Then
+		If Self._animCount = finishedCount Then
 			Self._isFinished = True
 		End If
 
 	End Method
-	
+
+
+	' ----------------------------------------------------------------------
+	' -- Hooks
+	' ----------------------------------------------------------------------
+
+	Method onStart()
+		For Local anim:AbstractSpriteBehaviour = EachIn Self._animations
+			anim.onStart()
+		Next
+	End Method
+
+	Method onFinish()
+		For Local anim:AbstractSpriteBehaviour = EachIn Self._animations
+			anim.onFinish()
+		Next
+	End Method
+
+
+	' ----------------------------------------------------------------------
+	' -- Construction & Destruction
+	' ----------------------------------------------------------------------
+
+	Function Create:ParallelSpriteBehaviour()
+		Local this:ParallelSpriteBehaviour	= New ParallelSpriteBehaviour
+		Return this
+	End Function
+
+	Method New()
+		Self._animations = New TList
+	End Method
 
 End Type
