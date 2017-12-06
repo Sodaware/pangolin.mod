@@ -35,7 +35,12 @@ Type EventHandler
 		If Self._caller = Null Then
 			Return Self._callback(event)
 		Else
-			Return Self._method.Invoke(Self._caller, [event])
+			' Only send event to the method if it as an `event` parameter
+			If Self._method.ArgTypes() = Null or Self._method.ArgTypes().Length = 0 Then
+				Return Self._method.Invoke(Self._caller, Null)
+			Else
+				Return Self._method.Invoke(Self._caller, [event])
+			End If
 		EndIf
 		
 	End Method
