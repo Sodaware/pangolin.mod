@@ -57,6 +57,9 @@ Import "src/behaviour/parallel_sprite_behaviour.bmx"
 Import "src/behaviour/move_sprite_behaviour.bmx"
 Import "src/behaviour/pixel_move_sprite_behaviour.bmx"
 Import "src/behaviour/physics_move_sprite_behaviour.bmx"
+Import "src/behaviour/hide_sprite_behaviour.bmx"
+Import "src/behaviour/show_sprite_behaviour.bmx"
+
 
 ' -- Helper functions
 Import "src/util/hex_util.bmx"
