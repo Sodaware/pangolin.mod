@@ -12,6 +12,8 @@
 
 SuperStrict
 
+Import pangolin.events
+
 Type AbstractSpriteBehaviour Abstract
 	
 	Const TRANSITION_LINEAR:Byte 		= 1
@@ -22,6 +24,7 @@ Type AbstractSpriteBehaviour Abstract
 	Field _transitionType:Byte
 	Field _transitionFunction:Float(t:Float, s:Float, de:Float, du:Float)
 	Field _elapsedTime:Float
+	Field _whenFinishedHooks:TList = New TList
 	
 	Field _isFinished:Byte	= False
 
@@ -52,14 +55,29 @@ Type AbstractSpriteBehaviour Abstract
 	Method setTarget(target:Object) Abstract
 	Method update(delta:Float) Abstract
 	
+
+	' ----------------------------------------------------------------------
+	' -- Optional Hooks
+	' ----------------------------------------------------------------------
+
+	''' <summary>Called when the sprite behaviour has first started.</summary>
 	Method onStart()
 		
 	End Method
 	
+	''' <summary>Called when the sprite behaviour has finished.</summary>
 	Method onFinish()
-		
+		For Local hook:EventHandler = EachIn Self._whenFinishedHooks
+			hook.call(Null)
+		Next
 	End Method
 	
+	Method whenFinished:AbstractSpriteBehaviour(callback:EventHandler)
+		Self._whenFinishedHooks.AddLast(callback)
+		Return Self
+	End Method
+
+
 	' ----------------------------------------------------------------------
 	' -- Transition functions
 	' ----------------------------------------------------------------------

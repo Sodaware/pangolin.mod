@@ -23,18 +23,26 @@ Type SpriteBehaviourService Extends GameService ..
 	
 	Field _behaviours:TList = New TList
 	
-	Method add(behaviour:SpriteBehaviour)
+	''' <summary>
+	''' Add a sprite behaviour to the list of running behaviours and
+	''' call its `onStart` method.
+	''' </summary>
+	Method add:SpriteBehaviour(behaviour:SpriteBehaviour)
 		Self._behaviours.AddLast(behaviour)
 		behaviour.onStart()
+		Return behaviour
 	End Method
 	
 	Method update(delta:Float)
 		
 		If Self._behaviours.Count() = 0 Then Return
 	
+		' Run all behaviours
 		For Local b:SpriteBehaviour = EachIn Self._behaviours
 			b.update(delta)
 			
+			' If the behaviour is finished, call its `onFinished` method and
+			' remove it from the active list.
 			If b.isFinished() Then
 				b.onFinish()
 				Self._behaviours.Remove(b)
