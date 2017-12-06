@@ -62,12 +62,14 @@ Type ParallelSpriteBehaviour Extends SpriteBehaviour
 	' ----------------------------------------------------------------------
 
 	Method onStart()
+		Super.onStart()
 		For Local anim:AbstractSpriteBehaviour = EachIn Self._animations
 			anim.onStart()
 		Next
 	End Method
 
 	Method onFinish()
+		Super.onFinish()
 		For Local anim:AbstractSpriteBehaviour = EachIn Self._animations
 			anim.onFinish()
 		Next
@@ -78,8 +80,13 @@ Type ParallelSpriteBehaviour Extends SpriteBehaviour
 	' -- Construction & Destruction
 	' ----------------------------------------------------------------------
 
-	Function Create:ParallelSpriteBehaviour()
-		Local this:ParallelSpriteBehaviour	= New ParallelSpriteBehaviour
+	Function Create:ParallelSpriteBehaviour(behaviours:AbstractSpriteBehaviour[] = Null)
+		Local this:ParallelSpriteBehaviour = New ParallelSpriteBehaviour
+		If behaviours <> Null Then
+			For Local anim:AbstractSpriteBehaviour = EachIn behaviours
+				this.add(anim)
+			Next
+		End If
 		Return this
 	End Function
 
