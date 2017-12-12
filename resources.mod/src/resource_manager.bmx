@@ -144,6 +144,7 @@ Type ResourceManager
 		Self._resources.Remove(name)
 	End Method
 	
+	
 	' ------------------------------------------------------------
 	' -- Resource Loading
 	' ------------------------------------------------------------
@@ -173,8 +174,8 @@ Type ResourceManager
 			Local resource:BaseResource = Self.addResource(definition)
 			Self._resources.Insert(definition.getFullName(), resource)
 			
-			' Load resource completely if laziness disabled
-			If isLazy = False Then
+			' Load resource completely if laziness disabled AND they're not skipping autoload.
+			If isLazy = False And definition.skipAutoload() = False Then
 				resource.reload()
 				Self._onFileLoaded(resource)
 			End If

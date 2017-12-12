@@ -25,6 +25,7 @@ Type ResourceDefinition
 	Field _resourceType:String
 	Field _details:TMap
 	Field _data:TMap
+	Field _skipAutoload:Byte = False
 	
 	
 	' ------------------------------------------------------------
@@ -45,6 +46,10 @@ Type ResourceDefinition
 	
 	Method getFileName:String()
 		Return Self._fileName
+	End Method
+	
+	Method skipAutoload:Byte()
+		Return Self._skipAutoload
 	End Method
 	
 	
