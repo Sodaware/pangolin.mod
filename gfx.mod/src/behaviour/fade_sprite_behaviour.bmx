@@ -16,9 +16,10 @@ SuperStrict
 Import brl.linkedlist
 Import brl.max2d
 
-Import "sprite_animation.bmx"
+Import "sprite_behaviour.bmx"
+Import "../renderer/abstract_sprite_request.bmx"
 
-Type FadeSpriteAnimation Extends SpriteAnimation
+Type FadeSpriteBehaviour Extends SpriteBehaviour
 
 	Const FADE_IN:Int	= 1
 	Const FADE_OUT:Int	= 2
@@ -42,19 +43,19 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 	' -- Setting Options
 	' ------------------------------------------------------------
 	
-	Method setFadeInTime:FadeSpriteAnimation(time:Int)
+	Method setFadeInTime:FadeSpriteBehaviour(time:Int)
 		Self._fadeInTime = time
 		Self._updateInternals()
 		Return Self
 	End Method
 
-	Method setDisplayTime:FadeSpriteAnimation(time:Int)
+	Method setDisplayTime:FadeSpriteBehaviour(time:Int)
 		Self._displayTime = time
 		Self._updateInternals()
 		Return Self
 	End Method
 
-	Method setFadeOutTime:FadeSpriteAnimation(time:Int)
+	Method setFadeOutTime:FadeSpriteBehaviour(time:Int)
 		Self._fadeOutTime = time
 		Self._updateInternals()
 		Return Self
@@ -66,30 +67,33 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 	' ------------------------------------------------------------
 	
 	Method update(delta:Float)
-		
+
 		Self._elapsedTime:+ delta
 		
 		Select Self._state
 			
-			Case FadeSpriteAnimation.FADE_IN;
+			Case FadeSpriteBehaviour.FADE_IN;
 				Self._updateFadeIn()			
 			
-			Case FadeSpriteAnimation.DISPLAY;
+			Case FadeSpriteBehaviour.DISPLAY;
 				Self._updateDisplay()
 			
-			Case FadeSpriteAnimation.FADE_OUT;
+			Case FadeSpriteBehaviour.FADE_OUT;
 				Self._updateFadeOut()
 				
 		End Select
 		
-		Self.getParent().setBlendMode(ALPHABLEND)
-		Self.getParent().SetAlpha(Self._alpha)
+		AbstractSpriteRequest(Self.getTarget()).setBlendMode(ALPHABLEND)
+		AbstractSpriteRequest(Self.getTarget()).SetAlpha(Self._alpha)
+		
+		'Self.getParent().setBlendMode(ALPHABLEND)
+		'Self.getParent().SetAlpha(Self._alpha)
 	
 	End Method
 	
 	
 	Method reset()
-		Self._state			= FadeSpriteAnimation.FADE_IN
+		Self._state			= FadeSpriteBehaviour.FADE_IN
 		Self._elapsedTime 	= 0
 		Self._alphaStep 	= Self._calculateAlphaStep(Self._fadeInTime)
 		Self._alpha			= 0
@@ -102,11 +106,12 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 	
 	Method _updateFadeIn()
 		
+		self.getTarget().show()
+
 		Self._alpha:+ Self._alphaStep
 					
 		If Self._elapsedTime > Self._fadeInTime Then
 			Self._setState(Self.DISPLAY)
-			Self._elapsedTime	= 0
 			Self._alpha			= 1
 		End If
 		
@@ -116,20 +121,20 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 		
 		If Self._elapsedTime > Self._displayTime Then
 			Self._setState(Self.FADE_OUT)
-			Self._alphaStep 	= Self._calculateAlphaStep(Self._fadeOutTime)
-			Self._alpha			= 1
+			Self._alphaStep	= Self._calculateAlphaStep(Self._fadeOutTime)
+			Self._alpha = 1
 		End If
 		
 	End Method
 	
 	Method _updateFadeOut()
-		
+
 		Self._alpha:- Self._alphaStep
-		
+
 		If Self._elapsedTime > Self._fadeOutTime Then
-			
+
 			Self._repeatCount:+ 1
-					
+	
 			' Do we repeat?
 			If Self._repeatCount <= Self._repeatLimit Then
 				Self.reset()
@@ -155,13 +160,13 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 		
 		Self._alphaStep		= Self._calculateAlphaStep(Self._fadeInTime)
 		Self._alpha			= 0
-		Self._state			= FadeSpriteAnimation.FADE_IN
+		Self._state			= FadeSpriteBehaviour.FADE_IN
 	
 		If Self._fadeInTime = 0 Then 
 			If Self._displayTime = 0 Then
-				Self._state = FadeSpriteAnimation.FADE_OUT
+				Self._state = FadeSpriteBehaviour.FADE_OUT
 			Else
-				Self._state = FadeSpriteAnimation.DISPLAY
+				Self._state = FadeSpriteBehaviour.DISPLAY
 			EndIf
 		EndIf
 		
@@ -178,10 +183,11 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 	
-	Function Create:FadeSpriteAnimation(fadeInTime:Int, displayTime:Int, fadeOutTime:Int, repeatLimit:Int = 0)
+	Function Create:FadeSpriteBehaviour(request:AbstractRenderRequest, fadeInTime:Int, displayTime:Int, fadeOutTime:Int, repeatLimit:Int = 0)
 		
-		Local this:FadeSpriteAnimation	= New FadeSpriteAnimation
+		Local this:FadeSpriteBehaviour	= New FadeSpriteBehaviour
 		
+		this.setTarget(request)
 		this._fadeInTime	= fadeInTime
 		this._fadeOutTime	= fadeOutTime
 		this._displayTime	= displayTime
@@ -197,4 +203,5 @@ Type FadeSpriteAnimation Extends SpriteAnimation
 		Self._alpha 	= 1
 		Self._alphaStep	= 0
 	End Method
+
 End Type

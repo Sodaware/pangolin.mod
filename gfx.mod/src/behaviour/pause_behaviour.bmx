@@ -1,8 +1,8 @@
 ' ------------------------------------------------------------------------------
-' -- sprite_animations/pause_animation.bmx
+' -- sprite_behaviours/pause_behaviour.bmx
 ' --
-' -- Simple sprite animation object that waits for a number
-' -- of milliseconds to elapse before finishing.
+' -- Simple sprite animation object that waits for a number of milliseconds to
+' -- elapse before finishing.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
 ' -- Copyright (c) 2009-2017 Phil Newton
@@ -13,10 +13,10 @@
 
 SuperStrict
 
-Import "sprite_animation.bmx"
+Import "sprite_behaviour.bmx"
 
 
-Type PauseAnimation Extends SpriteAnimation
+Type PauseBehaviour Extends SpriteBehaviour
 
 	Field _limit:Int
 	Field _expireTime:Int
@@ -28,9 +28,9 @@ Type PauseAnimation Extends SpriteAnimation
 	
 	''' <summary>Create a new PauseAnimation object.</summary>
 	''' <param name="time">The time in milliseconds for this object to pause.</param>
-	Function Create:PauseAnimation(time:Int)
+	Function Create:PauseBehaviour(time:Int)
 		
-		Local this:PauseAnimation	= New PauseAnimation
+		Local this:PauseBehaviour	= New PauseBehaviour
 		this._limit			= time
 		this._expireTime	= -1		
 		Return this
