@@ -119,12 +119,26 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		Return Self
 	End Method
 	
+	''' <summary>Set the color of the text using hex notation.</summary>
+	''' <param name="color">Text colour in hex.</param>
+	Method setFontColorHex:TextRenderRequest(color:String)
+		Self._fontColor = HexToInt(color)
+		Return Self
+	End Method
+
 	''' <summary>Set the color of the shadow.</summary>
 	''' <param name="r">Red value of the shadow colour.</param>
 	''' <param name="g">Green value of the shadow colour.</param>
 	''' <param name="b">Blue value of the shadow colour.</param>
 	Method setShadowColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
 		Self._shadowColor = PangolinGfx.rgbToInt(r, g, b)
+		Return Self
+	End Method
+
+	''' <summary>Set the shadow color using hex notation.</summary>
+	''' <param name="color">Shadow colour in hex.</param>
+	Method setShadowColorHex:TextRenderRequest(color:String)
+		Self._shadowColor = HexToInt(color)
 		Return Self
 	End Method
 	
