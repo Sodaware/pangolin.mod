@@ -95,6 +95,16 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		Return Self
 	End Method
 	
+	Method setWidth:RectangleRenderRequest(width:Float)
+		Self.setDimensions(width, Self._height)
+		Return Self
+	End Method
+
+	Method setHeight:RectangleRenderRequest(height:Float)
+		Self.setDimensions(Self._width, height)
+		Return Self
+	End Method
+
 	Method setBorderColor:RectangleRenderRequest(r:Byte, g:Byte, b:Byte)
 		Self._borderColor = PangolinGfx.rgbToInt(r, g, b)
 		Return Self
