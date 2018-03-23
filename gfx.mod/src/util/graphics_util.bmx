@@ -1,7 +1,7 @@
 ' ------------------------------------------------------------------------------
 ' -- src/util/graphics_util.bmx
 ' --
-' -- Various utility finctions for working with graphics.
+' -- Various utility functions for working with graphics.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
 ' -- Copyright (c) 2009-2017 Phil Newton
@@ -23,69 +23,81 @@ Function GetAspectRatio:Float()
 	Return (Float(GraphicsHeight()) / Float(GraphicsWidth()))
 End Function
 
-
-Function SetColorInt(color:int)
-	SetColor 255 & (color SHR 16), 255 & (color SHR 8), 255 & color
+Function SetColorInt(color:Int)
+	SetColor 255 & (color Shr 16), 255 & (color Shr 8), 255 & color
 End Function
 
-function ColorRgb:int(r:byte, g:byte, b:byte)
-	return (r shl 16) + (g shl 8) + (b)
-end function
-
-
-Function IsWidescreen:Int()
-	Return (GraphicsHeight() / GraphicsWidth() >= 1.6)
+''' <summary>Convert an RGB colour into a single integer.</summary>
+''' <param name="r">Red value between 0 and 255.</param>
+''' <param name="g">Green value between 0 and 255.</param>
+''' <param name="b">Blue value between 0 and 255.</param>
+''' <returns>Integer colour.</returns>
+Function ColorRgb:Int(r:Byte, g:Byte, b:Byte)
+	Return (r Shl 16) + (g Shl 8) + (b)
 End Function
 
-Function TileImageScaled(image:TImage, x:Float = 0 ,y:Float = 0, frame:Int = 0)
+''' <summary>Check if the current screen resolution widescreen.</summary>
+''' <returns>True if the screen is widescreen (the aspect ratio >= 1.6).</returns>
+Function IsWidescreen:Byte()
+	Return GetAspectRatio() >= 1.6
+End Function
 
-    Local scale_x#, scale_y#
-    GetScale(scale_x#, scale_y#)
+Function TileImageScaled(image:TImage, x:Float = 0, y:Float = 0, frame:Int = 0)
 
-    Local viewport_x%, viewport_y%, viewport_w%, viewport_h%
-    GetViewport(viewport_x, viewport_y, viewport_w, viewport_h)
+	' Get the current scale, viewport, origin and handle
+    Local scaleX:Float
+	Local scaleY:Float
+    GetScale(scaleX, scaleY)
 
-    Local origin_x#, origin_y#
-    GetOrigin(origin_x, origin_y)
+    Local viewportX:Int
+	Local viewPortY:Int
+	Local viewportWidth:Int
+	Local viewportHeight:Int
+    GetViewport(viewportX, viewPortY, viewportWidth, viewportHeight)
 
-    Local handle_X#, handle_y#
-    GetHandle(handle_X#, handle_y#)
+    Local originX:Float
+    Local originY:Float
+    GetOrigin(originX, originY)
 
-    Local image_h# = ImageHeight(image)
-    Local image_w# = ImageWidth(image)
+    Local handleX:Float
+	Local handleY:Float
+    GetHandle(handleX, handleY)
 
-    Local w#=image_w * Abs(scale_x#)
-    Local h#=image_h * Abs(scale_y#)
+    Local imgHeight:Float = ImageHeight(image)
+    Local imgWidth:Float  = ImageWidth(image)
 
-    Local ox#=viewport_x-w+1
-    Local oy#=viewport_y-h+1
+    Local width:Float  = imgWidth * Abs(scaleX)
+    Local height:Float = imgHeight * Abs(scaleY)
 
-    origin_X = origin_X Mod w
-    origin_Y = origin_Y Mod h
+    Local ox:Float = viewportX - width + 1
+    Local oy:Float = viewportY - height + 1
 
-    Local px#=x+origin_x - handle_x
-    Local py#=y+origin_y - handle_y
+    originX = originX Mod width
+    originY = originY Mod height
 
-    Local fx#=px-Floor(px)
-    Local fy#=py-Floor(py)
-    Local tx#=Floor(px)-ox
-    Local ty#=Floor(py)-oy
+    Local px:Float = x + originX - handleX
+    Local py:Float = y + originY - handleY
 
-    If tx>=0 tx=tx Mod w + ox Else tx = w - -tx Mod w + ox
-    If ty>=0 ty=ty Mod h + oy Else ty = h - -ty Mod h + oy
+    Local fx:Float = px - Floor(px)
+    Local fy:Float = py - Floor(py)
+    Local tx:Float = Floor(px) - ox
+    Local ty:Float = Floor(py) - oy
 
-    Local vr#= viewport_x + viewport_w, vb# = viewport_y + viewport_h
+    If tx>=0 tx=tx Mod width + ox Else tx = width - -tx Mod width + ox
+    If ty>=0 ty=ty Mod height + oy Else ty = height - -ty Mod height + oy
+
+    Local vr:Float = viewportX + viewportWidth, vb# = viewportY + viewportHeight
 
     SetOrigin 0,0
     Local iy#=ty
-    While iy<vb + h ' add image height to fill lower gap
+    While iy<vb + height ' add image height to fill lower gap
         Local ix#=tx
-        While ix<vr + w ' add image width to fill right gap
+        While ix<vr + width ' add image width to fill right gap
             DrawImage(image, ix+fx,iy+fy, frame)
-            ix=ix+w
+            ix=ix+width
         Wend
-        iy=iy+h
+        iy=iy+height
     Wend
-    SetOrigin origin_x, origin_y
+    SetOrigin originX, originY
 
 End Function
