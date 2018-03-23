@@ -31,3 +31,4 @@ ModuleInfo "Pangolin.Events - Event service."
 
 ' Service
 Import "src/events_service.bmx"
+Import "src/hooks.bmx"
