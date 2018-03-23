@@ -28,7 +28,7 @@ Type Hooks
 	' -- Executing Hooks
 	' ------------------------------------------------------------
 
-	Method runAll(name:String, event:GameEvent)
+	Method runHook(name:String, event:GameEvent)
 		Local handlers:EventHandlerBag = Self.getHook(name)
 		handlers.runAll(event)
 	End Method
