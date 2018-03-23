@@ -36,7 +36,7 @@ Type EventHandler
 			Return Self._callback(event)
 		Else
 			' Only send event to the method if it as an `event` parameter
-			If Self._method.ArgTypes() = Null or Self._method.ArgTypes().Length = 0 Then
+			If Self._method.ArgTypes() = Null Or Self._method.ArgTypes().Length = 0 Then
 				Return Self._method.Invoke(Self._caller, Null)
 			Else
 				Return Self._method.Invoke(Self._caller, [event])
@@ -78,6 +78,9 @@ Type EventHandler
 		this._caller = caller
 		this._method = TTypeId.ForObject(caller).FindMethod(methodName)
 		
+		' Must be a valid method
+		If this._method = Null Then Throw "Cannot create a callback for missing method: " + methodName
+
 		Return this
 		
 	End Function

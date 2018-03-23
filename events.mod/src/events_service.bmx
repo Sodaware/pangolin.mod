@@ -19,12 +19,13 @@ Import sodaware.ObjectBag
 
 Import "game_event.bmx"
 Import "event_handler.bmx"
+Import "event_handler_bag.bmx"
 Import "game_event_mapper.bmx"
 
 
 Type EventService Extends GameService
 	
-	''' <summary>Map of eventName => ObjectBag of handlers
+	''' <summary>Map of eventName => EventHandlersBag of handlers
 	Field _handlers:TMap = New TMap
 	
 	
@@ -38,9 +39,9 @@ Type EventService Extends GameService
 		Local handler:EventHandler = EventHandler.Create(callback)
 		
 		' Add to collection of handlers
-		Local bag:ObjectBag	= ObjectBag(Self._handlers.ValueForKey(eventName))
+		Local bag:EventHandlerBag = EventHandlerBag(Self._handlers.ValueForKey(eventName))
 		If bag = Null Then
-			bag = New ObjectBag
+			bag = New EventHandlerBag
 			Self._handlers.Insert(eventName, bag)
 		End If
 		
@@ -63,9 +64,9 @@ Type EventService Extends GameService
 		Local handler:EventHandler = EventHandler.CreateCallback(caller, methodName)
 		
 		' Add to collection of handlers
-		Local eventHandlers:ObjectBag = ObjectBag(Self._handlers.ValueForKey(eventName))
+		Local eventHandlers:EventHandlerBag = EventHandlerBag(Self._handlers.ValueForKey(eventName))
 		If eventHandlers = Null Then
-			eventHandlers = New ObjectBag
+			eventHandlers = New EventHandlerBag
 			Self._handlers.Insert(eventName, eventHandlers)
 		End If
 		
@@ -77,7 +78,7 @@ Type EventService Extends GameService
 	Method removeCallback(eventName:String, caller:Object, methodName:String)
 		
 		' Get the event bag
-		Local bag:ObjectBag = ObjectBag(Self._handlers.ValueForKey(eventName))
+		Local bag:EventHandlerBag = EventHandlerBag(Self._handlers.ValueForKey(eventName))
 		If bag = Null Then Return
 		
 		' Find thie object / method
@@ -94,7 +95,7 @@ Type EventService Extends GameService
 	Method removeEventHandlers(eventName:String)
 		
 		' Get all handlers for this event
-		Local handlers:ObjectBag = ObjectBag(Self._handlers.ValueForKey(eventName))
+		Local handlers:EventHandlerBag = EventHandlerBag(Self._handlers.ValueForKey(eventName))
 		If handlers = Null Then Return
 		
 		' Clear each handler object
@@ -144,11 +145,10 @@ Type EventService Extends GameService
 		Local service:EventService	= EventService(context)
         
         ' Get handlers
-		Local eventName:String		= GameEventMapper.getEventName(event.id)
-		Local handlers:ObjectBag	= ObjectBag(service._handlers.ValueForKey(eventName))
+		Local eventName:String			= GameEventMapper.getEventName(event.id)
+		Local handlers:EventHandlerBag	= EventHandlerBag(service._handlers.ValueForKey(eventName))
 		
 		If handlers = Null Then Return eventData
-		
 		For Local handler:EventHandler = EachIn handlers
 			handler.call(event)
 		Next
