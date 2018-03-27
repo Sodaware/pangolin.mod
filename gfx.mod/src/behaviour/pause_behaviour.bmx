@@ -18,32 +18,35 @@ Import "sprite_behaviour.bmx"
 
 Type PauseBehaviour Extends SpriteBehaviour
 
-	Field _limit:Int
-	Field _expireTime:Int
-	
-	
-	' --------------------------------------------------
-	' -- Constructors
-	' --------------------------------------------------
-	
-	''' <summary>Create a new PauseAnimation object.</summary>
-	''' <param name="time">The time in milliseconds for this object to pause.</param>
-	Function Create:PauseBehaviour(time:Int)
-		
-		Local this:PauseBehaviour	= New PauseBehaviour
-		this._limit			= time
-		this._expireTime	= -1		
-		Return this
+	Field _limit:Float
+	Field _timeRemaining:Float
 
-	End Function
 
 	' --------------------------------------------------
 	' -- Inherited functions (update/draw)
 	' --------------------------------------------------
 	
 	Method update(delta:Float)
-		If Self._expireTime = -1 Then Self._expireTime	= Self._limit + MilliSecs()
-		If MilliSecs() >= Self._expireTime Then Self.finished()
+		Self._timeRemaining :- delta
+		If Self._timeRemaining <= 0 Then Self.finished()
 	End Method
+
+
+	' --------------------------------------------------
+	' -- Construction
+	' --------------------------------------------------
+
+	''' <summary>Create a new PauseAnimation object.</summary>
+	''' <param name="time">The time in milliseconds for this object to pause.</param>
+	Function Create:PauseBehaviour(time:Float)
+
+		Local this:PauseBehaviour = New PauseBehaviour
+
+		this._limit         = time
+		this._timeRemaining = time
+
+		Return this
+
+	End Function
 
 End Type
