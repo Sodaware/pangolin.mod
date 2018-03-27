@@ -123,11 +123,7 @@ Type RenderQueue
 		
 		' Render all visible items
 		For Local item:AbstractRenderRequest = EachIn Self._renderObjects
-			If item._isVisible Then
-				item.render(delta, Self._camera)
-			Else
-				DebugLog item.getIndentifier() + " is invisble"
-			EndIf
+			If item._isVisible Then item.render(delta, Self._camera)
 		Next
 		
 		'SetViewport(viewX, viewY, viewWidth, viewHeight)
