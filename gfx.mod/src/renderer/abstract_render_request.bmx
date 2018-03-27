@@ -82,47 +82,64 @@ Type AbstractRenderRequest Abstract
 	Method setZIndex(zIndex:Short)
 		Self._zIndex = zIndex
 	End Method
-	
+
 	Method isIgnoringCamera:Byte()
 		Return Self._ignoreCamera
 	End Method
-	
+
 	Method ignoreCamera:AbstractRenderRequest(ignore:Byte = True)
 		Self._ignoreCamera = ignore
 		Return Self
 	End Method
-	
+
+
+	' ------------------------------------------------------------
+	' -- Stubs
+	' ------------------------------------------------------------
+
 	Method move(xOff:Float, yOff:Float)
-    	' Do nothing (should be overridden)
+		' Do nothing (should be overridden)
 	End Method
-	
-			
+
+	Method setBlendMode:AbstractRenderRequest(blendMode:Byte)
+		Return Self
+	End Method
+
+	Method setAlpha:AbstractRenderRequest(alpha:Float)
+		Return Self
+	End Method
+
+	Method setScale:AbstractRenderRequest(xScale:Float, yScale:Float)
+		Return Self
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Hooks
 	' ------------------------------------------------------------
-	
+
 	Method onRemoved()
-		
+
 	End Method
 
-		
+
 	' ------------------------------------------------------------
 	' -- Sorting Functions
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Sorting function. Use this inside a "Sort" method.</summary>
 	Function SortByZIndex:Int(o1:Object, o2:Object)
 		Return AbstractRenderRequest(o1).getZIndex() - AbstractRenderRequest(o2).getZIndex()
 	End Function
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Construction / Destruction
 	' ------------------------------------------------------------
-	
+
 	Method New()
-		Self._zIndex 	= 1
+		Self._zIndex	= 1
 		Self._isVisible = True
 	End Method
-	
+
 End Type
