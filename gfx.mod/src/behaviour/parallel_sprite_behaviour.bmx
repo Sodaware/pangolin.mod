@@ -19,15 +19,16 @@ Type ParallelSpriteBehaviour Extends SpriteBehaviour
 
 	Field _animations:TList
 	Field _animCount:Int = 0
-	
+
 
 	' ----------------------------------------------------------------------
 	' -- Adding Items
 	' ----------------------------------------------------------------------
-	
-	Method add(anim:AbstractSpriteBehaviour)
+
+	Method add:AbstractSpriteBehaviour(anim:AbstractSpriteBehaviour)
 		Self._animations.AddLast(anim)
 		Self._animCount :+ 1
+		Return anim
 	End Method
 
 
