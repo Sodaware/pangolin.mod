@@ -34,14 +34,33 @@ Type RenderGroup Extends AbstractRenderRequest
 	Method getY:Float()
 		Return 0
 	End Method		
-	
+
+
+	' ------------------------------------------------------------
+	' -- Delegated Methods
+	' ------------------------------------------------------------
+
 	Method move(xOff:Float, yOff:Float)
     	For Local r:AbstractRenderRequest = EachIn Self._items
 			r.move(xOff, yOff)
 		Next
-	EndMethod
+	End Method
 
-	
+	Method SetAlpha:RenderGroup(alpha:Float)
+	   	For Local r:AbstractRenderRequest = EachIn Self._items
+			r.SetAlpha(alpha)
+		Next
+		Return Self
+	End Method
+
+	Method setScale:RenderGroup(xScale:Float, yScale:Float)
+	   	For Local r:AbstractRenderRequest = EachIn Self._items
+			r.setScale(xScale, yScale)
+		Next
+		Return Self
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Adding / Removing items
 	' ------------------------------------------------------------
