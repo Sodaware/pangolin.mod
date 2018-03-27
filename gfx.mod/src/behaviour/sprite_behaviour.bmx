@@ -29,7 +29,7 @@ Type SpriteBehaviour Extends AbstractSpriteBehaviour
 	End Method
 	
 	Method update(delta:Float)
-		
+		Self._elapsedTime :+ delta
 	End Method
 	
 	Method preRender(delta:Float)
