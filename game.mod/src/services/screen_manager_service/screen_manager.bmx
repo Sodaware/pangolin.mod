@@ -45,9 +45,9 @@ Type ScreenManager
 	''' <param name="screen">The screen to add.</param>
 	Method addScreen(screen:IGameScreen, loadResources:Byte = True)
 
-		' TODO: Check inputs
-		
-		' 
+		Assert screen <> null, "Cannot add a null screen"
+
+		' Setup the newly added screen.
 		screen.setIsExiting(False)
 		screen.setParentManager(self)
 		
@@ -56,8 +56,10 @@ Type ScreenManager
 			screen.loadResources()
 		EndIf
 		
+		' Add to the list of active screens and enter.
 		Self._screens.AddLast(screen)
-		screen.Enter()
+		Self._enterScreen(screen)
+
 	End Method
 	
 	Method popScreen:IGameScreen()
@@ -89,9 +91,9 @@ Type ScreenManager
 	Method clearScreens()
 		
 		For Local screen:IGameScreen = EachIn Self._screens
-			screen.FreeResources()
-			Self._screens.Remove(screen)
-			Self.screensToUpdate.Remove(screen)
+			screen.freeResources()
+			Self._screens.remove(screen)
+			Self.screensToUpdate.remove(screen)
 		Next
 	
 		Self._screens.Clear()
@@ -107,7 +109,13 @@ Type ScreenManager
 		Return IGameScreen[](Self._screens.ToArray())
 	End Method
 	
-	
+	Method _enterScreen(screen:IGameScreen)
+		screen.beforeEnter()
+		screen.enter()
+		screen.afterEnter()
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Debug Helpers
 	' ------------------------------------------------------------
@@ -143,10 +151,10 @@ Type ScreenManager
 		
 		' Make a copy of the master screen list, To avoid confusion If
 		' the process of updating one screen adds or removes others.
-        Self.screensToUpdate.Clear()
+        Self.screensToUpdate.clear()
 		
 		For Local screen:IGameScreen = EachIn Self._screens
-			Self.screensToUpdate.AddLast(screen)
+			Self.screensToUpdate.addLast(screen)
 		Next
 		
 		Local otherScreenHasFocus:Byte  = False

@@ -96,8 +96,16 @@
 	'''' <summary>Called when the screen is exited (after resources are freed).</summary>
 	Method leave()
 	End Method
-	
-	
+
+	''' <summary>Called just before the screen is entered.</summary>
+	Method beforeEnter()
+	End Method
+
+	''' <summary>Called just after the screen is entered.</summary>
+	Method afterEnter()
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Input Handling
 	' ------------------------------------------------------------
