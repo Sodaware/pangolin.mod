@@ -89,7 +89,7 @@ Type SequentialSpriteBehaviour Extends SpriteBehaviour
 			Else
 
 				' Sequence has ended - check repeat count
-				If Self._repeatCount < Self.RepeatLimit Then
+				If Self._repeatCount < Self.RepeatLimit Or self.RepeatLimit = -1 Then
 
 					' If we need to repeat, inc counter and repeat (set current anim to first)
 					Self._repeatCount   :+ 1
