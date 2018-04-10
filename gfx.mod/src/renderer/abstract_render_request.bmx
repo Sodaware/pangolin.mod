@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- src/renderer/abstract_render_request.bmx
-' -- 
+' --
 ' -- Abstract class that renderable objects should extend. Objects that do not
 ' -- require any location information (such as fixed backgrounds) can extend
 ' -- from this. Other items, such as sprites and gui objects should extend
@@ -18,13 +18,13 @@ SuperStrict
 Import "abstract_render_camera.bmx"
 
 Type AbstractRenderRequest Abstract
-	
+
 	Field _identifier:String	'''< Optional name
 	Field _zIndex:Short			'''< Z-Index, used for sorting
 	Field _ignoreCamera:Byte	'''< Is this a fixed object or not
 	Field _isVisible:Byte		'''< Is object visible?
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Required Methods
 	' ------------------------------------------------------------
@@ -45,36 +45,36 @@ Type AbstractRenderRequest Abstract
 	' ------------------------------------------------------------
 	' -- Public API
 	' ------------------------------------------------------------
-	
+
 	Method setIdentifier(name:String)
 		Self._identifier = name
 	End Method
-	
+
 	Method getIndentifier:String()
 		Return Self._identifier
 	End Method
-	
+
 	Method setVisible(isVisible:Byte = True)
 		self._isVisible = isVisible
 	End Method
-	
+
 	Method hide()
 		Self.setVisible(False)
 	End Method
-	
+
 	Method show()
 		Self.setVisible(True)
 	End Method
 
 	Method isVisible:Byte()
-        Return Self._isVisible
+		Return Self._isVisible
 	EndMethod
-	
+
 	''' <summary>Get the Z-Index of this renderable object.</summary>
 	Method getZIndex:Short()
 		Return Self._zIndex
 	End Method
-	
+
 	''' <summary>
 	''' Set the sprite's z-index. Requests with a higher z-index are rendered in
 	''' front of requests with lower numbers,

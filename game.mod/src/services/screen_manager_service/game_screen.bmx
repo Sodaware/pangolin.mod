@@ -88,8 +88,8 @@ Type GameScreen extends IGameScreen
 	Method getRenderGroup:RenderGroup()
 		Return Self._group
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Hooks
 	' ------------------------------------------------------------

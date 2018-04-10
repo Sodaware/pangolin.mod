@@ -21,7 +21,6 @@ Import pangolin.profiler
 
 Import "../abstract_render_request.bmx"
 
-
 Type RenderGroup Extends AbstractRenderRequest
 
 	Field _items:TList = New TList
