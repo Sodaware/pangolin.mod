@@ -40,6 +40,10 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	Field _shadowYDistance:Short	= 1
 	Field _alignment:Byte			= ALIGN_LEFT
 	
+	' Internal state
+	Field _oldFont:TImageFont
+	Field _textWidth:Int            = -1
+
 	
 	' ------------------------------------------------------------
 	' -- Configuration
@@ -79,6 +83,8 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			Self._text = Self._wrapText(Self._text)
 		End If
 		
+		Self._textWidth = -1
+
 		Return Self
 	End Method
 	
@@ -181,6 +187,13 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		Return Self._text	
 	End Method
 
+	Method getTextWidth:Int()
+		If Self._textWidth = -1 Then
+			Self._refreshTextWidth()
+		End If
+		Return Self._textWidth
+	End Method
+
 		
 	' ------------------------------------------------------------
 	' -- Rendering
@@ -190,20 +203,22 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	
 	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
-		' Don't render if no text or set to invisible
-		If Self._text = "" Or Self.isVisible() = False Then
-			Return
-		EndIf
+		' Don't render if set to invisible
+		If Self._isVisible = False Then Return
 		
 		' Calculate new position
 		Self._interpolate(1)
-		
-		' Store previous font for restoration
-		Local oldFont:TImageFont = GetImageFont()
-		
-		' Set up appearance
 		Self.setRenderState()
-		If Self._font Then SetImageFont(Self._font)
+		
+ 		' Setup the font.
+		If Self._oldFont <> Self._font And Self._font Then
+			Self._oldFont = GetImageFont()
+			SetImageFont(Self._font)
+		EndIf
+
+		' Set up appearance
+		' TODO: Is this really needed? It's rather slow. Maybe only set the state if something fancy is going on?
+		' Self.setRenderState()
 		
 		' Wrap the text (if required)
 		If Self._wrap Then
@@ -214,6 +229,8 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			
 			Local lines:String[] = wrappedText.Split("~n")
 			Local yPos:Float = Self._currentPosition._yPos
+
+			' TODO: Store this
 			Local h:Float = TextHeight("`j")
 			
 			' Limit viewport when wrapping
@@ -231,7 +248,9 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		End If
 		
 		' Reset appearance
-		SetImageFont(oldFont)
+		If Self._oldFont Then
+			SetImageFont(Self._oldFont)
+		End If
 		
 	End Method
 	
@@ -243,7 +262,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			xOff = xOff + Self._width - TextWidth(line)
 		End If
 		
-		' Draw the font
+		' Draw the shadow first (if present).
 		If Self._shadowColor <> -1 Then
 			PangolinGfx.SetColorInt(Self._shadowColor)
 			Local oldAlpha:Float = brl.max2d.GetAlpha()
@@ -252,6 +271,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			brl.max2d.SetAlpha(oldAlpha)
 		EndIf
 		
+		' Render the main text.
 		PangolinGfx.SetColorInt(Self._fontColor)
 		DrawText line, xOff, yOff
 		
@@ -288,7 +308,23 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		
 	End Method
 	
-	
+	' SLOW.
+	Method _refreshTextWidth()
+		' Setup the font.
+		If Self._oldFont <> Self._font And Self._font Then
+			Self._oldFont = GetImageFont()
+			SetImageFont(Self._font)
+		EndIf
+
+		Self._textWidth = TextWidth(Self._text)
+
+		' Reset appearance
+		If Self._oldFont Then
+			SetImageFont(Self._oldFont)
+		End If
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
