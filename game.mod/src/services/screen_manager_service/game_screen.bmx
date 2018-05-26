@@ -26,28 +26,28 @@ Import "screen_manager.bmx"
 ''' </summary>
 Type GameScreen extends IGameScreen
 
-	' -- Screen states
-	Const STATE_TransitionOn:Byte			= 1		'''< Screen is appearing
-	Const STATE_Active:Byte		 			= 2		'''< Screen is running
-	Const STATE_TransitionOff:Byte			= 3		'''< Screen is disappearing
-	Const STATE_Hidden:Byte					= 4		'''< Screen is not visible
+	' -- Screen states.
+	Const STATE_TransitionOn:Byte   = 1     '''< Screen is appearing
+	Const STATE_Active:Byte         = 2     '''< Screen is running
+	Const STATE_TransitionOff:Byte  = 3     '''< Screen is disappearing
+	Const STATE_Hidden:Byte         = 4     '''< Screen is not visible
 
-	Field State:Byte								'''< Current state of this screen
-	
-	' -- Internal info	
-	Field _isPopup:Byte						= False
-	Field _noFocus:Byte						= False
-	Field _isExiting:Byte					= False
+	Field State:Byte                        '''< Current state of this screen
+
+	' -- Internal info.
+	Field _isPopup:Byte             = False
+	Field _noFocus:Byte             = False
+	Field _isExiting:Byte           = False
 	Field _transitionOffTime:Int
-	
+
 	Field _group:RenderGroup
 	Field __renderer:SpriteRenderingService = Null
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Querying the GameScreen
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Check if the screen is hidden.</summary>
 	''' <return>True if screen is hidden, false if not.</return>
 	Method isHidden:Byte()
@@ -59,31 +59,31 @@ Type GameScreen extends IGameScreen
 	Method isPopup:Byte()
 		Return Self._isPopup
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Managing renderable objects
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Add a render request to this screen's render group.</summary>
 	''' <param name="obj">The request object to add.</param>
 	''' <param name="name">Optional identifier for the request.</param>
 	Method add(obj:AbstractRenderRequest, name:String = "")
 		Self._group.add(obj, name)
 	End Method
-	
+
 	''' <summary>Remove a render request from this screen's render group.</summary>
 	''' <param name="obj">The request object to remove.</param>
 	Method remove(obj:AbstractRenderRequest)
 		Self._group.remove(obj)
 	End Method
-	
+
 	''' <summary>Remove a render request from this screen's render group using its name.</summary>
 	''' <param name="name">The name of the request to remove.</param>
 	Method removeByName(name:String)
 		Self._group.removeByName(name)
 	End Method
-	
+
 	''' <summary>Get the render group associated with this screen.</summary>
 	Method getRenderGroup:RenderGroup()
 		Return Self._group
@@ -93,67 +93,72 @@ Type GameScreen extends IGameScreen
 	' ------------------------------------------------------------
 	' -- Hooks
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Called after a screen has been added to the ScreenManager.</summary>
 	Method afterAdd()
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Entry & Exiting
 	' ------------------------------------------------------------
-	
+
 	''' <summary>
 	''' Exit the screen. Once the (optional) transition has finished will
 	''' remove the screen from the manager and remove all render requests.
 	''' </summary>
 	Method exitScreen()
-		
+
 		Self._isExiting	= True
-		
+
 		If Self._transitionOffTime <= 0 Then
-			
+
 			' Remove the screen from its parent screen manager.
 			Self.getParentManager().RemoveScreen(Self)
-			
+
 			' Clear items from the renderer.
 			Self._group.clear()
 			Self.__renderer.remove(Self._group)
 			Self._group = Null
-			
+
 		End If
-		
+
 		Self.leave()
-		
+
 	End Method
-		
-	
+
+
 	' ------------------------------------------------------------
 	' -- Updating & Rendering
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Update the current screen.</summary>
 	''' <param name="delta">Delta time in millisecs</param>
 	''' <param name="noFocus">Does this screen have focus?</param>
 	''' <param name="covered">Is this screen covered?</param>
 	Method update(delta:Float = 0, noFocus:Int = False, covered:Int = False)
-		Self._noFocus	= noFocus		
-	End Method 
-	
+		Self._noFocus	= noFocus
+	End Method
+
 	''' <summary>Render the current screen</summary>
 	''' <param name="delta">Delta time in milliseconds</param>
 	Method render(delta:Float = 0)
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
-	
+
+	Method initialize()
+
+	End Method
+
 	Method New()
 		Self._group	= New RenderGroup
+		Self.initialize()
 	End Method
-	
+
 End Type

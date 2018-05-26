@@ -20,27 +20,25 @@ Include "igame_screen.bmx"
 
 
 Type ScreenManager
-	
-'	Field parentGame:GameBase
 
 	' TODO: Change to "IGameScreenCollection"?
-	Field _screens:TList			= New TList
-	Field screensToUpdate:TList		= New TList
+	Field _screens:TList        = New TList
+	Field screensToUpdate:TList = New TList
 
-	Field traceEnabled:Int			= False
-	
-	
+	Field traceEnabled:Byte     = False
+
+
 	' ------------------------------------------------------------
 	' -- Adding / Removing screens
 	' ------------------------------------------------------------
-		
+
 	''' <summary>Replace the current screen with the new one.</summary>
 	Method switchScreen(screen:IGameScreen)
 		Self.popScreen()
 		Self.addScreen(screen)
 	End Method
 
-		
+
 	''' <summary>Add a screen to the manager and enter it.</summary>
 	''' <param name="screen">The screen to add.</param>
 	Method addScreen(screen:IGameScreen, loadResources:Byte = True)
@@ -50,22 +48,22 @@ Type ScreenManager
 		' Setup the newly added screen.
 		screen.setIsExiting(False)
 		screen.setParentManager(self)
-		
+
 		' Load resources (unless skipped)
 		If loadResources Then
 			screen.loadResources()
 		EndIf
-		
+
 		' Add to the list of active screens and enter.
 		Self._screens.AddLast(screen)
 		Self._enterScreen(screen)
 
 	End Method
-	
+
 	Method popScreen:IGameScreen()
 		IGameScreen(Self._screens.Last()).exitScreen()
 	End Method
-	
+
 	''' <summary>
 	''' Removes a screen from the screen manager. You should normally
 	''' use IGameScreen.ExitScreen instead of calling this directly, so
@@ -73,31 +71,31 @@ Type ScreenManager
 	''' instantly removed.
 	''' </summary>
 	Method removeScreen:IGameScreen(screen:IGameScreen)
-		
+
 		' Free resources for the screen
 		screen.FreeResources()
-		
+
 		' Remove from lists
 		Self._screens.Remove(screen)
 		Self.screensToUpdate.Remove(screen)
-		
+
 		Return screen
-		
+
 	End Method
-	
+
 	''' <summary>
 	''' Clears all screens from the current list of screens.
 	''' </summary>
 	Method clearScreens()
-		
+
 		For Local screen:IGameScreen = EachIn Self._screens
 			screen.freeResources()
 			Self._screens.remove(screen)
 			Self.screensToUpdate.remove(screen)
 		Next
-	
+
 		Self._screens.Clear()
-		
+
 	End Method
 
 	''' <summary>
@@ -108,7 +106,7 @@ Type ScreenManager
 	Method getScreens:IGameScreen[]()
 		Return IGameScreen[](Self._screens.ToArray())
 	End Method
-	
+
 	Method _enterScreen(screen:IGameScreen)
 		screen.beforeEnter()
 		screen.enter()
@@ -119,58 +117,58 @@ Type ScreenManager
 	' ------------------------------------------------------------
 	' -- Debug Helpers
 	' ------------------------------------------------------------
-	
+
 	Method traceScreens()
-		
+
 		DebugLog "ScreenManager.TraceScreens {"
 		For Local screen:IGameScreen = EachIn Self._screens
 			Local t:TTypeId = TTypeId.ForObject(screen)
-			DebugLog "    " + t.Name() 
+			DebugLog "    " + t.Name()
 		Next
 		DebugLog "}"
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Content Loading / Unloading
 	' ------------------------------------------------------------
-	
+
 	Method loadContent()
-		Throw "ScreenManager.loadContent -- Method is deprecated"		
+		RuntimeError "ScreenManager.loadContent -- Method is deprecated"
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Updating / Rendering
 	' ------------------------------------------------------------
-	
+
 	Method update(gameTime:Int)
-	
+
 		' TODO: This can probably be optimized...
-		
+
 		' Make a copy of the master screen list, To avoid confusion If
 		' the process of updating one screen adds or removes others.
-        Self.screensToUpdate.clear()
-		
+		Self.screensToUpdate.clear()
+
 		For Local screen:IGameScreen = EachIn Self._screens
 			Self.screensToUpdate.addLast(screen)
 		Next
-		
+
 		Local otherScreenHasFocus:Byte  = False
 		Local coveredByOtherScreen:Byte = False
-		
+
 		' Loop as long as there are screens waiting to be updated.
 		While Self.screensToUpdate.Count() > 0
-			
+
 			' Pop screen & update
 			Local currentScreen:IGameScreen	= IGameScreen(Self.screensToUpdate.RemoveLast())
 			currentScreen.setIsCovered(coveredByOtherScreen)
 			currentScreen.update(gameTime, otherScreenHasFocus, coveredByOtherScreen)
-			
+
 			' If screen is a popupm disable input for everything below
 			' If currentScreen.State = IGameScreen.STATE_ACTIVE Or currentScreen.State = IGameScreen.STATE_TransitionOn Then
-				
+
 				' Update if first active screen
 				If otherScreenHasFocus = False Then
 					If currentScreen.inputEnabled() Then
@@ -180,39 +178,39 @@ Type ScreenManager
 						otherScreenHasFocus = True
 					EndIf
 				EndIf
-				
+
 				If currentScreen.IsPopup() Then
 					coveredByOtherScreen = True
-				End If				
-			
+				End If
+
 		'	End If
-			
+
 		Wend
-            
+
 		' Print Debug Info?
 		If Self.traceEnabled Then Self.traceScreens()
-		
+
 	End Method
-	
+
 	' TODO: Might even remove this, seeing as it's all handled by the renderer now...
 	Method render(gameTime:Int)
-		
+
 		For Local screen:IGameScreen = EachIn Self._screens
 			If screen.IsHidden() = False Then
 				screen.Render(gameTime)
 			EndIf
 		Next
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
-	
+
 	Function Create:ScreenManager()
 		Local this:ScreenManager = New ScreenManager
 		Return this
 	End Function
-	
+
 End Type
