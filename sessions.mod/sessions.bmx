@@ -27,4 +27,5 @@ Module pangolin.sessions
 SuperStrict
 
 ' -- Core files
+Import "src/game_session_service.bmx"
 Import "src/game_session.bmx"
