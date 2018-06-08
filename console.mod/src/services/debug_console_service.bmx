@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- src/services/debug_console_service.bmx
-' -- 
+' --
 ' -- Implementation of a Quake style debug console as a Pangolin service.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
@@ -17,13 +17,13 @@ Import pangolin.core
 Import "../base/debug_console.bmx"
 
 
-Type DebugConsoleService Extends GameService .. 
+Type DebugConsoleService Extends GameService ..
 	{ implements = "update, render" }
 
 	Field _console:DebugConsole
 	Field _kernelInfo:KernelInformationService	{ injectable }
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Adding commands
 	' ------------------------------------------------------------
@@ -34,58 +34,58 @@ Type DebugConsoleService Extends GameService ..
 	''' </summary>
 	''' <seealso cref="ConsoleCommand"></seealso>
 	Method addCommand:Byte(handler:ConsoleCommand)
-       
-        If Self._kernelInfo = Null Then Throw "Console has not been added to kernel"
+
+		If Self._kernelInfo = Null Then Throw "Console has not been added to kernel"
 		If handler = Null Then Throw "Cannot add null command"
 
-		' Don't hadd if this handler has already been registered
+		' Don't add if this handler has already been registered.
 		If Self._console.hasCommandHandler(handler) Then Return False
 
-        ' Update injectable fields
-        handler._addInjectableFields()
+		' Update injectable fields.
+		handler._addInjectableFields()
 
-		' Inject dependencies
+		' Inject dependencies.
 		If handler.hasDependencies() Then
-	      For Local dependency:TTypeId = EachIn handler.getDependencies()
-			    handler.inject(dependency, Self._kernelInfo.getService(dependency))
+		  For Local dependency:TTypeId = EachIn handler.getDependencies()
+				handler.inject(dependency, Self._kernelInfo.getService(dependency))
 			Next
 		End If
-		
-		' Add the command
+
+		' Add the command.
 		Return Self._console.addCommand(handler)
-		
+
 	End Method
-	
+
 	Method _autoloadConsole:DebugConsoleService()
-		
+
 		' TODO: Allow commands to be active / inactive for debug & release mode (use meta?)
-	
+
 		Local cmd:TTypeId = TTypeId.ForName("ConsoleCommand")
 		For Local subCommand:TTypeId = EachIn cmd.DerivedTypes()
 			Self.addCommand(ConsoleCommand(subCommand.NewObject()))
 		Next
 		Return Self
-		
+
 	End Method
-	
+
 	Method start()
 		Super.start()
 		Self._autoloadConsole()
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Updating & Rendering
 	' ------------------------------------------------------------
-	
+
 	Method update(delta:Float)
 		Self._console.update()
 	End Method
-	
+
 	Method render(delta:Float)
 		self._console.render()
 	End Method
-	
+
 
 	' ------------------------------------------------------------
 	' -- Object Creation & Destruction
@@ -94,16 +94,18 @@ Type DebugConsoleService Extends GameService ..
 	Method New()
 		Self._addInjectableFields()
 	End Method
-	
+
 	Function Create:DebugConsoleService(backgroundImage:TImage, consoleFontName:String = "MS Dialog", consoleFontSize:Int = 10)
 
 		Local this:DebugConsoleService = New DebugConsoleService
-		this._console = DebugConsole.Create(backgroundImage, consoleFontName, consoleFontSize)
-		this._priority = 5
+
+		this._console        = DebugConsole.Create(backgroundImage, consoleFontName, consoleFontSize)
+		this._priority       = 5
 		this._renderPriority = 255
 		this._updatePriority = 1
+
 		Return this
-		
+
 	End Function
-	
+
 End Type
