@@ -17,6 +17,12 @@ SuperStrict
 Import brl.reflection
 Import "game_event.bmx"
 
+''' <summary>Shorthand for creating a callback.</summary>
+Function Callback:EventHandler(caller:Object, methodName:String)
+	Return EventHandler.CreateCallback(caller, methodName)
+End Function
+
+
 Type EventHandler
 	
 	Field _caller:Object
