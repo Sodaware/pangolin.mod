@@ -15,13 +15,12 @@
 
 SuperStrict
 
+Import brl.filesystem
 Import brl.map
-Import brl.max2d
-Import brl.audio
-
 Import brl.reflection
-
 Import brl.stream
+
+Import pangolin.events
 
 Import "base_resource.bmx"
 Import "resource_definition.bmx"
@@ -37,35 +36,66 @@ Type ResourceManager
 	' -- Options
 	Field _isStrictCheckingEnabled:Byte = False
 
-	Field _resources:TMap     	'''< Map of all resources
-	Field _loadCallbacks:TList 	'''< List of functions to be called when file loaded
-	Field _totalFiles:Int = 0	'''< Number of files loaded
-	
+	Field _resources:TMap       '''< Map of all resources names -> resources.
+	Field _totalFiles:Int       '''< Number of files loaded.
+
 	' -- Caches
-	Field _resourceTypes:TMap	'''< Map of string -> ttypeId
-	
-	Field _callbackCaller:Object
-	Field _startCallback:Object(called:Object, file:String)
-	
-	Method setStartCallback(caller:Object, callback:Object(caller:Object, file:String))
-		Self._callbackCaller	= caller
-		Self._startCallback 	= callback
+	Field _resourceTypes:TMap	'''< Map of string -> TTypeId.
+
+	' -- Callbacks
+	Field _hooks:Hooks
+
+
+	' ------------------------------------------------------------
+	' -- Callbacks
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Event hook that is called when a resource definition file is loaded. Called 
+	''' before loading of individual resources.
+	'''
+	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' name of the resource file being loaded.
+	''' </summary>
+	''' <param name="callback">Event handler.</param>
+	''' <return>ResourceManager instance.</return>
+	Method whenLoadStarted:ResourceManager(callback:EventHandler)
+		Self._hooks.add("load_started", callback)
+
+		Return Self
 	End Method
 	
-	' TODO: Callback list?
-	Method addCallback(callback(resource:BaseResource))
-		'Self._loadCallbacks.AddLast(callback)
+	''' <summary>
+	''' Event hook that is called when a resource definition file has finished being
+	''' loaded.
+	'''
+	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' name of the resource file that was loaded.
+	''' </summary>
+	''' <param name="callback">Event handler.</param>
+	''' <return>ResourceManager instance.</return>
+	Method whenLoadFinished:ResourceManager(callback:EventHandler)
+		Self._hooks.add("load_finished", callback)
+
+		Return Self
 	End Method
-	
-	Method removeCallback(callback(resource:BaseResource))
-		'Self._loadCallbacks.Remove(callback)
+
+	''' <summary>
+	''' Event hook that is called when single resource in a resource definition has
+	''' been loaded.
+	'''
+	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' `BaseResource` object that was loaded.
+	''' </summary>
+	''' <param name="callback">Event handler.</param>
+	''' <return>ResourceManager instance.</return>
+	Method whenResourceLoaded:ResourceManager(callback:EventHandler)
+		Self._hooks.add("resource_loaded", callback)
+
+		Return Self
 	End Method
-	
-	Method clearCallbacks()
-		'Self._loadCallbacks.Clear()
-	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Setting Options
 	' ------------------------------------------------------------
@@ -140,78 +170,68 @@ Type ResourceManager
 	End Method
 	
 	''' <summary>Remove a resource from the manager by name.</summary>
+	''' <param name="name">The name of the resource to remove.</param>
 	Method removeResource(name:String)
 		Self._resources.Remove(name)
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Resource Loading
 	' ------------------------------------------------------------
-	
-	''' <summary>Loads all resources from a resource file.</summary>
+
+	''' <summary>Loads all resources from a resource definition file.</summary>
+	''' <param name="filename">The resource definition file to load.</param>
+	''' <param name="isLazy">If true, resources will not be loaded until requested.</param>
 	Method loadResources(filename:String, isLazy:Byte = True)
-		
+
 		Local loader:ResourceFileSerializer = Self._getSerializer(fileName)
 		If loader = Null Then Throw "No resource serializer found for type: " + ExtractExt(filename)
-		
-		' Signal!
-		If Self._startCallback <> Null Then
-			Self._startCallback(Self._callbackCaller, filename)	
-		End If
-		
-		' Setup loader
-		loader.init(filename)
-		
-		' Load each resource definition
-		For Local definition:ResourceDefinition = EachIn loader.getResources()
-			
-			If Self._startCallback <> Null Then
-			'	Self._startCallback(Self._callbackCaller, definition.getFileName())
-			End If
 
-			' Create a resource from each definition
+		' Notify listeners that loading has started.
+		Self._hooks.sendEvent(GameEvent.CreateSimple("load_started", filename))
+
+		' Setup loader.
+		loader.init(filename)
+
+		' Load each resource definition.
+		For Local definition:ResourceDefinition = EachIn loader.getResources()
+
+			' Create a resource from each definition.
 			Local resource:BaseResource = Self.addResource(definition)
 			Self._resources.Insert(definition.getFullName(), resource)
-			
+
 			' Load resource completely if laziness disabled AND they're not skipping autoload.
 			If isLazy = False And definition.skipAutoload() = False Then
 				resource.reload()
-				Self._onFileLoaded(resource)
+
+				' Notify listeners.
+				Self._hooks.sendEvent(GameEvent.CreateSimple("resource_loaded", resource))
 			End If
-			
+
         Next
-		
+
+		' Notify listeners that loading has finished.
+		Self._hooks.sendEvent(GameEvent.CreateSimple("load_finished", filename))
+
 	End Method
-   
-	''' <summary>Reloads all resources.</summary>
+
+	''' <summary>Reload all resources.</summary>
 	Method reloadAll()
-		
+
 		' TODO: ResourceManager.reloadAll would be better to use an objectbag, rather than iterating through mapped resources
 		For Local resource:BaseResource = EachIn Self._resources.Values()
 			resource.reload()
-			Self._onFileLoaded(resource)
+			Self._hooks.sendEvent(GameEvent.CreateSimple("resource_loaded", resource))
 		Next       
-		
+
 	End Method
-	
-	
-	' ------------------------------------------------------------
-	' -- Load Callbacks
-	' ------------------------------------------------------------
-	
-	Method _onFileLoaded(resource:BaseResource)
-		If Self._loadCallbacks.Count() = 0 Then Return
-'		For Local callback(res:BaseResource) = EachIn Self._loadCallbacks
-'			callback(resource)
-'		Next
-	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Load a single resource
 	' ------------------------------------------------------------
-	
+
 	''' <summary>
 	''' Loads a Resource from a ResourceDefinition. Will throw an exception if
 	''' if no valid Resource exists for this type.
@@ -219,52 +239,52 @@ Type ResourceManager
 	''' <param name="definition">The resource definition to load.</param>
 	''' <return>Loaded resource</return>
 	Method addResource:BaseResource(definition:ResourceDefinition)
-		
+
 		' Get the BlitzMax type for this resource name.
 		Local resourceType:TTypeId = Self.getResourceTypeByName(definition.getType())
-		
+
 		' If resource type is invalid, throw an exception.
 		If Null = resourceType Then
 			Throw "Resource type ~q" + definition.getType() + "~q does not exist"
 		EndIf
-		
+
 		' Load the resource and return it.
 		Local resource:BaseResource = BaseResource(resourceType.NewObject())
 		resource.init(definition)
 		Return resource
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Serialization Helpers
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Get the serializer for a filename.</summary>
 	''' <param name="fileName">The file to fetch a serializer for.</param>
 	''' <return>Serializer for this file type, or null if none available.</return>
 	Method _getSerializer:ResourceFileSerializer(fileName:String)
-		
+
 		' Get file extension
 		Local extension:String = ExtractExt(fileName.ToLower())
-		
+
 		' Check every available serializer
 		Local baseType:TTypeId = TTypeId.ForName("ResourceFileSerializer")
 		For Local serializerType:TTypeId = EachIn baseType.DerivedTypes()
-			
+
 			' Check if this type supports the extension
 			If serializerType.MetaData("extensions").Contains(extension) Then
 				Return ResourceFileSerializer(serializerType.NewObject())
 			End If
-			
+
 		Next
-		
+
 		' None found
 		Return Null
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Resource type helpers
 	' ------------------------------------------------------------
@@ -305,10 +325,15 @@ Type ResourceManager
 	
 	Method New()
 		Self._resources 	= New TMap
-		Self._loadCallbacks = New TList
 		Self._resourceTypes = New TMap
-		
+
 		Self._initializeTypeCaches()
+
+		' Setup hooks.
+		Self._hooks = New Hooks
+		Self._hooks.registerHook("load_started")
+		Self._hooks.registerHook("load_finished")
+		Self._hooks.registerHook("resource_loaded")
 	End Method
 			
 End Type
