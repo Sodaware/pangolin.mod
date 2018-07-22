@@ -13,6 +13,7 @@
 SuperStrict
 
 Import brl.map
+
 Import sodaware.StringList
 
 Import "event_handler_bag.bmx"
@@ -28,9 +29,18 @@ Type Hooks
 	' -- Executing Hooks
 	' ------------------------------------------------------------
 
+	''' <summary>Run a hook. Sends the event to all registered callbacks.</summary>
+	''' <param name="name">The name of the hook to run.</param>
+	''' <param name="event">The GameEvent to send to all callbacks.</param>
 	Method runHook(name:String, event:GameEvent)
 		Local handlers:EventHandlerBag = Self.getHook(name)
 		handlers.runAll(event)
+	End Method
+
+	''' <summary>Run all hooks for an event. Uses the event's name to find hooks.</summary>
+	''' <param name="event">The GameEvent to run hooks with.</param>
+	Method sendEvent(event:GameEvent)
+		Self.runHook(event.name, event)
 	End Method
 
 
@@ -38,6 +48,11 @@ Type Hooks
 	' -- Registering Hooks
 	' ------------------------------------------------------------
 
+	''' <summary>
+	''' Register a hook name. Hook names must be registered before callbacks
+	''' are added when strict mode is enabled.
+	''' </summary>
+	''' <param name="name">The name of the hook to register.</param>
 	Method registerHook:Hooks(name:String)
 		If Not Self.isHookRegistered(name) Then
 			Self._allowedHooks.addLast(name)
@@ -46,6 +61,11 @@ Type Hooks
 		Return Self
 	End Method
 
+	''' <summary>
+	''' Register a list of hook names. Hook names must be registered before
+	''' callbacks are added when strict mode is enabled.
+	''' </summary>
+	''' <param name="name">The name of the hook to register.</param>
 	Method registerHooks:Hooks(hookNames:String[])
 		If hookNames And hookNames.Length Then
 			For Local name:String = EachIn hookNames
@@ -55,11 +75,10 @@ Type Hooks
 		Return Self
 	End Method
 
+	''' <summary>Check if a hook name has been registered.</summary>
+	''' <param name="name">The name of the hook to check.</param>
+	''' <return>True if hook registered, false if not.</return>
 	Method isHookRegistered:Byte(name:String)
-		Return Self._allowedHooks.contains(name)
-	End Method
-
-	Method validHook:Byte(name:String)
 		Return Self._allowedHooks.contains(name)
 	End Method
 
@@ -68,6 +87,9 @@ Type Hooks
 	' -- Adding and removing hooks
 	' ------------------------------------------------------------
 
+	''' <summary>Add a callback to a hook.</summary>
+	''' <param name="name">The name of the hook to register a callback for.</param>
+	''' <param name="handler">Valid event handler that will be called when hook executes.</param>
 	Method add:Hooks(name:String, handler:EventHandler)
 		If Self._strictMode Then Self.validateHookName(name)
 
@@ -98,7 +120,7 @@ Type Hooks
 	' ------------------------------------------------------------
 
 	Method validateHookName(name:String)
-		If Self.validHook(name) = False Then
+		If False = Self.isHookRegistered(name) Then
 			Throw "Invalid hook name in `add`: ~q" + name + "~q"
 		End If
 	End Method
