@@ -19,13 +19,13 @@ Type TextRenderStyle
 	
 	Field _font:TImageFont
 	
-	Field _fontColor:Int			= 0
-	Field _shadowColor:Int			= -1
-	Field _shadowAlpha:Float		= 0.5
-	Field _shadowXDistance:Short	= 1
-	Field _shadowYDistance:Short	= 1
-	Field _alignment:Byte			= 1
-	Field _width:Float				= -1
+	Field _fontColor:Int            = 0
+	Field _shadowColor:Int          = -1
+	Field _shadowAlpha:Float        = 0.5
+	Field _shadowXDistance:Short    = 1
+	Field _shadowYDistance:Short    = 1
+	Field _alignment:Byte           = 1
+	Field _width:Float              = -1
 	Field _ignoreCamera:Byte        = False
 	
 	
