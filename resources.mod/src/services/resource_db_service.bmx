@@ -70,6 +70,56 @@ Type ResourceDbService Extends GameService
 
 
 	' ------------------------------------------------------------
+	' -- Callbacks
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Event hook that is called when a resource definition file is loaded. Called 
+	''' before loading of individual resources.
+	'''
+	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' name of the resource file being loaded.
+	''' </summary>
+	''' <param name="callback">Event handler.</param>
+	''' <return>ResourceDbService instance.</return>
+	Method whenLoadStarted:ResourceDbService(callback:EventHandler)
+		Self._resources.whenLoadStarted(callback)
+
+		Return Self
+	End Method
+
+	''' <summary>
+	''' Event hook that is called when a resource definition file has finished being
+	''' loaded.
+	'''
+	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' name of the resource file that was loaded.
+	''' </summary>
+	''' <param name="callback">Event handler.</param>
+	''' <return>ResourceManager instance.</return>
+	Method whenLoadFinished:ResourceDbService(callback:EventHandler)
+		Self._resources.whenLoadFinished(callback)
+
+		Return Self
+	End Method
+
+	''' <summary>
+	''' Event hook that is called when single resource in a resource definition has
+	''' been loaded.
+	'''
+	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' `BaseResource` object that was loaded.
+	''' </summary>
+	''' <param name="callback">Event handler.</param>
+	''' <return>ResourceDbService instance.</return>
+	Method whenResourceLoaded:ResourceDbService(callback:EventHandler)
+		Self._resources.whenResourceLoaded(callback)
+
+		Return Self
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Creation / Setup
 	' ------------------------------------------------------------
 
