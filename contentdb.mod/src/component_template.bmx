@@ -55,8 +55,12 @@ Type ComponentTemplate
 	Method countFields:Int()
 		Return Self._fieldCount
 	End Method
-	
-	
+
+	Method schemaHasInternal:Byte(fieldName:String)
+		Return Self._schema._hasInternal(fieldName)
+	End Method
+
+
 	' --------------------------------------------------
 	' -- Copying from other objects
 	' --------------------------------------------------
@@ -132,7 +136,7 @@ Type ComponentTemplate
 		Self._fieldCount:+ 1
 		Self._fieldValues.Insert(fieldName, fieldValue)
 	End Method
-	
+
 	
 	' --------------------------------------------------
 	' -- Construction & Initialisation

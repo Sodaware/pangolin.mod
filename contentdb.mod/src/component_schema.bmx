@@ -127,7 +127,7 @@ Type ComponentSchema
 	End Method
 	
 	' TODO: Rebuild this
-	Method _hasInternal:Int(name:String)
+	Method _hasInternal:Byte(name:String)
 		For Local i:String = EachIn Self._internals
 			If i = name Then Return True
 		Next
