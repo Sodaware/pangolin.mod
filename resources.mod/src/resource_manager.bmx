@@ -7,7 +7,7 @@
 ' -- Pangolin.Services for an existing ResourceManagerService).
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
-' -- Copyright (c) 2009-2017 Phil Newton
+' -- Copyright (c) 2009-2018 Phil Newton
 ' --
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
