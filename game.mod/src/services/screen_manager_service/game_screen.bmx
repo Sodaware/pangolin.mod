@@ -26,19 +26,21 @@ Import "screen_manager.bmx"
 ''' </summary>
 Type GameScreen extends IGameScreen
 
-	' -- Screen states.
+	' -- Screen states (DEPRECATED).
 	Const STATE_TransitionOn:Byte   = 1     '''< Screen is appearing
-	Const STATE_Active:Byte         = 2     '''< Screen is running
 	Const STATE_TransitionOff:Byte  = 3     '''< Screen is disappearing
-	Const STATE_Hidden:Byte         = 4     '''< Screen is not visible
 
-	Field State:Byte                        '''< Current state of this screen
+	Const STATE_TRANSITION_ON:Byte  = 1     '''< Screen is appearing
+	Const STATE_ACTIVE:Byte         = 2     '''< Screen is running
+	Const STATE_TRANSITION_OFF:Byte = 3     '''< Screen is disappearing
+	Const STATE_HIDDEN:Byte         = 4     '''< Screen is not visible
+
+	Field state:Byte                        '''< Current state of this screen
 
 	' -- Internal info.
-	Field _isPopup:Byte             = False
+	Field _isPopup:Byte             = False '''< Is the screen a popup.
 	Field _noFocus:Byte             = False
 	Field _isExiting:Byte           = False
-	Field _transitionOffTime:Int
 
 	Field _group:RenderGroup
 	Field __renderer:SpriteRenderingService = Null
@@ -112,17 +114,13 @@ Type GameScreen extends IGameScreen
 
 		Self._isExiting	= True
 
-		If Self._transitionOffTime <= 0 Then
+		' Remove the screen from its parent screen manager.
+		Self.getParentManager().RemoveScreen(Self)
 
-			' Remove the screen from its parent screen manager.
-			Self.getParentManager().RemoveScreen(Self)
-
-			' Clear items from the renderer.
-			Self._group.clear()
-			Self.__renderer.remove(Self._group)
-			Self._group = Null
-
-		End If
+		' Clear items from the renderer.
+		Self._group.clear()
+		Self.__renderer.remove(Self._group)
+		Self._group = Null
 
 		Self.leave()
 
@@ -149,16 +147,23 @@ Type GameScreen extends IGameScreen
 
 
 	' ------------------------------------------------------------
+	' -- Transition Helpers
+	' ------------------------------------------------------------
+
+	''' <summary>Check if the current screen is transitioning on or off.</summary>
+	''' <return>True if transitioning, false if not.</return>
+	Method isTransitioning:Byte()
+		If Self.state = GameScreen.STATE_TRANSITION_OFF Then Return True
+		If Self.state = GameScreen.STATE_TRANSITION_ON Then Return True
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	Method initialize()
-
-	End Method
-
 	Method New()
 		Self._group	= New RenderGroup
-		Self.initialize()
 	End Method
 
 End Type
