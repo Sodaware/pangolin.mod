@@ -135,8 +135,8 @@ Type GameScreen extends IGameScreen
 	''' <param name="delta">Delta time in millisecs</param>
 	''' <param name="noFocus">Does this screen have focus?</param>
 	''' <param name="covered">Is this screen covered?</param>
-	Method update(delta:Float = 0, noFocus:Int = False, covered:Int = False)
-		Self._noFocus	= noFocus
+	Method update(delta:Float = 0, noFocus:Byte = False, covered:Byte = False)
+		Self._noFocus = noFocus
 	End Method
 
 	''' <summary>Render the current screen</summary>

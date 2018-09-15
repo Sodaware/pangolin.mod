@@ -1,9 +1,7 @@
 ' ------------------------------------------------------------------------------
 ' -- src/services/screen_manager_service/igame_screen.bmx
 ' --
-' -- Base type for game screens to inherit from. Done this
-' -- way to prevent circular dependencies between GameScreen
-' -- and ScreenManager.
+' -- Base type that GameScreen inherits from.
 ' --
 ' -- This file is INCLUDED in the ScreenManager file.
 ' --
@@ -13,8 +11,12 @@
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
 
-
- Type IGameScreen Abstract
+''' <summary>Base screen that GameScreen extends. Use `GameScreen`, not this.</summary>
+''' <remarks>
+''' This was handled by a separate class (rather than in `GameScreen`) to prevent
+''' circular dependencies between GameScreen and ScreenManager.
+''' </remarks>
+Type IGameScreen Abstract
 
 	Field _parentManager:ScreenManager
 	Field _isExiting:Byte
@@ -26,27 +28,35 @@
 	' -- Setters / Getters
 	' ------------------------------------------------------------
 
-	Method setIsExiting(exiting:byte = false)
-		self._isExiting = exiting
+	''' <summary>Set the "isExiting" property.</summary>
+	''' <param name="exiting">True if the screen is exiting, false if not.</param>
+	Method setIsExiting(exiting:Byte = False)
+		Self._isExiting = exiting
 	End Method
 
-	Method setIsCovered(covered:Byte = false)
-		self._isCovered = covered
+	''' <summary>Set the "isCovered" property.</summary>
+	''' <param name="covered">True if the screen is covered, false if not.</param>
+	Method setIsCovered(covered:Byte = False)
+		Self._isCovered = covered
 	End Method
 
 	''' <summary>Check if the screen is hidden.</summary>
 	Method isHidden:Byte() Abstract
 
+	''' <summary>Check if the screen is a popup.</summary>
 	Method isPopup:Byte() Abstract
 
+	''' <summary>Check if the screen is processing input.</summary>
 	Method inputEnabled:Byte()
 		Return Self._inputEnabled
 	End Method
 
+	''' <summary>Check if the screen is covered.</summary>
 	Method isCovered:byte()
 		return self._isCovered
 	End Method
 
+	''' <summary>Check if the screen is exiting.</summary>
 	Method isExiting:byte()
 		Return Self._isExiting
 	End Method
@@ -110,14 +120,21 @@
 	' -- Input Handling
 	' ------------------------------------------------------------
 
+	''' <summary>Disable input processing for this screen.</summary>
 	Method disableInput()
 		Self._inputEnabled = False
 	End Method
 
+	''' <summary>Disable input processing for this screen.</summary>
 	Method enableInput()
 		Self._inputEnabled = True
 	End Method
 
+	''' <summary>
+	''' Process input specific to this screen.
+	'''
+	''' Input processing can be disabled by calling `disableInput`.
+	''' </summary>
 	Method handleInput()
 	End Method
 
@@ -147,13 +164,13 @@
 	' ------------------------------------------------------------
 
 	''' <summary>Update the screen.</summary>
-	''' <param name="delta">Delta time in millisecs</param>
+	''' <param name="delta">Delta time since last update (in millisecs).</param>
 	''' <param name="noFocus">Does this screen have focus?</param>
 	''' <param name="covered">Is this screen covered</param>
-	Method update(delta:Float = 0, noFocus:Int = False, covered:Int = False) Abstract
+	Method update(delta:Float = 0, noFocus:Byte = False, covered:Byte = False) Abstract
 
 	''' <summary>Render the screen.</summary>
-	''' <param name="delta">Delta time in millisecs</param>
+	''' <param name="delta">Delta time since last render (in millisecs).</param>
 	Method render(delta:Float = 0) Abstract
 
 End Type
