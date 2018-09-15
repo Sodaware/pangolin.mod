@@ -49,6 +49,16 @@ Type ImageSprite Extends AbstractSpriteRequest
 		Self._frame = frame
 	End Method
 	
+	''' <summary>Increase the displayed frame offset.</summary>
+	Method increaseFrame(increaseBy:Int)
+		Self._frame :+ increaseBy
+	End Method
+
+	''' <summary>Decrease the displayed frame offset.</summary>
+	Method decreaseeFrame(decreaseBy:Int)
+		Self._frame :- decreaseBy
+	End Method
+
 	Method setAnimation(animation:AnimationResource)
 		Self._animation = animation
 	End Method
