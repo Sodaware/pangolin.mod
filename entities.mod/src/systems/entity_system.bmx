@@ -207,7 +207,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		
 		Local system:TTypeId = TTypeId.ForObject(Self)
 		
-		For Local f:TField = EachIn system.Fields()
+		For Local f:TField = EachIn system.EnumFields()
 			If f.MetaData("component_type") <> Null Then
 				f.Set(Self, ComponentTypeManager.getTypeForName(f.MetaData("component_type")))
 			EndIf

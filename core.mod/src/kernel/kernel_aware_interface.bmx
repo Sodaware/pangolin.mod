@@ -34,7 +34,7 @@ Type KernelAwareInterface Abstract
 		Local typeData:TTypeId = TTypeId.ForObject(Self)
 		Local baseType:TTypeId = TTypeId.ForName("GameService")
 
-		For Local fieldData:TField = EachIn typeData.Fields()
+		For Local fieldData:TField = EachIn typeData.EnumFields()
 
 			' Skip any field that doesn't have an autoload flag
 			If requireAutoloadFlag And "" = fieldData.MetaData("autoload_service") Then Continue
