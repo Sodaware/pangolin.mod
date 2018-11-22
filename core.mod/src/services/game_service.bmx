@@ -61,6 +61,56 @@ Type GameService Extends IInjectable
 
 
 	' ------------------------------------------------------------
+	' -- Priority Setting
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Set the priority for the service.
+	'''
+	''' Sets the priority for rendering and updating to the `priority` value and
+	''' runs the hook assigned to the service.
+	''' </summary>
+	''' <param name="priority">
+	''' Value between 0 and 255. Lower values are executed earlier in the loop.
+	''' </param>
+	Method setPriority(priority:Byte)
+
+		' Set new priority
+		Self._priority			= priority
+		Self._updatePriority	= priority
+		Self._renderPriority	= priority
+
+		' Alert listeners that priorities have been changed
+		RunHooks(GameService.g_HookId, Self)
+
+	End Method
+
+	''' <summary>Set the update priority of the service.</summary>
+	''' <param name="priority">Priority value. Lower values execute sooner.</param>
+	Method setUpdatePriority(priority:Byte)
+
+		' Set new update priority
+		Self._updatePriority	= priority
+
+		' Alert listeners that priorities have been changed
+		RunHooks(GameService.g_HookId, Self)
+
+	End Method
+
+	''' <summary>Set the render priority of the service.</summary>
+	''' <param name="priority">Priority value. Lower values execute sooner.</param>
+	Method setRenderPriority(priority:Byte)
+
+		' Set new render priority
+		Self._renderPriority	= priority
+
+		' Alert listeners that priorities have been changed
+		RunHooks(GameService.g_HookId, Self)
+
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Starting and Stopping
 	' ------------------------------------------------------------
 
@@ -103,51 +153,6 @@ Type GameService Extends IInjectable
 
 	''' <summary>Called during the kernel's render loop.</summary>
 	Method render(delta:Float)
-	End Method
-
-
-	' ------------------------------------------------------------
-	' -- Internal priority setting
-	' ------------------------------------------------------------
-
-	''' <summary>
-	''' Set the priority of the service. Will set the update AND
-	''' render priority.
-	''' </summary>
-	Method _setPriority(priority:Byte)
-
-		' Set new priority
-		Self._priority			= priority
-		Self._updatePriority	= priority
-		Self._renderPriority	= priority
-
-		' Alert listeners that priorities have been changed
-		RunHooks(GameService.g_HookId, Self)
-
-	End Method
-
-	''' <summary>Set the update priority of the service.</summary>
-	''' <param name="priority">Priority value. Lower values execute sooner.</param>
-	Method _setUpdatePriority(priority:Byte)
-
-		' Set new update priority
-		Self._updatePriority	= priority
-
-		' Alert listeners that priorities have been changed
-		RunHooks(GameService.g_HookId, Self)
-
-	End Method
-
-	''' <summary>Set the render priority of the service.</summary>
-	''' <param name="priority">Priority value. Lower values execute sooner.</param>
-	Method _setRenderPriority(priority:Byte)
-
-		' Set new render priority
-		Self._renderPriority	= priority
-
-		' Alert listeners that priorities have been changed
-		RunHooks(GameService.g_HookId, Self)
-
 	End Method
 
 
