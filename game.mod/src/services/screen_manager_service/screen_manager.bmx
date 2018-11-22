@@ -47,7 +47,7 @@ Type ScreenManager
 
 		' Setup the newly added screen.
 		screen.setIsExiting(False)
-		screen.setParentManager(self)
+		screen.setParentManager(Self)
 
 		' Load resources (unless skipped)
 		If loadResources Then
@@ -193,11 +193,11 @@ Type ScreenManager
 	End Method
 
 	' TODO: Might even remove this, seeing as it's all handled by the renderer now...
-	Method render(gameTime:Int)
+	Method render(delta:Float)
 
 		For Local screen:IGameScreen = EachIn Self._screens
-			If screen.IsHidden() = False Then
-				screen.Render(gameTime)
+			If screen.isHidden() = False Then
+				screen.render(delta)
 			EndIf
 		Next
 

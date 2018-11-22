@@ -224,7 +224,6 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	' -- Rendering and Updating
 	' ------------------------------------------------------------
 
-
 	Method render(delta:Double, camera:AbstractRenderCamera, isFixed:Byte) Abstract
 
 	Method update(delta:Float)

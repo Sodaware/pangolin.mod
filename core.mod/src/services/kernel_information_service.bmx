@@ -15,14 +15,18 @@ Type KernelInformationService Extends GameService
 
 	Field _kernel:GameKernel
 
+	''' <summary>Get the kernel.</summary>
 	Method getKernel:GameKernel()
 		Return self._kernel
 	End Method
 
+	''' <summary>Get all services currently registered with the kernel.</summary>
 	Method getServices:GameServiceCollection()
 		Return Self._kernel.getServices()
 	End Method
 
+	''' <summary>Get a single services by its type.</summary>
+	''' <param name="serviceType">The TTypeId of the service to retrieve.</param>
 	Method getService:GameService(serviceType:TTypeId)
 		Return Self._kernel.getService(serviceType)
 	End Method

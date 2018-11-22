@@ -289,7 +289,7 @@ Type GameKernel
 	''' by priority.
 	''' </summary>
 	Function _onPriorityChange:Object(id:Int, data:Object, context:Object)
-		local kernel:GameKernel = GameKernel(context)
+		Local kernel:GameKernel = GameKernel(context)
 		kernel.updatePriorities()
 	End Function
 

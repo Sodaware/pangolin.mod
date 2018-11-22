@@ -24,7 +24,6 @@ Import "resource_definition.bmx"
 Type BaseResource Abstract
 
 	Field _definition:ResourceDefinition    '''< Definition of resource.
-
 	Field _name:String                      '''< Identifier for this resource.
 	Field _fileName:String                  '''< Full path to load from.
 	Field _isLoaded:Byte                    '''< True if resource loaded, false if not.
