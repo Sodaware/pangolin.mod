@@ -26,7 +26,7 @@ Type FileResource Extends BaseResource ..
 	
 	''' <summary>Get internal handle.</summary>
 	Method _get:Object()
-		Return OpenStream(Self.getDefinition().getFileName())
+		Return OpenStream(Self.getFileName())
 	End Method
 	
 	''' <summary>Load the resource.</summary>

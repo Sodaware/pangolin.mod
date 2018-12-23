@@ -33,9 +33,9 @@ Type TileSetResource Extends BaseResource ..
 	
 	''' <summary>Load the resource.</summary>
 	Method _load()
-		Self._tileset = TileMapLoader.LoadTileSet(Self.getDefinition().getFileName())
+		Self._tileset = TileMapLoader.LoadTileSet(Self.getFileName())
 		if not(self._tileset) Then
-			debuglog "Could not load tileset from: " + self.getDefinition().getFileName()
+			debuglog "Could not load tileset from: " + Self.getFileName()
 			Return
 		endif
 		Self._tileset._updateInternals()

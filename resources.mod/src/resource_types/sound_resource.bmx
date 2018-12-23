@@ -34,8 +34,8 @@ Type SoundResource Extends BaseResource ..
 	
 	''' <summary>Load the resource.</summary>
 	Method _load()
-		Self._sound = LoadSound(Self.getDefinition().getFileName(), Self._loadflags)
-		If Self._sound = Null Then DebugLog "Could not load sound file: " + Self.getDefinition().getFileName()
+		Self._sound = LoadSound(Self.getFileName(), Self._loadflags)
+		If Self._sound = Null Then DebugLog "Could not load sound file: " + Self.getFileName()
 	End Method
 	
 	''' <summary>Free the resource.</summary>

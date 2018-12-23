@@ -38,6 +38,12 @@ Type BaseResource Abstract
 		Return Self._definition.getFullName()
 	End Method
 
+	''' <summary>Get the full filename of the resource.</summary>
+	''' <return>The complete filename and path.</return>
+	Method getFileName:String()
+		Return Self._definition.getFileName()
+	End Method
+
 	''' <summary>
 	''' Get handle of actual resource. Call this instead of _get, as
 	''' _get DOES NOT load the resource.

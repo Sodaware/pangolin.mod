@@ -56,7 +56,7 @@ Type FontResource Extends BaseResource ..
 				EndIf
 
 				Self._font = LoadImageFont(..
-                    Self.getDefinition().getFileName(), ..
+                    Self.getFileName(), ..
                     Int(Self.getDefinition().getField("size", 16)), ..
 					flags .. 
                 )

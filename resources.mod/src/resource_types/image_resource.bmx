@@ -41,7 +41,7 @@ Type ImageResource Extends BaseResource ..
 		Select Self.getDefinition().getType()
 			
 			Case "image"
-				Self._image = LoadImage(Self.getDefinition().getFileName())
+				Self._image = LoadImage(Self.getFileName())
 			
 			Case "imagestrip"
 				

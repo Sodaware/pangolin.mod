@@ -31,7 +31,7 @@ Type TileMapResource Extends BaseResource ..
 	
 	''' <summary>Load the resource.</summary>
 	Method _load()
-		Self._tilemap = TileMapLoader.LoadTileMap(Self.getDefinition().getFileName())
+		Self._tilemap = TileMapLoader.LoadTileMap(Self.getFileName())
 	End Method
 	
 	''' <summary>Free the resource.</summary>
