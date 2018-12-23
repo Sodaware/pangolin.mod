@@ -25,7 +25,6 @@ Type BaseResource Abstract
 
 	Field _definition:ResourceDefinition    '''< Definition of resource.
 	Field _name:String                      '''< Identifier for this resource.
-	Field _fileName:String                  '''< Full path to load from.
 	Field _isLoaded:Byte                    '''< True if resource loaded, false if not.
 	Field _referenceCount:Int               '''< Number of places resource is referenced.
 
@@ -85,10 +84,6 @@ Type BaseResource Abstract
 	' ------------------------------------------------------------
 	' -- Internal API
 	' ------------------------------------------------------------
-
-	Method _setFilename(path:String)
-		Self._fileName = path
-	End Method
 
 	''' <summary>Increase the number of references to object.</summary>
 	Method _increaseCount()
