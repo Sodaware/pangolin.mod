@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- Pangolin.Entities -- entity_component_mapper.bmx
-' -- 
+' --
 ' -- Maps the relationship between an entity and a component. Extend this
 ' -- and override `get` where a very fast lookup is required.
 ' --
@@ -31,10 +31,10 @@ Type EntityComponentMapper
 	' ------------------------------------------------------------
 	' -- Initialization
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Map classType to a component type.</summary>
 	Method initialize(classType:TTypeId, w:World)
-		Self._em 			= w.getEntityManager()
+		Self._em			= w.getEntityManager()
 		Self._componentType = ComponentTypeManager.getTypeFor(classType)
 		Self._classType		= classType
 	End Method

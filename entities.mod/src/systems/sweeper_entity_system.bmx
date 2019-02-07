@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- systems/sweeper_entity_system.bmx
-' -- 
+' --
 ' -- System for processing entities that are about to be deleted.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
@@ -11,7 +11,7 @@
 
 
 Type SweeperEntitySystem Extends EntitySystem Abstract
-	
+
 	Method isSweeper:Byte()
 		Return True
 	End Method
@@ -20,9 +20,9 @@ Type SweeperEntitySystem Extends EntitySystem Abstract
 	Method checkProcessing:Short() Final
 		Return False
 	End Method
-	
+
 	Method initialize()
 		Super.initialize()
 	End Method
-	
+
 End Type

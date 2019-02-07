@@ -30,7 +30,7 @@ Type ComponentTypeMapper
 
 		Return found
 
-	End Function 
+	End Function
 
 	Function getBit:Long(t:TTypeId)
 		Return ComponentTypeMapper.getTypeFor(t).getBit()

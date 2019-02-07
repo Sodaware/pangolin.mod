@@ -1,7 +1,7 @@
 ' ------------------------------------------------------------------------------
 ' -- systems/interval_entity_processing_system.bmx
-' -- 
-' -- Processes entities at specific entities. Most systems will run every 
+' --
+' -- Processes entities at specific entities. Most systems will run every
 ' -- frame, so this is a way to execute actions less often.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
@@ -14,7 +14,7 @@
 Type IntervalEntityProcessingSystem Extends IntervalEntitySystem Abstract
 
 	Method processEntity(e:Entity) Abstract
-	
+
 	Method processEntities(entities:EntityBag)
 		For Local e:Entity = EachIn entities
 			Self.processEntity(e)
