@@ -33,8 +33,8 @@ Type CameraBehaviour
 		
 		If Self._camera.hasTarget() Then
 			Self._camera._position.setPositionObject(Self._camera._target._currentPosition)
-			Self._camera._position._xPos:- (Self._camera.width / 4)
-			Self._camera._position._yPos:- (Self._camera.height / 4)
+			Self._camera._position._xPos:- (Self._camera.width / 4)  + Self._camera._xOffset
+			Self._camera._position._yPos:- (Self._camera.height / 4) + Self._camera._yOffset
 		End If
 		
 	End Method
