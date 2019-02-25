@@ -183,8 +183,8 @@ Type Entity
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Called when an entity has had components changed. This causes the
-	''' world to update the system relationshops.
+	''' Called when an entity has had components changed. This causes the world
+	''' to update the system relationships.
 	''' </summary>
 	Method refresh()
 		Self._world.refreshEntity(Self)
@@ -195,7 +195,7 @@ Type Entity
 		Self._systemBits = 0
 		Self._typeBits   = 0
 
-		' Remove all components (may eed to clear from a manager)
+		' Remove all components (may need to clear from a manager).
 		For Local c:EntityComponent = EachIn Self._components
 			Self.removeComponent(c)
 		Next
@@ -269,7 +269,7 @@ Type Entity
 
 	Method dumpComponents()
 		DebugLog "Entity[" + Self.getTag() + "]"
-		DebugLog "Available components:"
+		DebugLog "Attached components:"
 		For Local c:EntityComponent = EachIn Self.getComponents()
 			DebugLog "  - " + TTypeId.ForObject(c).Name()
 		Next
@@ -280,15 +280,21 @@ Type Entity
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	''' <summary>Do NOT call this directly. Use World.create instead.</summary>
+	''' <summary>Create an Entity.</summary>
+	''' <description>Do NOT call this directly. Use World.create instead.</description>
+	''' <param name="w">The World this entity will belong to.</param>
+	''' <param name="id">The identifier of the new entity.</param>
+	''' <return>The newly created entity.</return>
 	Function Create:Entity(w:World, id:Int)
 
 		If w = Null Then Throw "Entity must belong to a valid World instance"
 
 		Local this:Entity = New Entity
-		this._world = w
+
+		this._world         = w
 		this._entityManager = w.getEntityManager()
-		this._id = id
+		this._id            = id
+
 		Return this
 
 	End Function

@@ -76,7 +76,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' ------------------------------------------------------------
 
 	Method getEntityManager:EntityManager()
-		return self._world.getEntityManager()
+		Return Self._world.getEntityManager()
 	End Method
 
 	''' <summary>Is this service a sweeper?</summary>

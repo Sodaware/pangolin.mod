@@ -11,20 +11,27 @@
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
 
-
+''' <summary>
+''' A "World" object contains all entities, their components and the systems
+''' that manage them. Use this to creates new entities and manage the
+''' relationships between entities and components.
+'''
+''' Although multiple worlds can exist in a single program, it's recommended to
+''' use GameEntityService to create and manage the world automatically.
+''' </summary>
 Type World
 
-	' -- Internal Managers
+	' -- Internal Managers.
 	Field _managers:TMap
-	Field _systemManager:SystemManager
 	Field _entityManager:EntityManager
-	Field _tagManager:TagManager
 	Field _groupManager:GroupManager
+	Field _systemManager:SystemManager
+	Field _tagManager:TagManager
 
-	' -- Frame delta
+	' -- Frame delta.
 	Field _delta:Float
 
-	' -- Collection of refreshed / deleted entities
+	' -- Collection of refreshed / deleted entities.
 	Field _refreshed:EntityBag
 	Field _deleted:EntityBag
 
@@ -32,6 +39,12 @@ Type World
 	' ------------------------------------------------------------
 	' -- Manager Quick Access
 	' ------------------------------------------------------------
+
+	''' <summary>Get the active EntityManager for this World.</summary>
+	''' <return>Active EntityManager object.</return>
+	Method getEntityManager:EntityManager()
+		Return Self._entityManager
+	End Method
 
 	''' <summary>Get the active GroupManager for this World.</summary>
 	''' <return>Active GroupManager object.</return>
@@ -43,12 +56,6 @@ Type World
 	''' <return>Active SystemManager object.</return>
 	Method getSystemManager:SystemManager()
 		Return Self._systemManager
-	End Method
-
-	''' <summary>Get the active EntityManager for this World.</summary>
-	''' <return>Active EntityManager object.</return>
-	Method getEntityManager:EntityManager()
-		Return Self._entityManager
 	End Method
 
 	''' <summary>Get the active TagManager for this World.</summary>
@@ -107,7 +114,7 @@ Type World
 	''' <param name="e">The entity instance to remove.</param>
 	Method deleteEntity(e:Entity)
 
-		' Check object isn't already on the deleted list
+		' Check object isn't already on the deleted list.
 		If Self._deleted.contains(e) = False Then
 			Self._deleted.add(e)
 		End If
@@ -139,9 +146,11 @@ Type World
 
 	''' <summary>Count the number of active entities that have a specific component.</summary>
 	''' <param name="t">The component type to check for.</param>
+	''' <return>The number of entities with the component.</return>
 	Method countEntitiesWithComponent:Int(t:ComponentType)
 		Local entities:EntityBag = Self._entityManager.getEntitiesWithComponent(t)
 		If entities = Null Then Return 0
+
 		Return entities.getSize()
 	End Method
 
@@ -151,30 +160,32 @@ Type World
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Should be called once every frame. Refreshes entities, clears out
-	''' deleted ones and processes all systems.
+	''' Should be called once every frame.
+	'''
+	''' Refreshes entities, clears out deleted ones and processes all systems.
 	''' </summary>
 	''' <param name="delta">Delta time since execute last called.</param>
 	Method execute(delta:Float)
 
-		' Clear deleted entities
+		' Clear deleted entities.
 		Self.loopStart()
 
-		' Update delta value
+		' Update delta value.
 		Self.setDelta(delta)
 
-		' Run all active systems
+		' Run all active systems.
 		Self.processAllSystems()
 
 	End Method
 
 	''' <summary>
-	''' Call this at the start of every game loop. Refreshes entities and
-	''' deletes expired entities.
+	''' Call this at the start of every game loop.
+	'''
+	''' Refreshes entities and deletes expired entities.
 	''' </summary>
 	Method loopStart()
 
-		' Clear entities to refresh
+		' Process entities to refresh.
 		If False = Self._refreshed.isEmpty() Then
 
 			For Local e:Entity = EachIn Self._refreshed
@@ -185,13 +196,13 @@ Type World
 
 		EndIf
 
-		' Delete entities on the delete pile
+		' Delete entities on the delete list.
 		If False = Self._deleted.isEmpty() Then
 
-			' Process sweepers
+			' Process sweepers.
 			Self.runSweepers()
 
-			' Delete all entities
+			' Delete all entities in the delete list.
 			For Local e:Entity = EachIn Self._deleted
 
 				' Remove entity from entity list, all groups and tags.
@@ -211,17 +222,18 @@ Type World
 	End Method
 
 	''' <summary>
-	''' Call the "process" method for every system currently
-	''' registered with the World.
+	''' Call the "process" method for every system registered with the World.
 	''' </summary>
 	Method processAllSystems()
 		Self._systemManager.processAll()
 	End Method
 
-	''' <summary>
-	''' Run all sweepers. These are called on entities that
-	''' have been deleted before the final deletion takes place.
-	''' </summary>
+	''' <summary>Run all sweeper systems.</summary>
+	''' <description>
+	''' These are called on entities that have been deleted before the final
+	''' deletion takes place. This is called automatically when an entity is
+	''' deleted, so doesn't need to be called manually.
+	''' </description>
 	Method runSweepers()
 		Self._systemManager.processSweepers()
 	End Method
@@ -234,12 +246,12 @@ Type World
 	Method New()
 
 		Self._entityManager = EntityManager.Create(Self)
+		Self._groupManager  = GroupManager.Create(Self)
 		Self._systemManager = SystemManager.Create(Self)
 		Self._tagManager    = TagManager.Create(Self)
-		Self._groupManager  = GroupManager.Create(Self)
 
-		Self._refreshed     = New EntityBag
 		Self._deleted       = New EntityBag
+		Self._refreshed     = New EntityBag
 
 		Self._managers      = New TMap
 
