@@ -21,16 +21,40 @@ Type Position2D
 	' ------------------------------------------------------------
 	' -- Getting / Setting Position
 	' ------------------------------------------------------------
-	
+
+	''' <summary>Get the X position.</summary>
+	Method getX:Float()
+		Return Self._xPos
+	End Method
+
+	''' <summary>Get the Y position.</summary>
+	Method getY:Float()
+		Return Self._yPos
+	End Method
+
 	Method setPosition(xPos:float, yPos:int)
 		self._xPos = xPos
 		self._yPos = yPos
 	End Method
 	
+	Method setX:Position2D(xPos:Float)
+		Self._xPos = xPos
+
+		Return Self
+	End Method
+
+	Method setY:Position2D(yPos:Float)
+		Self._yPos = yPos
+
+		Return Self
+	End Method
+
+	' DEPRECATED
 	Method setPositionX(xPos:Float)
 		Self._xPos = xPos
 	End Method
 
+	' DEPRECATED
 	Method setPositionY(yPos:Float)
 		Self._yPos = yPos
 	End Method
@@ -135,12 +159,14 @@ Type Position2D
 	' ------------------------------------------------------------
 	' -- Construction / Destruction
 	' ------------------------------------------------------------
-	
-	Function Create:Position2D(xPos:Float,yPos:Float)
+
+	Function Create:Position2D(xPos:Float, yPos:Float)
 		Local this:Position2D = New Position2D
+
 		this._xPos = xPos
 		this._yPos = yPos
-		return this
+
+		Return this
 	End Function
-	
+
 End Type
