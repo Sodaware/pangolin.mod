@@ -84,6 +84,12 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		Return False
 	End Method
 
+	''' <summary>Get the delta-time since the last time the world ran its services.</summary>
+	''' <return>Delta-time in milliseconds.</return>
+	Method getDelta:Float()
+		Return Self._world._delta
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Processing
