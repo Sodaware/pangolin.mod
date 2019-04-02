@@ -339,17 +339,9 @@ Type ParticleBag
 		' Use default new size if none set
 		If newCapacity < 0 Then newCapacity = ((Self._objects.Length * 3) / 2) + 1
 		
-		' Create copy of current objects
-		Local oldObjects:BaseParticle[] = Self._objects
-		
-		' Recreate array with new size
-		Self._objects = New BaseParticle[newCapacity]
-		
-		' Copy the old conents back
-		For Local pos:Int = 0 To oldObjects.Length - 1
-			Self._objects[pos] = oldObjects[pos]
-		Next
-	
+		' Resize the internal array.
+		Self._objects = Self._objects[..newCapacity]
+
 	End Method
 	
 	
