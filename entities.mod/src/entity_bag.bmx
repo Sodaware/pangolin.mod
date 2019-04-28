@@ -233,6 +233,21 @@ Type EntityBag
 
 	End Method
 
+	''' <summary>Move null values to the end of the collection.</summary>
+	Method compact:EntityBag()
+		Local pos:Int = 0
+
+		While pos < Self._size - 1
+			If Self._objects[pos] = Null Then
+				Self._objects[pos] = Self._objects[Self._size - 1]
+				Self._size :- 1
+			EndIf
+			pos :+ 1
+		Wend
+
+		Return Self
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Sorting
