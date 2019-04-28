@@ -46,7 +46,7 @@ Type EntityBag
 
 	''' <summary>Check if bag is empty.</summary>
 	''' <return>True if empty, false if not.</return>
-	Method isEmpty:Short()
+	Method isEmpty:Byte()
 		Return (Self._size = 0)
 	End Method
 
@@ -80,6 +80,7 @@ Type EntityBag
 	''' <return>Object at this offset, or null if not found.</return>
 	Method get:Entity(index:Int)
 		If index < 0 Or index >= Self._size Then Return Null
+
 		Return Self._objects[index]
 	End Method
 
@@ -241,7 +242,9 @@ Type EntityBag
 			If Self._objects[pos] = Null Then
 				Self._objects[pos] = Self._objects[Self._size - 1]
 				Self._size :- 1
+				pos :- 1
 			EndIf
+
 			pos :+ 1
 		Wend
 
