@@ -31,7 +31,6 @@ Import brl.map
 Import brl.reflection
 
 Import pangolin.core
-Import sodaware.ObjectBag
 
 
 ' -- Managers
@@ -67,3 +66,7 @@ Include "src/systems/initializer_entity_processing_system.bmx"
 
 ' -- Services
 Include "src/services/game_entity_service.bmx"
+
+' -- Query System
+Include "src/entity_query.bmx"
+
