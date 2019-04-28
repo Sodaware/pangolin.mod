@@ -36,6 +36,48 @@ Type KernelInformationService Extends GameService
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
+	''' <summary>Autoload services into the target object from the kernel.</summary>
+	''' <param name="target">The object to inject services into.</param>
+	''' <param name="requireAutoLoadFlag">If `True`, will only inject if the field as `autoload_service` meta data set.</param>
+	Method injectServicesInto(target:Object, requireAutoloadFlag:Byte = True)
+
+		Local typeData:TTypeId = TTypeId.ForObject(target)
+		Local baseType:TTypeId = TTypeId.ForName("GameService")
+
+		For Local fieldData:TField = EachIn typeData.EnumFields()
+
+			' Skip any field that doesn't have an autoload flag.
+			If requireAutoloadFlag And "" = fieldData.MetaData("autoload_service") Then Continue
+
+			' Check this field is a service type.
+			Local fieldType:TTypeId = fielddata.TypeId()
+			If fieldType = Null Then Continue
+
+			' If this field type is a service, autoload it.
+			If Self._inherits(fieldType, baseType) Then
+				fieldData.Set(target, Self.getService(fieldType))
+			EndIf
+
+		Next
+
+	End Method
+
+	''' <summary>
+	''' Check if `fieldType` inherits `baseType`. Checks all parent types all
+	''' the way to the root Object type.
+	''' </summary>
+	Method _inherits:Byte(fieldType:TTypeId, baseType:TTypeId)
+		If fieldType.ExtendsType(baseType) Then Return True
+		If fieldType.SuperType() = Null Then Return False
+
+		Return Self._inherits(fieldType.SuperType(), baseType)
+	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Creation / Destruction
+	' ------------------------------------------------------------
+
 	Function Create:KernelInformationService(kernel:GameKernel)
 		Local this:KernelInformationService = New KernelInformationService
 		this._kernel	= kernel
