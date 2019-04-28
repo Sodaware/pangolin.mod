@@ -282,6 +282,27 @@ Type EntityBag
 
 	End Method
 
+
+	' ------------------------------------------------------------
+	' -- Copying Bags
+	' ------------------------------------------------------------
+
+	''' <summary>Create a copy of this EntityBag.</summary>
+	''' <return>New EntityBag containing the same items as this one.</return>
+	Method copy:EntityBag()
+		Local bag:EntityBag = New EntityBag
+
+		bag._size    = Self._size
+		bag._objects = Self._objects[..]
+
+		Return bag
+	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Internal helpers
+	' ------------------------------------------------------------
+
 	''' <summary>Swaps two elements.</summary>
 	''' <param name="targetPos">The element to move.</param>
 	''' <param name="destinationPos">The element to move to.</param>
@@ -292,11 +313,6 @@ Type EntityBag
 		Self.set(targetPos, temp)
 
 	End Method
-
-
-	' ------------------------------------------------------------
-	' -- Internal helpers
-	' ------------------------------------------------------------
 
 	''' <summary>
 	''' Increase the capacity of the bag. The new capacity can either be specified
