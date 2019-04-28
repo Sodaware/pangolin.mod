@@ -33,14 +33,14 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	Field _tweenedPosition:Position2D
 
 	' Appearance modifiers
-	Field _xScale:Float					'''< X Scale
-	Field _yScale:Float					'''< Y Scale
-	Field _rotation:Float				'''< Rotation
-	Field _blendMode:Int
-	Field _color:Int		= 16777215	'''< Colour packed into an int
-	Field _alpha:Float		= 1			'''< Transparency
-	Field _xHandle:Float	= 0
-	Field _yHandle:Float	= 0
+	Field _xScale:Float                     '''< X Scale
+	Field _yScale:Float                     '''< Y Scale
+	Field _rotation:Float                   '''< Rotation
+	Field _blendMode:Int    = ALPHABLEND    '''< Blend mode.
+	Field _color:Int		= 16777215      '''< Colour packed into an int
+	Field _alpha:Float		= 1             '''< Transparency, between 0 and 1
+	Field _xHandle:Float	= 0             '''< X handle. Defaults to left side of image.
+	Field _yHandle:Float	= 0             '''< Y handle. Defaults to top of image.
 
 
 	' ------------------------------------------------------------
@@ -143,6 +143,7 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	End Method
 
 	Method SetAlpha:AbstractSpriteRequest(alpha:Float)
+		If alpha <> 1 Then Self.setBlendMode(ALPHABLEND)
 		Self._alpha	= alpha
 		Return Self
 	End Method
