@@ -461,22 +461,73 @@ Type ContentDb
 	End Method
 	
 	''' <summary>
-	''' Build component schemas using reflection. This method is a slower 
-	''' than loading them from a file so must be called manually.
+	''' Build component schema using reflection.
+	'''
+	''' This method isn't as flexible as a user-defined schema, but is useful during
+	''' development when things are changing.
 	''' </summary>
+	''' <description>
+	''' All EntityComponent types (including sub-types) will be scanned during this
+	''' process. Any public field (i.e. field that does not start with a `_` character)
+	''' will be added to the schema.
+	''' </description>
 	Method autobuildComponentSchemas()
-		
-		' Get the base component type
-		' Get all child types
-		
-		' Get each field
-		' Parse meta data (if present) for description/default
-		' Add to the component schema
-		' Register the schema
-		
+		Self._extractComponentSchemaForType(TTypeId.ForName("EntityComponent"))
 	End Method
-		
-	
+
+	Method _extractComponentSchemaForType(typeInfo:TTypeId)
+		' Extract info from all child types.
+		For Local childType:TTypeId = EachIn typeInfo.DerivedTypes()
+			Self._extractComponentSchemaForType(childType)
+		Next
+
+		' Create the component schema.
+		Local schema:ComponentSchema = ComponentSchema.Create(typeInfo.MetaData("name"), typeInfo.MetaData("doc"))
+
+		' Get each field.
+		For Local fieldInfo:TField = EachIn typeInfo.EnumFields()
+			' Ignore private fields.
+			If fieldInfo.Name().StartsWith("_") Then Continue
+
+			' If field is internal, add it immediately and ignore any meta.
+			If fieldInfo.MetaData("internal") Then
+				schema._internals.AddLast(fieldInfo.Name())
+				Continue
+			EndIf
+
+			' Create field schema and setup info.
+			Local fieldSchema:ComponentField = New ComponentField
+			fieldSchema.setName(fieldInfo.Name())
+			fieldSchema.setDataType(Self._getDataTypeNameForTTypeId(fieldInfo.TypeId()))
+			fieldSchema.setDescription(fieldInfo.MetaData("doc"))
+			fieldSchema.setProtectionLevel(ComponentField.PROTECTIONLEVEL_PUBLIC)
+
+			' Add to the component schema.
+			schema.addField(fieldSchema)
+		Next
+
+		' Register the schema.
+		Self._addComponentSchema(schema)
+
+	End Method
+
+	Method _getDataTypeNameForTTypeId:String(typeInfo:TTypeId)
+		Select typeInfo.Name()
+			Case "Byte"
+				Return "bool"
+
+			Case "String"
+				Return "string";
+
+			Case "Int", "Short", "Long"
+				Return "int"
+
+			Case "Float"
+				Return "float"
+		End Select
+	End Method
+
+
 	' ----------------------------------------------------------------------
 	' -- Internal helpers
 	' ----------------------------------------------------------------------
