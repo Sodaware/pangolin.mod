@@ -94,6 +94,10 @@ Type GameEntityService Extends GameService ..
 		Return Self.getTagManager().getEntity(name)
 	End Method
 
+	Method getActiveEntities:EntityBag()
+		Return Self.getEntityManager().getActiveEntities()
+	End Method
+
 	Method getEntitiesWithComponentName:EntityBag(name:String)
 		Return Self.getEntityManager().getEntitiesWithComponent(ComponentTypeManager.getTypeForMetaName(name))
 	End Method
