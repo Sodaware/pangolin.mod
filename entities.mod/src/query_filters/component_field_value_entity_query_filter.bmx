@@ -15,6 +15,8 @@ Type ComponentFieldValueEntityQueryFilter extends BaseEntityQueryFilter
 	Field _componentType:ComponentType
 	Field _fieldName:String
 	Field _value:Object
+	Field _typeInfo:TTypeId
+	Field _fieldInfo:TField
 
 	Method filter:EntityBag(bag:EntityBag)
 		Local size:Int = bag._size - 1
@@ -31,11 +33,14 @@ Type ComponentFieldValueEntityQueryFilter extends BaseEntityQueryFilter
 			' Check the field value.
 			Local e:Entity          = bag._objects[i]
 			Local c:EntityComponent = e.getComponent(Self._componentType)
-			Local t:TTypeId         = TTypeId.forobject(c)
-			Local f:TField          = t.FindField(Self._fieldName)
 
-			' TODO: Would like to not cast these.
-			If f.get(c).toString() <> Self._value.toString() Then
+			If Self._fieldInfo = Null then
+				Self._typeInfo  = TTypeId.forobject(c)
+				Self._fieldInfo = Self._typeInfo.FindField(Self._fieldName)
+			End If
+
+''			' TODO: Would like to not cast these.
+			If Self._fieldInfo.get(c).toString() <> Self._value.toString() Then
 				bag._objects[i] = Null
 			EndIf
 		Next
@@ -53,3 +58,4 @@ Type ComponentFieldValueEntityQueryFilter extends BaseEntityQueryFilter
 		Return this
 	End Function
 End Type
+
