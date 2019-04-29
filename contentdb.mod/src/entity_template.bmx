@@ -71,6 +71,8 @@ Type EntityTemplate
 	' -- Setting data
 	' ------------------------------------------------------------
 	
+	''' <summary>Set the category this template belongs to.</summary>
+	''' <param name="category">The template's category.</param>
 	Method setCategory:EntityTemplate(category:String)
 		Self._category = category
 		Return Self
@@ -82,13 +84,15 @@ Type EntityTemplate
 	' ------------------------------------------------------------
 	
 	''' <summary>Check if this template is a child of `parentName`.</summary>
+	''' <param name="parentName">The name of the parent template.</param>
+	''' <returns>True if the template is a child of `parentName`, false if not.</returns>
 	Method inherits:Byte(parentName:String)
 		Return (Lower(parentName) = Lower(Self._inherits))
 	End Method
 	
 	''' <summary>Check if this template contains a specific component.</summary>
-	Method hasComponentTemplate:Int(templateName:String)
-		Return (Self.getComponentTemplate(templateName) <> Null)
+	Method hasComponentTemplate:Byte(componentName:String)
+		Return (Self.getComponentTemplate(componentName) <> Null)
 	End Method
 	
 	''' <summary>Count the number of components in this template.</summary>

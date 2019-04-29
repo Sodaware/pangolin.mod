@@ -138,34 +138,37 @@ Type GameKernel
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Add a service to the kernel. ServiceType is usually just the TTypeID for
-	''' the serviceProvider being passed in (use null to set it automatically).
-	''' However, it can also be used to replace a service. For example,
-	''' a TTypeId of AbstractRenderService could then be used when setting any of
-	''' its children, whilst keeping just one service.
+	''' Add a service to the kernel.
+	'''
+	''' ServiceType is usually just the `TTypeID` for the serviceProvider being
+	''' passed in (use null to set it automatically). However, it can also be
+	''' used to replace a service.
+	'''
+	''' For example, a `TTypeId` of `AbstractRenderService` could then be used
+	''' when setting any of its children, whilst keeping just one service.
 	''' </summary>
 	''' <param name="serviceType">The type (TTypeId) of the service to add.</param>
 	''' <param name="serviceProvider">GameService instance.</param>
 	''' <return>True if the service was added, false if not.</return>
 	Method addService:Byte(serviceType:TTypeId, serviceProvider:GameService)
 
-		' Check inputs
+		' Check inputs.
 		If serviceProvider = Null Then Return False
 		If serviceType = Null Then serviceType = TTypeId.ForObject(serviceProvider)
 
-		' Add to service locator
+		' Add to service locator.
 		Self._serviceLookup.set(serviceType, serviceProvider)
 		Self._serviceList.add(serviceProvider)
 
-		' Check for update and render method
+		' Check for update and render method.
 		Self._addIfImplements(serviceProvider, "update", Self._updateServices)
 		Self._addIfImplements(serviceProvider, "render", self._renderServices)
 
-		' Set the ID
+		' Set the unique ID.
 		serviceProvider._id = Self._nextServiceId
 		Self._nextServiceId:+ 1
 
-		' Inject dependencies
+		' Inject dependencies.
 		If serviceProvider.hasDependencies() Then
 			For Local dependency:TTypeId = EachIn serviceProvider.getDependencies()
 				serviceProvider.inject(dependency, Self.getService(dependency))

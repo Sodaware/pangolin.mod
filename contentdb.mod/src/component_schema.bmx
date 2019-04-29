@@ -39,6 +39,9 @@ Type ComponentSchema
 	' -- Checking for items
 	' --------------------------------------------------
 	
+	''' <summary>Check if this component has a property with `propertyName`.</summary>
+	''' <param name="propertyName">The property to check for.</param>
+	''' <return>True if the property exists, false if not.</return>
 	Method hasProperty:Byte(propertyName:String)
 		Return (Self._fields.ValueForKey(propertyName.ToLower()) <> Null)
 	End Method

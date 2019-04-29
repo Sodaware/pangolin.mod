@@ -156,10 +156,13 @@ Type EntityFactory
 		
 		Next
 		
-		' Set internal fields
+		' Set internal fields.
 		For Local internalField:String = EachIn template.getSchema().getInternals()
 			Local fieldDefinition:TField = typeDef.FindField(internalField)
-			fieldDefinition.set(instance, template.getRawField(internalField))
+
+			If fieldDefinition <> Null Then
+				fieldDefinition.set(instance, template.getRawField(internalField))
+			EndIf
 		Next
 		
 		Return instance

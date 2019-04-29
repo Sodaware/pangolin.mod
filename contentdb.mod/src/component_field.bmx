@@ -13,9 +13,6 @@
 
 SuperStrict
 
-Import brl.retro
-
-
 Type ComponentField
 
 	Const PROTECTIONLEVEL_PRIVATE:Byte   = 1
@@ -61,21 +58,19 @@ Type ComponentField
 	End Method
 	
 	Method setProtectionLevel:ComponentField(protectionLevel:String)
-		
-		Select Upper(protectionLevel)
+		Select protectionLevel.ToUpper()
 			Case "PRIVATE";		Self._protectionLevel = PROTECTIONLEVEL_PRIVATE
 			Case "PROTECTED";	Self._protectionLevel = PROTECTIONLEVEL_PROTECTED
 			Case "PUBLIC";		Self._protectionLevel = PROTECTIONLEVEL_PUBLIC
 		End Select
-		
+
 		Return Self
-		
 	End Method
-	
+
 	Method getType:String()
 		Return Self._dataType
 	End Method
-	
+
 	Method getName:String()
 		Return Self._name
 	End Method
