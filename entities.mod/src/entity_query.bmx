@@ -14,6 +14,7 @@
 Include "query_filters/base_entity_query_filter.bmx"
 Include "query_filters/component_type_entity_query_filter.bmx"
 Include "query_filters/component_field_value_entity_query_filter.bmx"
+Include "query_filters/group_name_entity_query_filter.bmx"
 
 Type EntityQuery
 	Field _filters:BaseEntityQueryFilter[]
@@ -89,6 +90,14 @@ Type EntityQuery
 ''        self._filters.addLast(ComponentFieldNotValueEntityQueryFilter.Create(t, fieldName, fieldValue))
 
 		Return self
+	End Method
+
+	''' <summary>Filter entity list to only include entities with a specific group.</summary>
+	''' <remarks>Prefer using `GroupManager.getEntities`.</remarks>
+	''' <param name="group">The group name to filter by.</param>
+	''' <return>Self</return>
+	Method withGroup:EntityQuery(group:String)
+		Return Self.addFilter(GroupNameEntityQueryFilter.Create(group))
 	End Method
 
 	''' <summary>Add a filter to the query.</summary>
