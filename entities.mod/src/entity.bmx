@@ -233,7 +233,6 @@ Type Entity
 		Return (Self._typeBits & t.getBit() > 0)
 	End Method
 
-
 	''' <summary>Get a component from the entity by its type.</summary>
 	Method getComponent:EntityComponent(t:ComponentType)
 		Return Self._entityManager.getComponent(Self, t)
@@ -254,6 +253,12 @@ Type Entity
 	' ------------------------------------------------------------
 	' -- Group management
 	' ------------------------------------------------------------
+
+	''' <summary>Get the group name for Entity.</summary>
+	''' <seealso cref="GroupManager">See GroupManager for more information on groups.</seealso>
+	Method getGroup:String()
+		Return Self._world.getGroupManager().getGroupOf(Self)
+	End Method
 
 	''' <summary>Set the group name for Entity.</summary>
 	''' <seealso cref="GroupManager">See GroupManager for more information on groups.</seealso>
