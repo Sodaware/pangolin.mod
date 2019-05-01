@@ -53,6 +53,12 @@ Type GameEntityService Extends GameService ..
 		Return Self._world.getTagManager()
 	End Method
 
+	''' <summary>Create an EntityQuery for all active entities in the World.</summary>
+	''' <return>EntityQuery with active entities as its list to filter.</return>
+	Method query:EntityQuery()
+		Return EntityQuery.Create(Self.getEntityManager().getActiveEntities())
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Entity Management
