@@ -14,5 +14,5 @@ Type ComponentSchemaSerializer
 
 	Method canLoad:Byte(fileName:String) Abstract
 	Method loadComponentSchema:TList(fileName:String) Abstract
-	
+
 End Type

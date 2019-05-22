@@ -15,10 +15,10 @@ Type ContentDbSerializer
 	Method CanLoad:Int(fileName:String) Abstract
 	Method Load(db:ContentDb, url:Object) Abstract
 	Method loadEntities:TList(db:ContentDb, url:Object) Abstract
-	Method Save(db:ContentDb, url:Object) Abstract	
-	
+	Method Save(db:ContentDb, url:Object) Abstract
+
 	Method _openFile:TStream(url:Object)
-		
+
 		' Attempt to read map stream
 		Local fileIn:TStream = ReadStream( url )
 		If Not(fileIn) Then Return Null
@@ -28,9 +28,9 @@ Type ContentDbSerializer
 			fileIn.Close()
 			Return Null
 		EndIf
-		
+
 		Return fileIn
-		
+
 	End Method
-	
+
 End Type

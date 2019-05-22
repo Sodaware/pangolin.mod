@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- Pangolin.ContentDb -- contentdb.bmx
-' -- 
+' --
 ' -- The ContentDb manages entity templates and other static, non-resource
 ' -- content. It allows entities to be defined in files and created from a
 ' -- template instead of done via code.
@@ -19,7 +19,7 @@
 ' -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' -- GNU Lesser General Public License for more details.
-' -- 
+' --
 ' -- You should have received a copy of the GNU Lesser General Public
 ' -- License along with this library (see the file COPYING for more
 ' -- details); If not, see <http://www.gnu.org/licenses/>.

@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- src/content_db_loader.bmx
-' -- 
+' --
 ' -- A helper class for loading the content database. Not all that great, but
 ' -- works for now.
 ' --
@@ -14,17 +14,17 @@
 
 
 Type ContentDbLoader
-	
+
 	Function LoadTemplateFromFile(db:ContentDb, fileName:String)
 		ContentDbLoader._LoadTemplate(db, fileName)
 	End Function
-	
+
 	Function LoadTemplateFromArchive(db:ContentDb, zipIn:ZipReader, fileName:String)
 		ContentDbLoader._LoadTemplate(db, fileName, zipIn)
 	End Function
 
 	Function loadComponentSchema:TList(fileName:String)
-		
+
 		' TODO: Should we cache these? Takes 3ms, so probably not
 		Local id:TTypeId = TTypeId.ForName("ComponentSchemaSerializer")
 		For Local loader:TTypeId = EachIn id.DerivedTypes()
@@ -33,13 +33,13 @@ Type ContentDbLoader
 				Return serializer.loadComponentSchema(fileName)
 			EndIf
 		Next
-		
+
 		Return Null
-		
+
 	End Function
-	
+
 	Function loadEntityTemplates:TList(db:ContentDb, fileName:String)
-		
+
 		Local id:TTypeId = TTypeId.ForName("ContentDbSerializer")
 		For Local loader:TTypeId = EachIn id.DerivedTypes()
 			Local serializer:ContentDbSerializer = ContentDbSerializer(loader.NewObject())
@@ -51,12 +51,12 @@ Type ContentDbLoader
 		Next
 
 		Return Null
-				
+
 	End Function
-		
+
 	' -- Private
 	Function _LoadTemplate(db:ContentDb, fileName:String, zipIn:ZipReader = Null)
-		
+
 		Local id:TTypeId = TTypeId.ForName("ContentDbSerializer")
 		For Local loader:TTypeId = EachIn id.DerivedTypes()
 			Local serializer:ContentDbSerializer = ContentDbSerializer(loader.NewObject())
@@ -68,7 +68,7 @@ Type ContentDbLoader
 				EndIf
 			EndIf
 		Next
-		
+
 	End Function
 
 
