@@ -12,7 +12,6 @@
 
 SuperStrict
 
-Import brl.retro
 Import brl.linkedlist
 Import brl.map
 
@@ -22,22 +21,22 @@ Import "component_field.bmx"
 Type ComponentSchema
 
 	' Standard information
-	Field _name:String				'''< The name of the component
-	Field _description:String		'''< A brief description of the component
-	Field _sourceFile:String		'''< The name of the file this component is declared in.
+	Field _name:String              '''< The name of the component.
+	Field _description:String       '''< A brief description of the component
+	Field _sourceFile:String        '''< The name of the file this component is declared in.
 
 	' Internal data
 	Field _isInternal:Byte          '''< Is this an internal (ie BlitzMax) component or a script component
 	Field _requires:TList
 	Field _internals:TList
 
-	Field _fields:TMap				'''< ObjectHash of fields.
+	Field _fields:TMap				'''< Map of field names => ComponentField objects.
 	Field _fieldsList:TList			'''< List of fields for iterating
 
 
-	' --------------------------------------------------
+	' ------------------------------------------------------------
 	' -- Checking for items
-	' --------------------------------------------------
+	' ------------------------------------------------------------
 
 	''' <summary>Check if this component has a property with `propertyName`.</summary>
 	''' <param name="propertyName">The property to check for.</param>
@@ -46,16 +45,21 @@ Type ComponentSchema
 		Return (Self._fields.ValueForKey(propertyName.ToLower()) <> Null)
 	End Method
 
+	''' <summary>Check if this component has a specific requirement.</summary>
+	''' <param name="name">The name of the requirement to check for.</param>
+	''' <return>True if the component has the requirement, false if not.</return>
 	Method hasRequirement:Byte(name:String)
 		For Local requirement:String = EachIn Self._requires
 			If requirement.ToLower() = name.ToLower() Then Return True
 		Next
+
+		Return False
 	End Method
 
 
-	' --------------------------------------------------
-	' -- General Information
-	' --------------------------------------------------
+	' ------------------------------------------------------------
+	' -- Component Information
+	' ------------------------------------------------------------
 
 	Method getName:String()
 		Return Self._name
@@ -157,17 +161,17 @@ Type ComponentSchema
 	' --------------------------------------------------
 
 	Method New()
-		Self._fields		= New TMap
-		Self._fieldsList	= New TList
-		Self._requires		= New TList
-		Self._internals		= New TList
+		Self._fields     = New TMap
+		Self._fieldsList = New TList
+		Self._requires   = New TList
+		Self._internals  = New TList
 	End Method
 
 	Function Create:ComponentSchema(identifier:String, doc:String)
-		Local this:ComponentSchema	= New ComponentSchema
+		Local this:ComponentSchema = New ComponentSchema
 
-		this._name			= identifier
-		this._description	= doc
+		this._name        = identifier
+		this._description = doc
 
 		Return this
 	End Function
