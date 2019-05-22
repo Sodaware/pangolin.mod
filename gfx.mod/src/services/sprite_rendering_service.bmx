@@ -58,7 +58,9 @@ Type SpriteRenderingService Extends GameService ..
 		Return RenderGroup(Self._renderer.getRequest(name))
 	End Method
 	
-	Method remove(obj:AbstractRenderRequest, deepRemove:Byte = true)
+	Method remove(obj:AbstractRenderRequest, deepRemove:Byte = True)
+		If obj = Null Then Return
+
 		Self._renderer.remove(obj, deepRemove)
 	End Method
 	
