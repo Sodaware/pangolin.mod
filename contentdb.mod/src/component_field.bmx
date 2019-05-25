@@ -13,6 +13,8 @@
 
 SuperStrict
 
+Import brl.retro
+
 ''' <summary>Represents a field within a component schema.</summary>
 Type ComponentField
 
