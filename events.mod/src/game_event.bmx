@@ -14,7 +14,6 @@
 SuperStrict
 
 Import brl.event
-Import brl.map
 
 Import "game_event_mapper.bmx"
 
@@ -37,7 +36,7 @@ Type GameEvent extends TEvent
 	''' <summary>Create a GameEvent with a name and optional extra data.</summary>
 	''' <param name="eventName">The event name.</param>
 	''' <param name="extra">Optional object that will be stored in event's `extra` field.</param>
-	''' <return>The newly created event.</summary>
+	''' <return>The newly created event.</return>
 	Function CreateSimple:GameEvent(eventName:String, extra:Object = Null)
 
 		Local this:GameEvent = New GameEvent

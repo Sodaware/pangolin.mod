@@ -37,8 +37,8 @@ Type GameEventMapper
 	End Function
 
 	''' <summary>
-	''' Gets the ID for an event name. If no ID found, will allocate one.
-	''' <summary>
+	''' Get the ID for an event name. If no ID found, will allocate one.
+	''' </summary>
 	''' <param name="eventName">The event name to lookup.</param>
 	''' <return>ID for this event name.</return>
 	Function getEventId:Int(eventName:String)

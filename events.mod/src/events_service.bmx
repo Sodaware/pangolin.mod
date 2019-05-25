@@ -25,7 +25,7 @@ Import "game_event_mapper.bmx"
 
 Type EventService Extends GameService
 	
-	''' <summary>Map of eventName => EventHandlersBag of handlers
+	''' <summary>Map of eventName => EventHandlersBag of handlers.</summary>
 	Field _handlers:TMap = New TMap
 	
 	
@@ -53,7 +53,7 @@ Type EventService Extends GameService
 	''' Add a callback to the event service. A callback consists of an 
 	''' object and a method name. When the event is fired, `methodName`
 	''' will be called on the `caller` object.
-	''' <summary>
+	''' </summary>
 	''' <param name="eventName">The event this callback will listen for.</param>
 	Method addCallback(eventName:String, caller:Object, methodName:String)
 			
@@ -91,7 +91,7 @@ Type EventService Extends GameService
 		
 	End Method
 	
-	''' <summary>Remove all handlers for a specific event.<summary>
+	''' <summary>Remove all handlers for a specific event.</summary>
 	Method removeEventHandlers(eventName:String)
 		
 		' Get all handlers for this event
