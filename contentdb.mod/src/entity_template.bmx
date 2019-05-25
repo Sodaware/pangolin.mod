@@ -28,9 +28,7 @@ Type EntityTemplate
 
 	' -- Internal organisation
 	Field _category:String
-
-	' TODO: Replace this with a StringList
-	Field _tags:TList
+	Field _tags:String[]
 
 	' -- Component Templates
 	Field _componentTemplates:TMap
@@ -66,6 +64,20 @@ Type EntityTemplate
 		Return Self._category
 	End Method
 
+	''' <summary>Get all tags for the template.</summary>
+	Method getTags:String[]()
+		Return Self._tags
+	End Method
+
+	''' <summary>Check if template has a specific tag.</summary>
+	Method hasTag:Byte(tag:String)
+		For Local t:String = EachIn Self._tags
+			If t = tag Then Return True
+		Next
+
+		Return False
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Setting data
@@ -75,6 +87,16 @@ Type EntityTemplate
 	''' <param name="category">The template's category.</param>
 	Method setCategory:EntityTemplate(category:String)
 		Self._category = category
+
+		Return Self
+	End Method
+
+	''' <summary>Add a tag to the template.</summary>
+	''' <param name="tag">The tag to add.</param>
+	Method addTag:EntityTemplate(tag:String)
+		Self._tags = Self._tags[..Self._tags.Length + 1]
+		Self._tags[Self._tags.Length - 1] = tag
+
 		Return Self
 	End Method
 
@@ -131,14 +153,14 @@ Type EntityTemplate
 
 		Local template:Entitytemplate = New EntityTemplate
 
-		' Clone basic details
+		' Clone basic details.
 		template._name			= Self._name
 		template._description	= Self._description
 		template._inherits		= Self._inherits
 		template._category		= Self._category
-		template._tags			= Self._tags.Copy()
+		template._tags			= Self._tags[..]
 
-		' Copy component templates
+		' Copy component templates.
 		For Local component:ComponentTemplate = EachIn Self._componentTemplatesList
 			template.addComponentTemplate(component.clone())
 		Next
@@ -182,9 +204,8 @@ Type EntityTemplate
 	' ------------------------------------------------------------
 
 	Method New()
-		Self._tags                      = New TList
-		Self._componentTemplates        = New TMap
-		Self._componentTemplatesList    = New TList
+		Self._componentTemplates     = New TMap
+		Self._componentTemplatesList = New TList
 	End Method
 
 	''' <summary>Creates and initialises a new EntityTemplate object and returns it.</summary>
