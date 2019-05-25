@@ -34,14 +34,16 @@ Type Tile
 	' -- Meta Values
 	' ------------------------------------------------------------
 	
-	Method getMeta:Object(name:String)
+	Method getMeta:String(name:String)
 		If Self._meta = Null Then Return Null
-		Return Self._meta.ValueForKey(name)
+		Return String(Self._meta.ValueForKey(name))
 	End Method
 	
-	Method setMeta:Object(name:String, value:Object)
+	Method setMeta:Tile(name:String, value:Object)
 		If Self._meta = Null Then Self._meta = New TMap
 		Self._meta.Insert(name, value)
+
+		Return Self
 	End Method
 	
 	' SLOW!
@@ -54,7 +56,34 @@ Type Tile
 		Return count
 	End Method
 	
-	
+
+	' ------------------------------------------------------------
+	' -- Collision Helpers
+	' ------------------------------------------------------------
+
+	' Check if tile is completely collidable. If any direction is not
+	' collidable, will return false. Otherwise returns true.
+	Method allCollidable:Byte()
+		If Self.CollideUp = False Then Return False
+		If Self.CollideDown = False Then Return False
+		If Self.CollideLeft = False Then Return False
+		If Self.CollideRight = False Then Return False
+
+		Return True
+	End Method
+
+	' Check if tile is completely uncollidable. If any direction is collidable,
+	' will return false. Otherwise returns true.
+	Method notAllCollidable:Byte()
+		If Self.CollideUp = True Then Return False
+		If Self.CollideDown = True Then Return False
+		If Self.CollideLeft = True Then Return False
+		If Self.CollideRight = True Then Return False
+
+		Return True
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
