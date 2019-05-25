@@ -64,6 +64,16 @@ Type GameScreen extends IGameScreen
 
 
 	' ------------------------------------------------------------
+	' -- Camera Helpers
+	' ------------------------------------------------------------
+
+	''' <summary>Set the global camera.</summary>
+	Method setCamera(camera:RenderCamera)
+		Self.__renderer.setCamera(camera)
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Managing renderable objects
 	' ------------------------------------------------------------
 
@@ -89,6 +99,13 @@ Type GameScreen extends IGameScreen
 	''' <summary>Get the render group associated with this screen.</summary>
 	Method getRenderGroup:RenderGroup()
 		Return Self._group
+	End Method
+
+	''' <summary>Add a render request directly to the renderer.</summary>
+	''' <param name="obj">The request object to add.</param>
+	''' <param name="name">Optional identifier for the request.</param>
+	Method addGlobalRequest(obj:AbstractRenderRequest, name:String = "")
+		Self.__renderer.add(obj, name)
 	End Method
 
 
@@ -118,7 +135,7 @@ Type GameScreen extends IGameScreen
 		Self.getParentManager().RemoveScreen(Self)
 
 		' Clear items from the renderer.
-		Self._group.clear()
+		If Self._group Then Self._group.clear()
 		Self.__renderer.remove(Self._group)
 		Self._group = Null
 
