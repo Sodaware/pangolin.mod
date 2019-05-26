@@ -238,9 +238,10 @@ Type EntityBag
 	Method compact:EntityBag()
 		Local pos:Int = 0
 
-		While pos < Self._size - 1
+		While pos < Self._size
 			If Self._objects[pos] = Null Then
 				Self._objects[pos] = Self._objects[Self._size - 1]
+
 				Self._size :- 1
 				pos :- 1
 			EndIf
