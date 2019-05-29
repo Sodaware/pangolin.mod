@@ -61,7 +61,7 @@ The following modules are included as part of **pangolin**:
 
 ## Licence
 
-Copyright (C) 2009-2017 Phil Newton
+Copyright (C) 2009-2019 Phil Newton
 
 PANGOLIN is free software: you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
