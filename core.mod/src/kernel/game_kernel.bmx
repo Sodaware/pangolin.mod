@@ -31,11 +31,11 @@ Include "../services/kernel_information_service.bmx"
 ''' </summary>
 Type GameKernel
 
-	Field _serviceLookup:GameServiceLocator         '''< Maps service types to their instances
+	Field _serviceLookup:GameServiceLocator         '''< Maps service types to their instances.
 
-	Field _serviceList:GameServiceCollection        '''< All services registered to the Kernel
-	Field _updateServices:GameServiceCollection     '''< All services that need to be called during an update
-	Field _renderServices:GameServiceCollection     '''< All services that need to be called during a render
+	Field _serviceList:GameServiceCollection        '''< All services registered to the Kernel.
+	Field _updateServices:GameServiceCollection     '''< All services that need to be called during an update.
+	Field _renderServices:GameServiceCollection     '''< All services that need to be called during a render.
 
 	Field _nextServiceId:Int                        '''< The next available service id.
 
@@ -57,6 +57,8 @@ Type GameKernel
 	End Method
 
 	''' <summary>Retrieve a service from the kernel using its TTypeId.</summary>
+	''' <param name="serviceType">The TTypeId to lookup. Must be non-null</param>
+	''' <return>The found service instance.</return>
 	Method getService:GameService(serviceType:TTypeId)
 
 		' Check that a proper service type was passed in
@@ -67,7 +69,13 @@ Type GameKernel
 
 	End Method
 
-	''' <summary>Get a service instance by its type name.</summary>
+	''' <summary>
+	''' Get a service instance by its type name.
+	'''
+	''' Will throw an exception if the type name does not exist.
+	''' </summary>
+	''' <param name="serviceName">The Type name of the service to find.</param>
+	''' <return>The found service instance.</return>
 	Method getServiceByName:GameService(serviceName:String)
 
 		' Find the type data for the name
@@ -90,6 +98,7 @@ Type GameKernel
 
 	''' <summary>Start a service.</summary>
 	''' <param name="serviceType">TTypeId of the service to start.</param>
+	''' <return>True if the service started, false if not.</return>
 	Method startService:Byte(serviceType:TTypeId)
 
 		Local service:GameService = Self.getService(serviceType)
