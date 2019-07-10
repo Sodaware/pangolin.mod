@@ -57,7 +57,17 @@ Type PangolinGfx
 		GraphicsManager.getInstance().startGraphics()
 		
 	End Function
-	
+
+	''' <summary>Get the width of the screen in actual pixels.</summary>
+	Function getScreenWidth:Int()
+		Return GraphicsManager.getInstance().getWidth()
+	End Function
+
+	''' <summary>Get the height of the screen in actual pixels.</summary>
+	Function getScreenHeight:Int()
+		Return GraphicsManager.getInstance().getHeight()
+	End Function
+
 	''' <summary>Get the width of the screen in virtual pixels.</summary>
 	Function getGraphicsWidth:Int()
 		Return VirtualScreenResolution.getInstance().getWidth()
@@ -72,6 +82,12 @@ Type PangolinGfx
 		SetColor 255 & (color Shr 16), 255 & (color Shr 8), 255 & color
 	End Function
 	
+	Function intToRgb(color:Int, r:Byte Var, g:Byte Var, b:Byte Var)
+		r = color Shr 16
+		g = color Shr 8
+		b = color
+	End Function
+
 	Function rgbToInt:Int(r:Byte, g:Byte, b:Byte)
 		Return 0 + (r Shl 16) + (g Shl 8) + (b)
 	End Function
