@@ -19,7 +19,7 @@ Import "../services/game_service.bmx"
 ''' <summary>
 ''' Maps service types to their instances. i.e. TTypeId => GameService. Works in
 ''' exactly the same way as a tmap, except the keys and values are strongly-typed
-''' and automatically casted.
+''' and automatically cast.
 ''' </summary>
 Type GameServiceLocator extends TMap
 
