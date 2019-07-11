@@ -12,8 +12,7 @@
 
 SuperStrict
 
-Import brl.reflection
-import brl.hook
+Import brl.hook
 Import sodaware.blitzmax_injection
 
 

@@ -2,7 +2,7 @@
 ' -- content_db.bmx
 ' --
 ' -- The ContentDb class is a database of object templates that can be used
-' -- when spawning game entities. Full-integrated with pangolin.entities.
+' -- when spawning game entities. Fully-integrated with pangolin.entities.
 ' --
 ' -- To actually load content a serializer needs to be imported.
 ' --
@@ -18,8 +18,6 @@ SuperStrict
 Import brl.retro
 Import brl.map
 Import brl.linkedlist
-
-Import gman.zipengine
 
 Import sodaware.File_Util
 Import sodaware.file_ziphelper
@@ -37,16 +35,19 @@ Include "serializers/component_schema_serializer.bmx"
 Include "content_db_loader.bmx"
 
 
-''' <summary>Manages all object templates and schemas.</summary>
+''' <summary>
+''' The ContentDb class is a database of object templates that can be used when
+''' spawning game entities. Fully-integrated with pangolin.entities.
+''' </summary>
 Type ContentDb
 
 	' -- Hashes to store templates and schemas
-	Field _objectTemplates:Tmap             '''< Map of TemplateName => ObjectTemplate
-	Field _componentSchemas:Tmap            '''< Map of SchemaName => ComponentSchema
+	Field _objectTemplates:Tmap             '''< Map of TemplateName => ObjectTemplate.
+	Field _componentSchemas:Tmap            '''< Map of SchemaName => ComponentSchema.
 
 	' -- Lists
-	Field _objectTemplateList:TList         '''< List of object templates
-	Field _componentSchemaList:TList        '''< List of component schemas
+	Field _objectTemplateList:TList         '''< List of object templates.
+	Field _componentSchemaList:TList        '''< List of component schemas.
 
 	' -- Internal file lists
 	Field _componentFiles:TList
@@ -65,6 +66,7 @@ Type ContentDb
 	Method addTemplateDirectory:ContentDb(pathName:String)
 		' [todo] - Check the directory exists (take zip:: etc protocols into account)
 		Self._templateDirectories.AddLast(pathName)
+
 		Return Self
 	End Method
 
@@ -76,6 +78,7 @@ Type ContentDb
 	Method addTemplateArchive:ContentDb(fileName:String)
 		' [todo] - Check the file exists (take zip:: etc protocols into account)
 		Self._templateDirectories.AddLast(fileName)
+
 		Return Self
 	End Method
 
@@ -91,16 +94,15 @@ Type ContentDb
 	''' <param name="path">Dotted path.</param>
 	Method getTemplateString:String(path:String)
 
-		' Get the template
+		' Get the template.
 		Local template:EntityTemplate = Self.getObjectTemplate(Left(path, path.Find(".")))
 		If template = Null Then Throw "Could not find ObjectTemplate: " + Left(path, path.Find("."))
 
-		' Return the field value
+		' Return the field value.
 		Return template.getTemplateString(Right(path, path.Length - path.Find(".") - 1))
 
 	End Method
 
-	' [todo] - Optimize this
 	''' <summary>Count the number of object templates.</summary>
 	Method countObjectTemplates:Int()
 		Return Self._objectTemplateList.Count()
@@ -117,7 +119,8 @@ Type ContentDb
 	''' <param name="templateName">The name of the ObjectTemplate to retrieve.</param>
 	''' <returns>The GameObjectTemplate object that was found, or null if it was not found.</returns>
 	Method getObjectTemplate:EntityTemplate(templateName:String)
-		if templateName = "" then return null
+		If templateName = "" Then Return Null
+
 		Return EntityTemplate(Self._objectTemplates.ValueForKey(templateName.ToLower()))
 	End Method
 
@@ -125,7 +128,7 @@ Type ContentDb
 	''' <returns>A list of GameObjectTemplate names.</returns>
 	Method getObjectTemplateList:TList()
 
-		Local classList:TList	= New TList
+		Local classList:TList = New TList
 
 		For Local template:EntityTemplate = EachIn Self._objectTemplateList
 			classList.AddLast(template.GetName())
@@ -141,6 +144,11 @@ Type ContentDb
 		Return Self._componentSchemaList
 	End Method
 
+	''' <summary>
+	''' Get a collection of EntityTemplate objects that use `componentName`.
+	''' </summary>
+	''' <param name="componentName">The component name to search for.</param>
+	''' <return>TList of EntityTemplate objects.</return>
 	Method getTemplatesWithComponent:TList(componentName:String)
 
 		Local templateList:TList = New TList

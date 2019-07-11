@@ -11,6 +11,10 @@
 ' ------------------------------------------------------------------------------
 
 
+''' <summary>
+''' A GameService that acts as a proxy so other services can interact with the
+''' kernel without exposing implementation details.
+''' </summary>
 Type KernelInformationService Extends GameService
 
 	Field _kernel:GameKernel

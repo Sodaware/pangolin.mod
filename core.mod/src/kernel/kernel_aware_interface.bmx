@@ -14,6 +14,12 @@ SuperStrict
 
 Import "game_kernel.bmx"
 
+''' <summary>
+''' Abstract type that allows another type to be aware of the kernel.
+'''
+''' Adds methods for setting the kernel and for autoloading services into fields that
+''' have `autoload_service` in their meta data.
+''' </summary>
 Type KernelAwareInterface Abstract
 
 	Field __kernel:GameKernel
