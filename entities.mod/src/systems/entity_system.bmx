@@ -97,7 +97,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 
 	Method processEntities(entities:EntityBag) Abstract
 
-	Method checkProcessing:Short() Abstract
+	Method checkProcessing:Byte() Abstract
 
 	''' <summary>Called before all entities are processed by this system.</summary>
 	Method beforeProcessEntities()
@@ -150,8 +150,8 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 
 	Method change(e:Entity)
 
-		Local contains:Short = ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
-		Local interest:Short = ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
+		Local contains:Byte = ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
+		Local interest:Byte = ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
 
 		If interest And Not(contains) And Self._typeFlags > 0 Then
 			Self._actives.add(e)

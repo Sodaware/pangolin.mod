@@ -17,7 +17,7 @@ Type SweeperEntitySystem Extends EntitySystem Abstract
 	End Method
 
 	' This is set to false so it doesn't run during normal execution
-	Method checkProcessing:Short() Final
+	Method checkProcessing:Byte() Final
 		Return False
 	End Method
 

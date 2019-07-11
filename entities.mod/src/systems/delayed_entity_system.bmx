@@ -13,7 +13,7 @@
 Type DelayedEntitySystem Extends EntitySystem Abstract
 
 	Field _delay:Int
-	Field _running:Short
+	Field _running:Byte
 	Field _acc:Int
 
 	Method processEntity(e:Entity) Abstract
@@ -25,7 +25,7 @@ Type DelayedEntitySystem Extends EntitySystem Abstract
 
 	Method _processEntities(entities:EntityBag, acc:Float) Abstract
 
-	Method checkProcessing:Short() Final
+	Method checkProcessing:Byte() Final
 
 		If Self._running Then
 			Self._acc = Self._acc + Self._world.getDelta()
@@ -58,7 +58,7 @@ Type DelayedEntitySystem Extends EntitySystem Abstract
 
 	End Method
 
-	Method isRunning:Short()
+	Method isRunning:Byte()
 		Return Self._running
 	End Method
 

@@ -20,7 +20,7 @@ Type IntervalEntitySystem Extends EntitySystem Abstract
 		Self._interval = interval
 	End Method
 
-	Method checkProcessing:Short()
+	Method checkProcessing:Byte()
 		Self._timeSinceLastExecution :+ Self._world.getDelta()
 		If Self._timeSinceLastExecution >= Self._interval Then
 			Self._timeSinceLastExecution :- Self._interval

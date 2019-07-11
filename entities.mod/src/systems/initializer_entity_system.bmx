@@ -12,7 +12,7 @@
 
 Type InitializerEntitySystem Extends EntitySystem Abstract
 
-	Method checkProcessing:Short()
+	Method checkProcessing:Byte()
 		Return False
 	End Method
 
