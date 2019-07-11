@@ -23,10 +23,10 @@ Type ComponentType
 	Global nextBit:Long = 1
 
 	''' <summary>The next unique ID for a component type.</summary>
-	Global nextId:Int	= 0
+	Global nextId:Int   = 0
 
-	Field _bit:Long		'''< The ComponentType's unique bit
-	Field _id:Int		'''< The ComponentType's unique ID
+	Field _bit:Long     '''< The ComponentType's unique bit.
+	Field _id:Int       '''< The ComponentType's unique ID.
 
 
 	' ------------------------------------------------------------
@@ -52,6 +52,7 @@ Type ComponentType
 	Function _getNextBit:Int()
 		Local result:Int = ComponentType.nextBit
 		ComponentType.nextBit = ComponentType.nextBit Shl 1
+
 		Return result
 	End Function
 
@@ -59,6 +60,7 @@ Type ComponentType
 	Function _getNextId:Int()
 		Local result:Int = ComponentType.nextId
 		ComponentType.nextId:+ 1
+
 		Return result
 	End Function
 

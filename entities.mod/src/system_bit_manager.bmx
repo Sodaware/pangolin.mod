@@ -18,9 +18,9 @@ Import brl.reflection
 
 Type SystemBitManager
 
-	Global _currentBitPosition:Int		= 0
-	Global _systemBits:TMap				= New TMap
-	Global _entitySystemTypeId:TTypeId	= Null
+	Global _currentBitPosition:Int      = 0
+	Global _systemBits:TMap             = New TMap
+	Global _entitySystemTypeId:TTypeId  = Null
 
 
 	' ------------------------------------------------------------
@@ -65,6 +65,7 @@ Type SystemBitManager
 		If SystemBitManager._entitySystemTypeId = Null Then
 			SystemBitManager._entitySystemTypeId = TTypeId.ForName("EntitySystem")
 		End If
+
 		Return SystemBitManager._entitySystemTypeId
 	End Function
 

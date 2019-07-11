@@ -34,17 +34,17 @@
 Type Entity
 
 	' -- Object information
-	Field _id:Int						'''< ID of the object that may be re-used when the entity is destroyed
-	Field _uniqueId:Long				'''< An ID that is unique to this object
+	Field _id:Int                       '''< ID of the object that may be re-used when the entity is destroyed.
+	Field _uniqueId:Long                '''< An ID that is unique to this object.
 
-	Field _typeBits:Long				'''< A list of component types this entity is interested in
-	Field _systemBits:Long				'''< A list of systems that this entity is processed by
+	Field _typeBits:Long                '''< A list of component types this entity is interested in.
+	Field _systemBits:Long              '''< A list of systems that this entity is processed by.
 
-	Field _world:World					'''< The world this entity belongs to
-	Field _entityManager:EntityManager	'''< The manager for the world
+	Field _world:World                  '''< The world this entity belongs to.
+	Field _entityManager:EntityManager  '''< The manager for the world.
 
-	' This is a shortcut
-	Field _components:ObjectBag			'''< Quick lookup of components this entity has
+	' This is a shortcut.
+	Field _components:ObjectBag         '''< Quick lookup of components this entity has.
 
 
 	' ------------------------------------------------------------

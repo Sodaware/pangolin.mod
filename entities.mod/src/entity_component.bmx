@@ -10,6 +10,12 @@
 ' ------------------------------------------------------------------------------
 
 
+''' <summary>
+''' Base class that all entity components must extend.
+'''
+''' Contains a reference to the parent entity, along with some methods that are called
+''' before and after specific events.
+''' </summary>
 Type EntityComponent
 
 	Field _parent:Entity

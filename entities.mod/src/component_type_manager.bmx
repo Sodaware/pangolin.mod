@@ -33,6 +33,7 @@ Type ComponentTypeManager
 	' -- Getting Types
 	' ------------------------------------------------------------
 
+	''' <summary>Get the ComponentType for a BlitzMax TTypeId.</summary>
 	Function getTypeFor:ComponentType(t:TTypeId)
 
 		If t = Null Then Throw "Cannot get ComponentType for Null TTypeId"
@@ -47,10 +48,13 @@ Type ComponentTypeManager
 
 	End Function
 
+	''' <summary>Get the ComponentType for a Type name.</summary>
+	''' <param name="name">A valid BlitzMax type name.</param>
 	Function getTypeForName:ComponentType(name:String)
 		Return ComponentTypeManager.getTypeFor(TTypeId.ForName(name))
 	End function
 
+	''' <summary>Get the ComponentType for a component's meta name.</summary>
 	Function getTypeForMetaName:ComponentType(name:String)
 		Return ComponentTypeManager.getTypeFor(ComponentTypeManager._getTypeForMeta(name))
 	End Function
@@ -62,6 +66,11 @@ Type ComponentTypeManager
 	Function getId:Int(t:TTypeId)
 		Return ComponentTypeManager.getTypeFor(t).getId()
 	End Function
+
+
+	' ------------------------------------------------------------
+	' -- Internal Helpers
+	' ------------------------------------------------------------
 
 	Function _getTypeForMeta:TTypeId(metaName:String)
 

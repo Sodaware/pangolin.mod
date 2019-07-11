@@ -13,9 +13,9 @@
 
 Type EntityComponentMapper
 
-	Field _componentType:ComponentType	'< The component type mapped
-	Field _em:EntityManager				'< Entity manager reference
-	Field _classType:TTypeId			'< TTypeId for the component
+	Field _componentType:ComponentType  '''< The component type mapped.
+	Field _em:EntityManager             '''< Entity manager reference.
+	Field _classType:TTypeId            '''< TTypeId for the component.
 
 
 	' ------------------------------------------------------------
