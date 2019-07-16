@@ -21,4 +21,9 @@ Type EntityProcessingSystem Extends EntitySystem
 		Next
 	End Method
 
+	''' <summary>Run every loop by default.</summary>
+	Method checkProcessing:Byte()
+		Return True
+	End Method
+
 End Type
