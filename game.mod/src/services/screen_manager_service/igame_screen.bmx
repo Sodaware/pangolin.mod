@@ -115,6 +115,14 @@ Type IGameScreen Abstract
 	Method afterEnter()
 	End Method
 
+	''' <summary>Called just before the screen is exited.</summary>
+	Method beforeLeave()
+	End Method
+
+	''' <summary>Called just after the screen is exited.</summary>
+	Method afterLeave()
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Input Handling

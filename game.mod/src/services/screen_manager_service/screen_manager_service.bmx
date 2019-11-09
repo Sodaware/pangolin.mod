@@ -98,13 +98,17 @@ Type ScreenManagerService extends GameService ..
 
 		Local screens:IGameScreen[] = Self.getScreens()
 		Local screen:GameScreen     = GameScreen(screens[screens.Length - 1])
+		screen.beforeLeave()
 		screen.leave()
+		screen.afterLeave()
 		Self.removeScreen(screen)
 	End Method
 
 	Method leaveAllScreens()
 		For Local screen:GameScreen = EachIn Self.getScreens()
+			screen.beforeLeave()
 			screen.leave()
+			screen.afterLeave()
 			Self.removeScreen(screen)
 		Next
 		Self.clearScreens()
