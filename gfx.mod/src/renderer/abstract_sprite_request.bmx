@@ -85,6 +85,18 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 		self._currentPosition.addPosition(pos)
 	End Method
 
+	Method setX:AbstractSpriteRequest(xPos:Float)
+		Self._currentPosition.setX(xPos)
+
+		Return Self
+	End Method
+
+	Method setY:AbstractSpriteRequest(yPos:Float)
+		Self._currentPosition.setY(yPos)
+
+		Return Self
+	End Method
+
 	Method getX:Float()
 		Return Self._currentPosition._xPos
 	End Method

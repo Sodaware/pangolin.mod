@@ -12,9 +12,9 @@
 
 SuperStrict
 
-Const CENTER_X:Int		= $00000001
-Const CENTER_Y:Int		= $00000010
-Const CENTER_SCREEN:Int	= $00000100
+Const CENTER_X:Int      = 1
+Const CENTER_Y:Int      = 2
+Const CENTER_SCREEN:Int = 4
 
 
 Type AbstractSpriteAnimation Abstract

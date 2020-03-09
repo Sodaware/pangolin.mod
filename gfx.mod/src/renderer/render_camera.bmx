@@ -23,11 +23,11 @@ Include "camera_behaviour.bmx"
 
 Type RenderCamera Extends AbstractRenderCamera
 
-	Field _screenPosition:Position2D	= New Position2D
+	Field _screenPosition:Position2D    = New Position2D
 	Field _position:Position2D          = New Position2D
 	Field _previousPosition:Position2D  = New Position2D
 
-	Field _bounds:Rectangle2D			= New Rectangle2D
+	Field _bounds:Rectangle2D           = New Rectangle2D
 
 	Field _target:AbstractSpriteRequest
 	Field _behaviour:CameraBehaviour
@@ -199,6 +199,7 @@ Type RenderCamera Extends AbstractRenderCamera
 	' -- Creation and Destruction
 	' ------------------------------------------------------------
 
+	' Width is the REAL Width of the camera (i.e. not virtual pixels)
 	Function Create:RenderCamera(width:Int, height:Int, xPos:Float = 0, yPos:Float = 0)
 		Local this:RenderCamera = New RenderCamera
 

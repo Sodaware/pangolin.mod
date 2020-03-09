@@ -22,16 +22,37 @@ Type ClippedRenderGroup Extends RenderGroup
 
 	Field _boundingBox:Rectangle2D		'''< Optional clipping area
 	Field _currentPosition:Position2D
-	
+	Field _clippingEnabled:Byte = True
+
+
 	Function Create:ClippedRenderGroup(x:Float, y:Float, w:Float, h:Float)
 		Local this:ClippedRenderGroup = New ClippedRenderGroup
+
 		this._currentPosition = New Position2D
 		this._currentPosition.setPosition(x, y)
 		this._boundingBox = Rectangle2D.Create(0, 0, w, h)
+
 		Return this
 	End Function
-	
-	
+
+
+	' ------------------------------------------------------------
+	' -- Configure
+	' ------------------------------------------------------------
+
+	Method enableClipping:ClippedRenderGroup()
+		Self._clippingEnabled = True
+
+		Return Self
+	End Method
+
+	Method disableClipping:ClippedRenderGroup()
+		Self._clippingEnabled = False
+
+		Return Self
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Position
 	' ------------------------------------------------------------
@@ -39,46 +60,48 @@ Type ClippedRenderGroup Extends RenderGroup
 	Method getX:Float()
 		Return Self._currentPosition._xPos
 	End Method
-	
+
 	Method getY:Float()
 		Return Self._currentPosition._yPos
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Moving
 	' ------------------------------------------------------------
 
 	Method move(xOff:Float, yOff:Float)
 		Self._currentPosition.addValue(xOff, yOff)
-    	For Local r:AbstractRenderRequest = EachIn Self._items
+		For Local r:AbstractRenderRequest = EachIn Self._items
 			r.move(xOff, yOff)
 		Next
 	EndMethod
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Rendering
 	' ------------------------------------------------------------
 
 	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		Local x:Int, y:Int, w:Int, h:Int
-		
-		If Self._boundingBox Then
-			GetViewport(x,y,w,h)
+
+		If Self._boundingBox And Self._clippingEnabled Then
+			GetViewport(x, y, w, h)
 			SetViewport( ..
 				Self.getX() + Self._boundingBox.getX(), ..
-				Self.getY() + Self._boundingBox.gety(), .. 
-				Self._boundingBox.getWidth(), .. 
+				Self.getY() + Self._boundingBox.getY(), ..
+				Self._boundingBox.getWidth(), ..
 				Self._boundingBox.getHeight() ..
 			)
 		EndIf
+
 		For Local item:AbstractRenderRequest = EachIn Self._items
 			item.render(tween, camera, isFixed)
 		Next
+
 		If Self._boundingBox Then
-			SetViewport(x,y,w,h)
+			SetViewport(x, y, w, h)
 		EndIf
 	End Method
-	
+
 End Type
