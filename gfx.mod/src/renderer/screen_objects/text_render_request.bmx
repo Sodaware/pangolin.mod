@@ -43,6 +43,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	' Internal state
 	Field _oldFont:TImageFont
 	Field _textWidth:Int            = -1
+	Field _textHeight:Float
 
 
 	' ------------------------------------------------------------
@@ -194,6 +195,10 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		Return Self._textWidth
 	End Method
 
+	Method getTextHeight:Float()
+		Return Self._textHeight
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Rendering
@@ -284,10 +289,16 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	End Method
 
 	Method _wrapText:String(text:String)
+		' Setup the font.
+		If Self._oldFont <> Self._font And Self._font Then
+			Self._oldFont = GetImageFont()
+			SetImageFont(Self._font)
+		EndIf
 
 		Local wrappedText:String = ""
 		Local currentLine:String = ""
 		Local currentWord:String = ""
+		Local lineCount:Int      = 1
 
 		For Local pos:Int = 1 To text.Length
 			If Mid(text, pos, 1) = " " Then
@@ -295,6 +306,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 					wrappedText:+ currentLine + "~n"
 					currentLine = currentWord + " "
 					currentWord = ""
+					lineCount :+ 1
 				Else
 					currentLine:+ currentWord + " "
 					currentWord = ""
@@ -303,12 +315,20 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 				wrappedText:+ currentLine + currentWord + "~n"
 				currentLine = ""
 				currentWord = ""
+				lineCount :+ 1
 			Else
 				currentWord:+ Trim(Mid(text, pos, 1))
 			EndIf
 		Next
 
 		wrappedText:+ currentLine + currentWord
+
+		Self._textHeight = TextHeight(wrappedText) * lineCount
+
+		' Reset appearance
+		If Self._oldFont Then
+			SetImageFont(Self._oldFont)
+		End If
 
 		Return wrappedText
 
