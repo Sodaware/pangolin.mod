@@ -66,6 +66,10 @@ Type BaseResource Abstract
 		Return Self._definition
 	End Method
 
+	Method getDefinitionField:String(name:String, defaultValue:String = "")
+		Return Self._definition.getField(name, defaultValue)
+	End Method
+
 	Method reload()
 		Self._isLoaded = True
 		Self._load()
