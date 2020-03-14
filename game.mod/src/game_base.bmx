@@ -144,9 +144,11 @@ Type GameBase
 	''' service type (such as AudioService), and then replace it with specific
 	''' versions as needed. Uses the type for the `service` param if not provided.
 	''' </param>
-	Method addServiceToKernel(service:GameService, serviceType:TTypeId = Null)
+	Method addServiceToKernel:GameService(service:GameService, serviceType:TTypeId = Null)
 		Assert service, "Cannot add a Null service to the kernel"
 		Self._kernel.addService(serviceType, service)
+
+		Return service
 	End Method
 
 	''' <deprecated>Use `addServiceToKernel` instead.</deprecated>
