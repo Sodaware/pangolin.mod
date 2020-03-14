@@ -233,6 +233,16 @@ Type Entity
 		Return (Self._typeBits & t.getBit() > 0)
 	End Method
 
+	''' <summary>
+	''' Check if the entity has a component type and throw an exception if not.
+	''' </summary>
+	''' <param name="t">The ComponentType to check for.</param>
+	Method requireComponent(t:ComponentType)
+		If Self.hasComponent(t) Then Return
+
+		Throw MissingEntityComponentException.Create(Self, t)
+	End Method
+
 	''' <summary>Get a component from the entity by its type.</summary>
 	Method getComponent:EntityComponent(t:ComponentType)
 		Return Self._entityManager.getComponent(Self, t)
