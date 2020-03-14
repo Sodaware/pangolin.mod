@@ -25,6 +25,7 @@ Type ComponentType
 	''' <summary>The next unique ID for a component type.</summary>
 	Global nextId:Int   = 0
 
+	Field _name:String  '''< The BlitzMax type name for this component type.
 	Field _bit:Long     '''< The ComponentType's unique bit.
 	Field _id:Int       '''< The ComponentType's unique ID.
 
@@ -32,6 +33,11 @@ Type ComponentType
 	' ------------------------------------------------------------
 	' -- Querying
 	' ------------------------------------------------------------
+
+	''' <summary>Get the name for this component type.</summary>
+	Method getName:String()
+		Return Self._name
+	End Method
 
 	''' <summary>Get the unique bit for this component type.</summary>
 	Method getBit:Long()

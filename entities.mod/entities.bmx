@@ -43,6 +43,7 @@ Include "src/entity_component_mapper.bmx"
 Include "src/entity_bag.bmx"
 Include "src/entity.bmx"
 Include "src/entity_component.bmx"
+Include "src/exceptions.bmx"
 Include "src/world.bmx"
 
 ' -- Managers

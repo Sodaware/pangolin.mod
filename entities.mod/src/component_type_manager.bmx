@@ -35,17 +35,17 @@ Type ComponentTypeManager
 
 	''' <summary>Get the ComponentType for a BlitzMax TTypeId.</summary>
 	Function getTypeFor:ComponentType(t:TTypeId)
-
 		If t = Null Then Throw "Cannot get ComponentType for Null TTypeId"
 		Local found:ComponentType = ComponentType(ComponentTypeManager._componentTypes.ValueForKey(t))
 
 		If found = Null Then
 			found = New ComponentType
+
+			found._name = t.Name()
 			ComponentTypeManager._componentTypes.Insert(t, found)
 		End If
 
 		Return found
-
 	End Function
 
 	''' <summary>Get the ComponentType for a Type name.</summary>
@@ -96,6 +96,7 @@ Type ComponentTypeManager
 		Local baseType:TTypeId = TTypeId.ForName("EntityComponent")
 		For Local childType:TTypeId = EachIn baseType.DerivedTypes()
 			If childType.MetaData("name") = Null Then Throw "Type " + childType.Name() + " is missing ~qname~q metadata"
+
 			ComponentTypeManager._componentTypesMeta.Insert(childType.MetaData("name"), childType)
 		Next
 
