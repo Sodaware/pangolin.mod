@@ -57,15 +57,20 @@ Type DebugConsoleService Extends GameService ..
 	End Method
 
 	Method _autoloadConsole:DebugConsoleService()
-
 		' TODO: Allow commands to be active / inactive for debug & release mode (use meta?)
+		Self._autoloadCommands("ConsoleCommand")
 
-		Local cmd:TTypeId = TTypeId.ForName("ConsoleCommand")
-		For Local subCommand:TTypeId = EachIn cmd.DerivedTypes()
-			Self.addCommand(ConsoleCommand(subCommand.NewObject()))
-		Next
 		Return Self
+	End Method
 
+	Method _autoloadCommands(baseType:String = "ConsoleCommand")
+		Local baseCommand:TTypeId = TTypeId.forName(baseType)
+		For Local command:TTypeId = EachIn baseCommand.derivedTypes()
+			Self.addCommand(ConsoleCommand(command.NewObject()))
+
+			' Add any derived types.
+			Self._autoloadCommands(command.name())
+		Next
 	End Method
 
 	Method start()
