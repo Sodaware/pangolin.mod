@@ -17,6 +17,7 @@ SuperStrict
 Import brl.map
 Import brl.linkedlist
 Import brl.hook
+Import brl.retro
 
 Import sodaware.blitzmax_injection
 
