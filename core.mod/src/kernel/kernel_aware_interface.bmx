@@ -36,7 +36,6 @@ Type KernelAwareInterface Abstract
 
 	''' <summary>Autoload services into the current object from the kernel.</summary>
 	Method autoloadServices(requireAutoloadFlag:Byte = True)
-
 		Local typeData:TTypeId = TTypeId.ForObject(Self)
 		Local baseType:TTypeId = TTypeId.ForName("GameService")
 

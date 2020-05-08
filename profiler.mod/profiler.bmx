@@ -15,7 +15,7 @@
 ' -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 ' -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ' -- GNU Lesser General Public License for more details.
-' -- 
+' --
 ' -- You should have received a copy of the GNU Lesser General Public
 ' -- License along with this library (see the file COPYING for more
 ' -- details); If not, see <http://www.gnu.org/licenses/>.
@@ -46,16 +46,16 @@ Type PangolinProfiler
 
 	''' <summary>Profile timers lookup.</summary>
 	Field _timers:ProfileTimerMap
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Enabling and disabling the profiler
 	' ------------------------------------------------------------
-	
+
 	Function enableProfiler()
 		PangolinProfiler.g_Profiler = New PangolinProfiler
 	End Function
-	
+
 	Function disableProfiler()
 		PangolinProfiler.g_Profiler = Null
 	End Function
@@ -71,7 +71,7 @@ Type PangolinProfiler
 	' ------------------------------------------------------------
 	' -- Global profiling
 	' ------------------------------------------------------------
-	
+
 	Function startProfile(name:String)
 		If PangolinProfiler.g_Profiler Then
 			PangolinProfiler.g_Profiler.StartTimer(name)
@@ -83,38 +83,42 @@ Type PangolinProfiler
 			PangolinProfiler.g_Profiler.StopTimer(name)
 		End If
 	End Function
-	
+
 
 	' ------------------------------------------------------------
 	' -- Profiling
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Starts a debug timer.</summary>
-	''' <param name="timerName">The name of the timer to start. Case sensitive.</param>	
+	''' <param name="timerName">The name of the timer to start. Case sensitive.</param>
 	Method startTimer(timerName:String)
-		
+
 		Local timer:ProfileTimer = Self._timers.getTimer(timerName)
 		If timer = Null Then
 			timer = ProfileTimer.Create(timerName)
 			Self._timers.Insert(timerName, timer)
 		End If
-		
+
 		timer.start()
-	
+
 	End Method
 
 	''' <summary>Stops a debug timer.</summary>
-	''' <param name="timerName">The name of the timer to stop. Case sensitive.</param>	
+	''' <param name="timerName">The name of the timer to stop. Case sensitive.</param>
 	Method stopTimer(timerName:String)
-		
+
 		Local timer:ProfileTimer = Self._timers.getTimer(timerName)
-		
+
 		If timer = Null Then	' Error - can't find timer to stop
 			Throw "Timer " + timerName + " not found"
 		EndIf
-		
+
 		timer.Stop()
-	
+
+	End Method
+
+	Method clearTimers()
+		Self._timers.clear()
 	End Method
 
 

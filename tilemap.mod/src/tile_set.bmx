@@ -68,9 +68,9 @@ Type TileSet
 	End Method
 	
 	Method getTileInfo:Tile(tileID:Int)
-	
-		' TODO: Cache these values
-	
+		' TODO: Cache these values.
+		If tileID = -1 Then Return Null
+
 		' TODO: Gets information about a set tile
 		If tileID > -1 And tileID < Self._tileCount Then
 			Return Self._tileLookup[tileID]

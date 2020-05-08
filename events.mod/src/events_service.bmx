@@ -138,7 +138,7 @@ Type EventService Extends GameService
 		
 		' Only handle emitted events and events with data
         if id <> EmitEventHook then return eventData
-        If GameEvent(EventData) = Null Then Return eventData
+        If GameEvent(eventData) = Null Then Return eventData
         
 		' Get the event
 		Local event:GameEvent		= GameEvent(eventData)

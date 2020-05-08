@@ -22,15 +22,14 @@ Type GameEvent extends TEvent
 	Field name:String
 
 	Function CreateEvent:GameEvent(eventName:String, sender:Object = Null, data:Object = Null)
-
 		Local this:GameEvent = New GameEvent
-		this.source	= sender
-		this.id		= GameEventMapper.getEventId(eventName)
-		this.extra	= data
+
+		this.source = sender
+		this.id     = GameEventMapper.getEventId(eventName)
+		this.extra  = data
 		this.name   = eventName
 
 		Return this
-
 	End Function
 
 	''' <summary>Create a GameEvent with a name and optional extra data.</summary>
@@ -38,12 +37,12 @@ Type GameEvent extends TEvent
 	''' <param name="extra">Optional object that will be stored in event's `extra` field.</param>
 	''' <return>The newly created event.</return>
 	Function CreateSimple:GameEvent(eventName:String, extra:Object = Null)
-
 		Local this:GameEvent = New GameEvent
-		this.extra	= extra
-		this.name   = eventName
-		Return this
 
+		this.extra = extra
+		this.name  = eventName
+
+		Return this
 	End Function
 
 	Function fireEvent:GameEvent(eventName:String, sender:Object = Null, data:Object = Null)

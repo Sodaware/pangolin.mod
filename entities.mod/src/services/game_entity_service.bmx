@@ -124,6 +124,8 @@ Type GameEntityService Extends GameService ..
 	' -- Getting Component Types
 	' ------------------------------------------------------------
 
+	''' <summary>Get the ComponentType for a Type name.</summary>
+	''' <param name="name">A valid BlitzMax type name.</param>
 	Method getComponentType:ComponentType(name:String)
 		Return ComponentTypeManager.getTypeForName(name)
 	End Method

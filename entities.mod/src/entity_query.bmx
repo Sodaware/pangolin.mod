@@ -30,7 +30,7 @@ Type EntityQuery
 	Method filter:EntityQuery(entities:EntityBag)
 		Self._toFilter = entities
 
-		Return self
+		Return Self
 	End Method
 
 
@@ -41,12 +41,11 @@ Type EntityQuery
 	''' <summary>Run query filters and return the filtered collection.</summary>
 	''' <return>EntityBag of filtered results.</return>
 	Method getResults:EntityBag()
-
 		' Create a fast copy of the bag.
 		Local results:EntityBag = Self._toFilter.copy()
 
 		' Run filters.
-		For local filter:BaseEntityQueryFilter = eachin self._filters
+		For Local filter:BaseEntityQueryFilter = EachIn Self._filters
 			results = filter.filter(results)
 		Next
 
@@ -117,7 +116,7 @@ Type EntityQuery
 
 	''' <summary>Create a new EntityQuery and set the list of entities to filter.</summary>
 	Function Create:EntityQuery(entities:EntityBag)
-		Local this:EntityQuery = new EntityQuery
+		Local this:EntityQuery = New EntityQuery
 
 		this._toFilter = entities
 

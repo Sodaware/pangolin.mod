@@ -97,10 +97,10 @@ Type ComponentTemplate
 	End Method
 
 	Method clone:ComponentTemplate()
-		Return Self.Copy()
+		Return Self.copy()
 	End Method
 
-	Method Copy:ComponentTemplate()
+	Method copy:ComponentTemplate()
 
 		Local this:ComponentTemplate	= ComponentTemplate.Create()
 		this._schema = Self._schema
@@ -132,6 +132,7 @@ Type ComponentTemplate
 		Self._fieldValues.Insert(fieldName, fieldValue)
 	End Method
 
+	' TODO: Is there a need for this?
 	Method _setFieldValueObject(fieldName:String, fieldValue:Object)
 		Self._fieldCount:+ 1
 		Self._fieldValues.Insert(fieldName, fieldValue)

@@ -12,15 +12,15 @@
 
 Type ContentDbSerializer
 
-	Method CanLoad:Int(fileName:String) Abstract
-	Method Load(db:ContentDb, url:Object) Abstract
+	Method canLoad:Byte(fileName:String) Abstract
+	Method load(db:ContentDb, url:Object) Abstract
 	Method loadEntities:TList(db:ContentDb, url:Object) Abstract
-	Method Save(db:ContentDb, url:Object) Abstract
+	Method save(db:ContentDb, url:Object) Abstract
 
 	Method _openFile:TStream(url:Object)
 
 		' Attempt to read map stream
-		Local fileIn:TStream = ReadStream( url )
+		Local fileIn:TStream = ReadStream(url)
 		If Not(fileIn) Then Return Null
 
 		' Check position in stream is correct
