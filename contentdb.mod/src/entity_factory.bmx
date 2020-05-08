@@ -40,9 +40,9 @@ Type EntityFactory
 
 	''' <summary>Spawns a new object from a template.</summary>
 	''' <param name="template">The template to use for the new object.</param>
-	''' <param name="instanceName">Optional unique ID for this game object.</param>
+	''' <param name="tag">Optional tag for this game object.</param>
 	''' <return>The created object, or null if there was an error.</return>
-	Function spawnObject:Entity(template:EntityTemplate, instanceName:String = "")
+	Function spawnObject:Entity(template:EntityTemplate, tag:String = "")
 
 		' Check inputs and configuration
 		If template = Null Then Return Null
@@ -52,8 +52,8 @@ Type EntityFactory
 
 		' Create new object
 		Local objectInstance:Entity = EntityFactory._world.createEntity()
-		objectInstance.setGroup(instanceName)
-		objectInstance.setTag(instanceName)
+		objectInstance.setGroup(tag)
+		objectInstance.setTag(tag)
 
 		' Add components based on each sub-template
 		For Local component:ComponentTemplate = EachIn template.getComponentTemplates()
@@ -143,16 +143,25 @@ Type EntityFactory
 
 			Local fieldDefinition:TField = typeDef.FindField(fieldData.getName())
 
-			' Check field exists and isn't internal / private
-			If fieldDefinition And Not(fieldDefinition.Name().StartsWith("m_") Or fieldDefinition.Name().StartsWith("_"))
+			' Ignore field if it doesn't exist or is internal / private.
+			If fieldDefinition = Null Or fieldDefinition.Name().StartsWith("m_") Or fieldDefinition.Name().StartsWith("_") Then
+				Continue
+			End If
 
-				If fieldData.GetType() = "bool" Then
+			' Set the value based on the data type.
+			Select fieldData.getType()
+				' Bools are set to true if value is "true"
+				' TODO: Take uppercase/1 into account?
+				Case "bool"
 					fieldDefinition.Set(instance, String(template.GetFieldValue(fieldData.getName()) = "true"))
-				Else
-					fieldDefinition.Set(instance, template.GetFieldValue(fieldData.getName()))
-				EndIf
 
-			EndIf
+				Case "string_list"
+					fieldDefinition.Set(instance, template.getRawField(fieldData.getName()))
+
+				Default
+					fieldDefinition.Set(instance, template.GetFieldValue(fieldData.getName()))
+
+			End Select
 
 		Next
 
