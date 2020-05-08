@@ -69,6 +69,35 @@ Type ComponentTypeManager
 
 
 	' ------------------------------------------------------------
+	' -- Autoload Helpers
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Set field values of an object to ComponentType instances via metadata.
+	'''
+	''' This is used for setting lookup fields in a type. It's the equivelant of
+	''' manually calling `ComponentTypeManager.getTypeForName`, but uses metadata
+	''' to simplify things.
+	'''
+	''' For example:
+	''' `Field component_lookup:ComponentType { component_type = "MyComponent" }`
+	'''
+	''' Will set the `component_lookup` field to be the component type for
+	''' "MyComponent".
+	''' </summary>
+	''' <param name="o">The object to autoload fields for.</param>
+	Function autoloadTypeLookups(o:Object)
+		Local objectInfo:TTypeId = TTypeId.ForObject(o)
+
+		For Local f:TField = EachIn objectInfo.EnumFields()
+			If f.MetaData("component_type") <> Null Then
+				f.Set(Self, ComponentTypeManager.getTypeForName(f.MetaData("component_type")))
+			EndIf
+		Next
+	End Function
+
+
+	' ------------------------------------------------------------
 	' -- Internal Helpers
 	' ------------------------------------------------------------
 
