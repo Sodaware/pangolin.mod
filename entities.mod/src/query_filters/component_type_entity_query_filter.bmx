@@ -16,14 +16,22 @@ Type ComponentTypeEntityQueryFilter extends BaseEntityQueryFilter
 	Field _invert:Byte = False
 
 	Method filter:EntityBag(bag:EntityBag)
-		Local size:Int = bag._size - 1
+		Local size:Int          = bag._size - 1
+		Local hasComponent:Byte = False
 
 		For Local i:Int = 0 To size
 			If bag._objects[i] = Null Then Continue
 
-			If bag._objects[i]._typeBits & Self._componentType._bit <> Self._componentType._bit Then
-				bag._objects[i] = Null
-			End If
+			hasComponent = bag._objects[i]._typeBits & Self._componentType._bit = Self._componentType._bit 			
+
+			Select Self._invert
+				Case True
+					' Remove if entity has this component.
+					If hasComponent Then bag._objects[i] = Null
+				Case False
+					' Remove if entity DOES NOT have this component.
+					If Not hasComponent Then bag._objects[i] = Null
+			End Select
 		Next
 
 		Return bag

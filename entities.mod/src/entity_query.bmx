@@ -55,6 +55,14 @@ Type EntityQuery
 		Return results
 	End Method
 
+	''' <summary>Run query filters and return the number of items in the collection.</summary>
+	''' <return>Number of items.</return>
+	Method countResults:Int()
+		Local results:EntityBag = Self.getResults()
+
+		Return results.getSize()
+	End Method
+
 	''' <summary>Run query filters and return the first item found.</summary>
 	''' <return>Entity that matches all filters.</return>
 	Method getSingleResult:Entity()
@@ -76,6 +84,13 @@ Type EntityQuery
 		Return Self.addFilter(ComponentTypeEntityQueryFilter.Create(t))
 	End Method
 
+	''' <summary>Filter entity list to only include entities without a specific component.</summary>
+	''' <param name="t">The component type to filter by.</param>
+	''' <return>Self</return>
+	Method withoutComponent:EntityQuery(t:ComponentType)
+		Return Self.addFilter(ComponentTypeEntityQueryFilter.Create(t, True))
+	End Method
+
 	''' <summary>Filter entity list to only include entities with a specific field value.</summary>
 	''' <param name="t">The component to check.</param>
 	''' <param name="name">The component field to check.</param>
@@ -86,9 +101,10 @@ Type EntityQuery
 	End Method
 
 	Method withoutComponentFieldValue:EntityQuery(t:ComponentType, fieldName:String, fieldValue:Object)
-''        self._filters.addLast(ComponentFieldNotValueEntityQueryFilter.Create(t, fieldName, fieldValue))
+		Throw "Not yet implemented"
+        ' Self.addFilter(ComponentFieldNotValueEntityQueryFilter.Create(t, fieldName, fieldValue))
 
-		Return self
+		Return Self
 	End Method
 
 	''' <summary>Filter entity list to only include entities with a specific group.</summary>
