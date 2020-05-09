@@ -91,7 +91,7 @@ Type ComponentTypeManager
 
 		For Local f:TField = EachIn objectInfo.EnumFields()
 			If f.MetaData("component_type") <> Null Then
-				f.Set(Self, ComponentTypeManager.getTypeForName(f.MetaData("component_type")))
+				f.Set(o, ComponentTypeManager.getTypeForName(f.MetaData("component_type")))
 			EndIf
 		Next
 	End Function
