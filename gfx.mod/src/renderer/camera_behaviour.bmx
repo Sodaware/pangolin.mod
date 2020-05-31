@@ -19,7 +19,7 @@ Type CameraBehaviour
 		Self._camera = camera
 	End Method
 	
-	Method afterTargetSet()
+	Method afterTargetSet(jump:Byte)
 		
 	End Method
 	

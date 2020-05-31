@@ -137,7 +137,7 @@ Type RenderCamera Extends AbstractRenderCamera
 			Self.jumpToTarget()
 		End If
 
-		Self._behaviour.afterTargetSet()
+		Self._behaviour.afterTargetSet(jumpTo)
 
 	End Method
 
