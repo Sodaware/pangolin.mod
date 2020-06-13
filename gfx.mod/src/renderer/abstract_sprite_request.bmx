@@ -41,6 +41,8 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	Field _alpha:Float		= 1             '''< Transparency, between 0 and 1
 	Field _xHandle:Float	= 0             '''< X handle. Defaults to left side of image.
 	Field _yHandle:Float	= 0             '''< Y handle. Defaults to top of image.
+	Field _xOrigin:Int      = 0             '''< The X origin to render from.
+	Field _yOrigin:Int      = 0             '''< The Y origin to render from.
 
 
 	' ------------------------------------------------------------
@@ -160,18 +162,24 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 		Return Self
 	End Method
 
-	Method SetRotation(value:Float)
+	Method setRotation(value:Float)
 		Self._rotation = value
 	End Method
 
-	Method SetHandle(x:Float, y:Float)
+	Method setHandle(x:Float, y:Float)
 		Self._xHandle = x
 		Self._yHandle = y
 	End Method
 
+	Method setOrigin:AbstractSpriteRequest(x:Int, y:Int)
+		Self._xOrigin = x
+		Self._yOrigin = y
+
+		Return Self
+	End Method
+	
 	' TODO: Move to a private method
 	Method setRenderState()
-
 		' Initialise drawing stuff
 		PangolinGfx.SetColorInt(Self._color)
 		brl.max2d.SetScale(Self._xScale, Self._yScale)
@@ -179,7 +187,7 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 		brl.max2d.SetHandle(Self._xHandle, Self._yHandle)
 		brl.max2d.SetBlend(Self._blendMode)
 		brl.max2d.SetAlpha(Self._alpha)
-
+		brl.max2d.SetOrigin(Self._xOrigin, Self._yOrigin)
 	End Method
 
 
