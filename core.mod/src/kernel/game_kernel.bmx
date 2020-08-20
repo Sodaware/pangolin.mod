@@ -272,6 +272,27 @@ Type GameKernel
 
 
 	' ------------------------------------------------------------
+	' -- Manual injection
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Inject services into all registered services.
+	'''
+	''' This should be called once services have been registered so that they
+	''' don't have to be added in a specific order.
+	''' </summary>
+	Method injectAllServices()
+		For Local serviceProvider:GameService = EachIn Self._serviceList
+			If serviceProvider.hasDependencies() Then
+				For Local dependency:TTypeId = EachIn serviceProvider.getDependencies()
+					serviceProvider.inject(dependency, Self.getService(dependency))
+				Next
+			EndIf
+		Next
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Service utility functions
 	' ------------------------------------------------------------
 
