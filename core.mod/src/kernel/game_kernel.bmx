@@ -25,7 +25,7 @@ Include "../services/kernel_information_service.bmx"
 ''' <summary>
 ''' Main kernel for pangolin games.
 '''
-''' All services are registered by TTypeId. This can either by the TTypeId for
+''' All services are registered by TTypeId. This can either be the TTypeId for
 ''' the service OR its parent. This can be used to ensure there is only a single
 ''' service of a particular type, but allow the implementation class to change.
 ''' </summary>
