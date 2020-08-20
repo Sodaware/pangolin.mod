@@ -43,6 +43,11 @@ Type IGameScreen Abstract
 	''' <summary>Check if the screen is hidden.</summary>
 	Method isHidden:Byte() Abstract
 
+	''' <summary>Check if the screen is visible.</summary>
+	Method isVisible:Byte()
+		Return Not Self.isHidden()
+	End Method
+
 	''' <summary>Check if the screen is a popup.</summary>
 	Method isPopup:Byte() Abstract
 
