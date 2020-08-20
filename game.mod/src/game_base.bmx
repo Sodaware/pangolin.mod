@@ -137,6 +137,11 @@ Type GameBase
 	' -- Kernel Helpers
 	' ------------------------------------------------------------
 
+	''' <summary>Get the game's kernel instance.</summary>
+	Method getKernel:GameKernel()
+		Return Self._kernel
+	End Method
+
 	''' <summary>Add a service to the game's kernel.</summary>
 	''' <param name="service">The GameService object to add to the kernel.</param>
 	''' <param name="serviceType">
