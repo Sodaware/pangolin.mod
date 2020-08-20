@@ -18,13 +18,11 @@ Import brl.reflection
 
 Include "igame_screen.bmx"
 
-
 Type ScreenManager
 
 	' TODO: Change to "IGameScreenCollection"?
 	Field _screens:TList        = New TList
 	Field screensToUpdate:TList = New TList
-
 	Field traceEnabled:Byte     = False
 
 
@@ -42,7 +40,6 @@ Type ScreenManager
 	''' <summary>Add a screen to the manager and enter it.</summary>
 	''' <param name="screen">The screen to add.</param>
 	Method addScreen(screen:IGameScreen, loadResources:Byte = True)
-
 		Assert screen <> null, "Cannot add a null screen"
 
 		' Setup the newly added screen.
@@ -57,30 +54,29 @@ Type ScreenManager
 		' Add to the list of active screens and enter.
 		Self._screens.AddLast(screen)
 		Self._enterScreen(screen)
-
 	End Method
 
+	''' <summary>Pop the last screen added and exit it.</summary>
 	Method popScreen:IGameScreen()
 		IGameScreen(Self._screens.Last()).exitScreen()
 	End Method
 
 	''' <summary>
-	''' Removes a screen from the screen manager. You should normally
-	''' use IGameScreen.ExitScreen instead of calling this directly, so
-	''' the screen can gradually transition off rather than just being
-	''' instantly removed.
+	''' Removes a screen from the screen manager.
+	'''
+	''' You should normally use IGameScreen.ExitScreen instead of calling this
+	''' directly, so the screen can gradually transition off rather than just
+	''' being instantly removed.
 	''' </summary>
 	Method removeScreen:IGameScreen(screen:IGameScreen)
-
 		' Free resources for the screen
-		screen.FreeResources()
+		screen.freeResources()
 
 		' Remove from lists
 		Self._screens.Remove(screen)
 		Self.screensToUpdate.Remove(screen)
 
 		Return screen
-
 	End Method
 
 	''' <summary>
@@ -99,9 +95,11 @@ Type ScreenManager
 	End Method
 
 	''' <summary>
-	''' Expose an array holding all the screens. We return a copy rather
-	''' than the real master list, because screens should only ever be added
-	''' or removed using the AddScreen and RemoveScreen methods.
+	''' Expose an array holding all the screens.
+	'''
+	''' We return a copy rather than the real master list, because screens
+	''' should only ever be added or removed using the AddScreen and
+	''' RemoveScreen methods.
 	''' </summary>
 	Method getScreens:IGameScreen[]()
 		Return IGameScreen[](Self._screens.ToArray())
@@ -119,14 +117,14 @@ Type ScreenManager
 	' ------------------------------------------------------------
 
 	Method traceScreens()
-
 		DebugLog "ScreenManager.TraceScreens {"
+
 		For Local screen:IGameScreen = EachIn Self._screens
 			Local t:TTypeId = TTypeId.ForObject(screen)
 			DebugLog "    " + t.Name()
 		Next
-		DebugLog "}"
 
+		DebugLog "}"
 	End Method
 
 
@@ -143,12 +141,11 @@ Type ScreenManager
 	' -- Updating / Rendering
 	' ------------------------------------------------------------
 
-	Method update(gameTime:Int)
-
+	Method update(delta:Float)
 		' TODO: This can probably be optimized...
 
-		' Make a copy of the master screen list, To avoid confusion If
-		' the process of updating one screen adds or removes others.
+		' Make a copy of the master screen list. This prevents issues if screens
+		' are added or removed during the update cycle.
 		Self.screensToUpdate.clear()
 
 		For Local screen:IGameScreen = EachIn Self._screens
@@ -159,31 +156,28 @@ Type ScreenManager
 		Local coveredByOtherScreen:Byte = False
 
 		' Loop as long as there are screens waiting to be updated.
-		While Self.screensToUpdate.Count() > 0
+		While Not Self.screensToUpdate.isEmpty()
 
-			' Pop screen & update
+			' Pop screen & update.
 			Local currentScreen:IGameScreen	= IGameScreen(Self.screensToUpdate.RemoveLast())
 			currentScreen.setIsCovered(coveredByOtherScreen)
-			currentScreen.update(gameTime, otherScreenHasFocus, coveredByOtherScreen)
+			currentScreen.update(delta, otherScreenHasFocus, coveredByOtherScreen)
 
-			' If screen is a popupm disable input for everything below
-			' If currentScreen.State = IGameScreen.STATE_ACTIVE Or currentScreen.State = IGameScreen.STATE_TransitionOn Then
-
-				' Update if first active screen
-				If otherScreenHasFocus = False Then
-					If currentScreen.inputEnabled() Then
-						currentScreen.HandleInput()
-					EndIf
-					If currentScreen.isPopup() Then
-						otherScreenHasFocus = True
-					EndIf
+			' If screen is a popup, disable input for everything below
+			' Update if first active screen
+			If otherScreenHasFocus = False Then
+				If currentScreen.inputEnabled() And currentScreen.isVisible() Then
+					currentScreen.handleInput()
 				EndIf
 
-				If currentScreen.IsPopup() Then
-					coveredByOtherScreen = True
-				End If
+				If currentScreen.isPopup() Then
+					otherScreenHasFocus = True
+				EndIf
+			EndIf
 
-		'	End If
+			If currentScreen.isPopup() Then
+				coveredByOtherScreen = True
+			End If
 
 		Wend
 
