@@ -137,6 +137,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 
 	Method initialize()
 		Self._autoInjectComponentLookups()
+		Self.autoloadServices()
 	End Method
 
 	''' <summary>Called when an entity has been added to this system's list of interests.</summary>
