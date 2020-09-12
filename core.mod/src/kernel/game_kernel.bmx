@@ -291,6 +291,47 @@ Type GameKernel
 		Next
 	End Method
 
+	''' <summary>
+	''' Autoload services into an object object from the kernel.
+	'''
+	''' If `requireAutoloadFlag` is true, fields that need injection must have
+	''' the meta field "autoload_service".
+	''' </summary>
+	''' <param name="target">The target object to autoload.</param>
+	''' <param name="requireAutoloadFlag">If true, service fields require "autoload_service" meta.</param>
+	Method autoloadObjectServices(target:Object, requireAutoloadFlag:Byte = True)
+		Local typeData:TTypeId = TTypeId.ForObject(target)
+		Local baseType:TTypeId = TTypeId.ForName("GameService")
+
+		For Local fieldData:TField = EachIn typeData.EnumFields()
+
+			' Skip any field that doesn't have an autoload flag
+			If requireAutoloadFlag And "" = fieldData.MetaData("autoload_service") Then Continue
+
+			' Check this field is a service type
+			Local fieldType:TTypeId = fielddata.TypeId()
+			If fieldType = Null Then Continue
+
+			' If this field type is a service, autoload it
+			If Self._objectInherits(target, fieldType, baseType) Then
+				fieldData.Set(target, Self.getService(fieldType))
+			End If
+
+		Next
+	End Method
+
+	''' <summary>
+	''' Check if `fieldType` inherits `baseType`.
+	'''
+	''' This checks all parent types all the way to the root Object type.
+	''' </summary>
+	Method _objectInherits:Byte(target:Object, fieldType:TTypeId, baseType:TTypeId)
+		If fieldType.ExtendsType(baseType) Then Return True
+		If fieldType.SuperType() = Null Then Return False
+
+		Return Self._objectInherits(target, fieldType.SuperType(), baseType)
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Service utility functions
