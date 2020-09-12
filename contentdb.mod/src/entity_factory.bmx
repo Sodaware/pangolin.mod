@@ -104,7 +104,7 @@ Type EntityFactory
 		' Check inputs
 		If template = Null Then Throw "Cannot create component from invalid template"
 
-		' Get the Blitz type for this component and create
+		' Get the Blitz type for this component and create.
 		Local typeDef:TTypeId = EntityFactory._getTemplateTypeId(template)
 		If typeDef = Null Then
 			DebugLog "Component '" + template.getSchemaName() + "' not found"
@@ -137,10 +137,9 @@ Type EntityFactory
 	''' <summary>Creates a component using reflection.</summary>
 	Function _createComponentFromTypeId:EntityComponent(instance:EntityComponent, typeDef:TTypeId, template:ComponentTemplate)
 
-		' Set each field manually
+		' Set each field manually.
 		Local fieldList:TList = template.getSchema().getFields()
 		For Local fieldData:ComponentField = EachIn fieldList
-
 			Local fieldDefinition:TField = typeDef.FindField(fieldData.getName())
 
 			' Ignore field if it doesn't exist or is internal / private.
@@ -150,16 +149,15 @@ Type EntityFactory
 
 			' Set the value based on the data type.
 			Select fieldData.getType()
-				' Bools are set to true if value is "true"
-				' TODO: Take uppercase/1 into account?
+				' TODO: Also count "1" as true?
 				Case "bool"
-					fieldDefinition.Set(instance, String(template.GetFieldValue(fieldData.getName()) = "true"))
+					fieldDefinition.set(instance, String(Lower(template.getFieldValue(fieldData.getName())) = "true"))
 
 				Case "string_list"
-					fieldDefinition.Set(instance, template.getRawField(fieldData.getName()))
+					fieldDefinition.set(instance, template.getRawField(fieldData.getName()))
 
 				Default
-					fieldDefinition.Set(instance, template.GetFieldValue(fieldData.getName()))
+					fieldDefinition.set(instance, template.getFieldValue(fieldData.getName()))
 
 			End Select
 
@@ -186,6 +184,7 @@ Type EntityFactory
 	''' <summary>Get the BlitzMax Type data for a component template.</summary>
 	Function _getTemplateTypeId:TTypeId(template:ComponentTemplate)
 		If EntityFactory._TypeIdLookup = Null Then EntityFactory._setup()
+
 		Return TTypeId(EntityFactory._TypeIdLookup.ValueForKey(template.getSchemaName()))
 	End Function
 
