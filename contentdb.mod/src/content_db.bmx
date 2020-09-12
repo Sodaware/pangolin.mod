@@ -168,7 +168,13 @@ Type ContentDb
 	' -- Content Building
 	' ----------------------------------------------------------------------
 
-	''' <summary>Build all the object templates in the database. Sets up inheritance etc.</summary>
+	''' <summary>
+	''' Build all the object templates in the database.
+	'''
+	''' Goes through each template and ensures that each component has correct
+	''' values set. This must be called before using templates, or all kinds of
+	''' weirdness will occur.
+	''' </summary>
 	Method buildTemplates()
 		Self.buildChildTemplates()
 	End Method
@@ -182,20 +188,18 @@ Type ContentDb
 
 		For Local objTemplate:EntityTemplate = EachIn Self._objectTemplateList
 
-			' If template inherits, add it to our list of templates
+			' If template inherits, add it to our list of templates.
 			If objTemplate <> Null And objTemplate.inherits(templateName) Then
-
-				' If this is a root template, all initialisation will be done from schema, otherwise
-				'	it'll be done from the parent
+				' If this is a root template, all initialisation will be done
+				' from schema, otherwise it'll be done from the parent.
 				If parentTemplate = Null Then
 					Self.buildTemplateFromSchema(objTemplate)
 				Else
 					Self.buildTemplateFromParent(objTemplate, parentTemplate)
 				EndIf
 
-				' Build children
+				' Build children.
 				Self.buildChildTemplates(objTemplate.getName())
-
 			EndIf
 
 		Next
@@ -204,39 +208,42 @@ Type ContentDb
 
 	''' <summary>Builds an object template using values from the component schemas.</summary>
 	Method buildTemplateFromSchema(obj:EntityTemplate)
-
 		For Local childComponent:ComponentTemplate = EachIn obj.getComponentTemplates()
 			childComponent.copyFromSchema(childComponent.getSchema())
 		Next
-
 	End Method
 
 	Method buildTemplateFromParent(obj:EntityTemplate, parent:EntityTemplate)
-
-		'	2) If parent is set, iterate through parent components
-		'		If child doesn't have this component, create it & add it
-		' Set the category
+		' Set the category from the parent if needed.
 		If parent._category And obj._category = "" Then
-			obj._Category = parent._Category
-		endif
+			obj._category = parent._Category
+		EndIf
 
+		' Copy across all child components from the parent first.
 		For Local childComponent:ComponentTemplate = EachIn parent.getComponentTemplates()
 
-			If obj.hasComponentTemplate(childComponent.getSchemaName()) = False Then
-
+			' If the current template does not already have this component
+			' attached, copy the component from the parent.
+			If Not obj.hasComponentTemplate(childComponent.getSchemaName()) Then
 				Local newComponent:ComponentTemplate = childComponent.Copy()
+				newComponent.copyFromSchema(childComponent.getSchema())
 				newComponent.copyFromTemplate(childComponent)
+
 				obj.addComponentTemplate(newComponent)
-
 			Else
-
-				Local t1:ComponentTemplate	= obj.getComponentTemplate(childComponent.getSchemaName())
-				Local t2:ComponentTemplate	= parent.getComponentTemplate(childComponent.getSchemaName())
+				' Otherwise, copy fields from the parent that have not been set
+				' yet.
+				Local t1:ComponentTemplate = obj.getComponentTemplate(childComponent.getSchemaName())
+				Local t2:ComponentTemplate = parent.getComponentTemplate(childComponent.getSchemaName())
 
 				t1.copyFromTemplate(t2)
-
 			EndIf
 
+		Next
+
+		' Set any missing defaults.
+		For Local component:ComponentTemplate = EachIn obj.getComponentTemplates()
+			component.copyFromSchema(component.getSchema())
 		Next
 
 	End Method
