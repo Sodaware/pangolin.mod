@@ -13,17 +13,15 @@
 
 SuperStrict
 
-Import brl.linkedlist
 Import brl.reflection
+Import sodaware.blitzmax_array
 
 Include "igame_screen.bmx"
 
 Type ScreenManager
-
-	' TODO: Change to "IGameScreenCollection"?
-	Field _screens:TList        = New TList
-	Field screensToUpdate:TList = New TList
-	Field traceEnabled:Byte     = False
+	Field _screens:IGameScreen[]
+	Field screensToUpdate:IGameScreen[]
+	Field traceEnabled:Byte
 
 
 	' ------------------------------------------------------------
@@ -40,7 +38,7 @@ Type ScreenManager
 	''' <summary>Add a screen to the manager and enter it.</summary>
 	''' <param name="screen">The screen to add.</param>
 	Method addScreen(screen:IGameScreen, loadResources:Byte = True)
-		Assert screen <> null, "Cannot add a null screen"
+		Assert screen <> Null, "Cannot add a null screen"
 
 		' Setup the newly added screen.
 		screen.setIsExiting(False)
@@ -51,14 +49,15 @@ Type ScreenManager
 			screen.loadResources()
 		EndIf
 
-		' Add to the list of active screens and enter.
-		Self._screens.AddLast(screen)
+		' Add to the list of screens and enter.
+		array_append(Self._screens, screen)
 		Self._enterScreen(screen)
 	End Method
 
 	''' <summary>Pop the last screen added and exit it.</summary>
 	Method popScreen:IGameScreen()
-		IGameScreen(Self._screens.Last()).exitScreen()
+		Local screen:IGameScreen = IGameScreen(array_pop(Self._screens))
+		screen.exitScreen()
 	End Method
 
 	''' <summary>
@@ -72,9 +71,9 @@ Type ScreenManager
 		' Free resources for the screen
 		screen.freeResources()
 
-		' Remove from lists
-		Self._screens.Remove(screen)
-		Self.screensToUpdate.Remove(screen)
+		' Remove from lists.
+		Self._screens        = IGameScreen[](array_remove(Self._screens, screen))
+		Self.screensToUpdate = IGameScreen[](array_remove(Self.screensToUpdate, screen))
 
 		Return screen
 	End Method
@@ -83,15 +82,9 @@ Type ScreenManager
 	''' Clears all screens from the current list of screens.
 	''' </summary>
 	Method clearScreens()
-
 		For Local screen:IGameScreen = EachIn Self._screens
-			screen.freeResources()
-			Self._screens.remove(screen)
-			Self.screensToUpdate.remove(screen)
+			Self.removeScreen(screen)
 		Next
-
-		Self._screens.Clear()
-
 	End Method
 
 	''' <summary>
@@ -102,7 +95,7 @@ Type ScreenManager
 	''' RemoveScreen methods.
 	''' </summary>
 	Method getScreens:IGameScreen[]()
-		Return IGameScreen[](Self._screens.ToArray())
+		Return Self._screens
 	End Method
 
 	Method _enterScreen(screen:IGameScreen)
@@ -129,37 +122,23 @@ Type ScreenManager
 
 
 	' ------------------------------------------------------------
-	' -- Content Loading / Unloading
-	' ------------------------------------------------------------
-
-	Method loadContent()
-		RuntimeError "ScreenManager.loadContent -- Method is deprecated"
-	End Method
-
-
-	' ------------------------------------------------------------
 	' -- Updating / Rendering
 	' ------------------------------------------------------------
 
 	Method update(delta:Float)
-		' TODO: This can probably be optimized...
 
 		' Make a copy of the master screen list. This prevents issues if screens
 		' are added or removed during the update cycle.
-		Self.screensToUpdate.clear()
-
-		For Local screen:IGameScreen = EachIn Self._screens
-			Self.screensToUpdate.addLast(screen)
-		Next
+		Self.screensToUpdate = Self._screens[..]
 
 		Local otherScreenHasFocus:Byte  = False
 		Local coveredByOtherScreen:Byte = False
 
 		' Loop as long as there are screens waiting to be updated.
-		While Not Self.screensToUpdate.isEmpty()
-
+		While Self.screensToUpdate.length > 0
 			' Pop screen & update.
-			Local currentScreen:IGameScreen	= IGameScreen(Self.screensToUpdate.RemoveLast())
+			Local currentScreen:IGameScreen	= IGameScreen(array_pop(Self.screensToUpdate))
+
 			currentScreen.setIsCovered(coveredByOtherScreen)
 			currentScreen.update(delta, otherScreenHasFocus, coveredByOtherScreen)
 
