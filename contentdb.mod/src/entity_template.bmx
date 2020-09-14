@@ -15,24 +15,23 @@
 SuperStrict
 
 Import brl.map
-Import brl.linkedlist
 
 Import "component_template.bmx"
 
 Type EntityTemplate
 
-	' -- Information
+	' -- Template information.
 	Field _name:String
 	Field _description:String
 	Field _inherits:String
 
-	' -- Internal organisation
+	' -- Internal organisation.
 	Field _category:String
 	Field _tags:String[]
 
-	' -- Component Templates
+	' -- Component template storage.
 	Field _componentTemplates:TMap
-	Field _componentTemplatesList:TList		'< List of ComponentTemplate
+	Field _componentTemplatesList:ComponentTemplate[]
 
 
 	' ------------------------------------------------------------
@@ -119,12 +118,11 @@ Type EntityTemplate
 
 	''' <summary>Count the number of components in this template.</summary>
 	Method countComponents:Int()
-		' TODO: Slow -- room for optimisation
-		Return Self._componentTemplatesList.Count()
+		Return Self._componentTemplatesList.length
 	End Method
 
 	''' <summary>Get all ComponentTemplate objects that make up this entity.</summary>
-	Method getComponentTemplates:TList()
+	Method getComponentTemplates:ComponentTemplate[]()
 		Return Self._componentTemplatesList
 	End Method
 
@@ -140,8 +138,10 @@ Type EntityTemplate
 	End Method
 
 	Method addComponentTemplate(newComponent:ComponentTemplate)
-		Self._componentTemplates.Insert(newComponent.getSchemaIdentifier(), newComponent)	'Lower(newComponent\m_Schema\m_Name),
-		Self._componentTemplatesList.AddLast(newComponent)
+		Self._componentTemplates.Insert(newComponent.getSchemaIdentifier(), newComponent)
+
+		Self._componentTemplatesList = Self._componentTemplatesList[..Self._componentTemplatesList.Length + 1]
+		Self._componentTemplatesList[Self._componentTemplatesList.Length - 1] = newComponent
 	End Method
 
 
@@ -150,7 +150,6 @@ Type EntityTemplate
 	' ------------------------------------------------------------
 
 	Method clone:EntityTemplate()
-
 		Local template:Entitytemplate = New EntityTemplate
 
 		' Clone basic details.
@@ -166,7 +165,6 @@ Type EntityTemplate
 		Next
 
 		Return template
-
 	End Method
 
 
@@ -204,17 +202,18 @@ Type EntityTemplate
 	' ------------------------------------------------------------
 
 	Method New()
-		Self._componentTemplates     = New TMap
-		Self._componentTemplatesList = New TList
+		Self._componentTemplates = New TMap
 	End Method
 
 	''' <summary>Creates and initialises a new EntityTemplate object and returns it.</summary>
 	''' <returns>The newly created EntityTemplate object.</returns>
 	Function Create:EntityTemplate(name:String, doc:String = "", inherits:String = "")
 		Local this:EntityTemplate = New EntityTemplate
+
 		this._name			= name
 		this._inherits		= inherits
 		this._description	= doc
+
 		Return this
 	End Function
 
