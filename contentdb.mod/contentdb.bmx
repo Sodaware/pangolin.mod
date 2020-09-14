@@ -26,7 +26,7 @@
 ' ------------------------------------------------------------------------------
 
 
-Module pangolin.ContentDb
+Module pangolin.contentdb
 
 SuperStrict
 

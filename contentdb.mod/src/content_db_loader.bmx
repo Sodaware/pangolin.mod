@@ -10,9 +10,6 @@
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
 
-' TODO: Fix this up, it's terrible :D
-
-
 Type ContentDbLoader
 
 	Function LoadTemplateFromFile(db:ContentDb, fileName:String)
@@ -23,9 +20,8 @@ Type ContentDbLoader
 		ContentDbLoader._LoadTemplate(db, fileName, zipIn)
 	End Function
 
-	Function loadComponentSchema:TList(fileName:String)
+	Function LoadComponentSchema:TList(fileName:String)
 
-		' TODO: Should we cache these? Takes 3ms, so probably not
 		Local id:TTypeId = TTypeId.ForName("ComponentSchemaSerializer")
 		For Local loader:TTypeId = EachIn id.DerivedTypes()
 			Local serializer:ComponentSchemaSerializer = ComponentSchemaSerializer(loader.NewObject())
@@ -38,7 +34,7 @@ Type ContentDbLoader
 
 	End Function
 
-	Function loadEntityTemplates:TList(db:ContentDb, fileName:String)
+	Function LoadEntityTemplates:TList(db:ContentDb, fileName:String)
 
 		Local id:TTypeId = TTypeId.ForName("ContentDbSerializer")
 		For Local loader:TTypeId = EachIn id.DerivedTypes()

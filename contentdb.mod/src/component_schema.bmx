@@ -17,21 +17,21 @@ Import brl.map
 
 Import "component_field.bmx"
 
-''' <summary>Describes the structure of a component within the application.</summary>
+''' <summary>Describes the structure of a component within the content database.</summary>
 Type ComponentSchema
 
-	' Standard information
+	' Standard information.
 	Field _name:String              '''< The name of the component.
 	Field _description:String       '''< A brief description of the component
 	Field _sourceFile:String        '''< The name of the file this component is declared in.
 
-	' Internal data
+	' Internal data.
 	Field _isInternal:Byte          '''< Is this an internal (ie BlitzMax) component or a script component
 	Field _requires:TList
 	Field _internals:TList
 
 	Field _fields:TMap				'''< Map of field names => ComponentField objects.
-	Field _fieldsList:TList			'''< List of fields for iterating
+	Field _fieldsList:TList			'''< List of `ComponentField` objects for iterating.
 
 
 	' ------------------------------------------------------------

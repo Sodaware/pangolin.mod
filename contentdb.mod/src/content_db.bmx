@@ -19,10 +19,9 @@ Import brl.retro
 Import brl.map
 Import brl.linkedlist
 
-Import sodaware.File_Util
+Import sodaware.file_util
 Import sodaware.file_ziphelper
 Import pangolin.entities
-
 import pangolin.profiler
 
 ' -- Structure
@@ -36,20 +35,22 @@ Include "content_db_loader.bmx"
 
 
 ''' <summary>
-''' The ContentDb class is a database of object templates that can be used when
-''' spawning game entities. Fully-integrated with pangolin.entities.
+''' The ContentDb class is a database of entity templates.
+'''
+''' These templates can be used to spawn `pangolin.entities` objects from a
+''' text-based template instead of creating them by hand,
 ''' </summary>
 Type ContentDb
 
-	' -- Hashes to store templates and schemas
+	' -- Maps of templates and schemas.
 	Field _objectTemplates:Tmap             '''< Map of TemplateName => ObjectTemplate.
 	Field _componentSchemas:Tmap            '''< Map of SchemaName => ComponentSchema.
 
-	' -- Lists
+	' -- Lists of templates and schemas.
 	Field _objectTemplateList:TList         '''< List of object templates.
 	Field _componentSchemaList:TList        '''< List of component schemas.
 
-	' -- Internal file lists
+	' -- Internal file lists.
 	Field _componentFiles:TList
 	Field _templateDirectories:TList
 
@@ -64,15 +65,13 @@ Type ContentDb
 	''' <param name="pathName">A valid directory path to add.</param>
 	''' <return>Self</return>
 	Method addTemplateDirectory:ContentDb(pathName:String)
-		' [todo] - Check the directory exists (take zip:: etc protocols into account)
+		' TODO: Check the directory exists (take zip:: etc protocols into account)
 		Self._templateDirectories.AddLast(pathName)
 
 		Return Self
 	End Method
 
-	''' <summary>
-	''' Add an archive file files to scan for templates.
-	''' </summary>
+	''' <summary>Add an archive file to scan for templates.</summary>
 	''' <param name="fileName">A valid file path to add.</param>
 	''' <return>Self</return>
 	Method addTemplateArchive:ContentDb(fileName:String)
@@ -88,58 +87,62 @@ Type ContentDb
 	' ----------------------------------------------------------------------
 
 	''' <summary>
-	''' Get a string value from a template using a dotted identifier. The first
-	''' part should be the template name and the second the field name.
+	''' Get a string value from a template using a dotted identifier.
+	'''
+	''' The first part should be the template name and the second the field
+	''' name. E.g. "my_object.my_field" will return the value of "my_field" from
+	''' the "my_object" template.
 	''' </summary>
 	''' <param name="path">Dotted path.</param>
+	''' <return>The field value.</return>
 	Method getTemplateString:String(path:String)
+		Local objectName:String = Left(path, path.Find("."))
+		Local fieldName:String  = Right(path, path.Length - path.Find(".") - 1)
 
 		' Get the template.
-		Local template:EntityTemplate = Self.getObjectTemplate(Left(path, path.Find(".")))
-		If template = Null Then Throw "Could not find ObjectTemplate: " + Left(path, path.Find("."))
+		Local template:EntityTemplate = Self.getObjectTemplate(objectName)
+		If template = Null Then Throw "Could not find ObjectTemplate: " + objectName
 
 		' Return the field value.
-		Return template.getTemplateString(Right(path, path.Length - path.Find(".") - 1))
-
+		Return template.getTemplateString(fieldName)
 	End Method
 
 	''' <summary>Count the number of object templates.</summary>
+	''' <return>Number of registered object templates.</return>
 	Method countObjectTemplates:Int()
 		Return Self._objectTemplateList.Count()
 	End Method
 
-	''' <summary>Gets a Component Scheme object from the content database.</summary>
+	''' <summary>Get a ComponentScheme object from the content database.</summary>
 	''' <param name="schemaName">The name of the schema to find.</param>
-	''' <returns>The schema object that was found, or null if it was not found.</returns>
+	''' <return>The schema object that was found, or Null if it was not found.</return>
 	Method getComponentSchema:ComponentSchema(schemaName:String)
 		Return ComponentSchema(Self._componentSchemas.ValueForKey(schemaName.ToLower()))
 	End Method
 
-	''' <summary>Gets a Game Object Template object from the content database.</summary>
+	''' <summary>Get an EntityTemplate object from the content database.</summary>
 	''' <param name="templateName">The name of the ObjectTemplate to retrieve.</param>
-	''' <returns>The GameObjectTemplate object that was found, or null if it was not found.</returns>
+	''' <return>The GameObjectTemplate object that was found, or null if it was not found.</return>
 	Method getObjectTemplate:EntityTemplate(templateName:String)
-		If templateName = "" Then Return Null
-
 		Return EntityTemplate(Self._objectTemplates.ValueForKey(templateName.ToLower()))
 	End Method
 
 	''' <summary>Gets a list of all of the GameObjectTemplate names within the ContentDb.</summary>
-	''' <returns>A list of GameObjectTemplate names.</returns>
-	Method getObjectTemplateList:TList()
-
-		Local classList:TList = New TList
+	''' <return>An array of GameObjectTemplate names.</return>
+	Method getObjectTemplateList:String[]()
+		Local classList:String[]
 
 		For Local template:EntityTemplate = EachIn Self._objectTemplateList
-			classList.AddLast(template.GetName())
+			classList = classList[..classList.length + 1]
+
+			classList[classList.length - 1] = template.getName()
 		Next
 
 		Return classList
-
 	End Method
 
 	''' <summary>Gets a list of all the ContentSchema names within the ContentDb.</summary>
-	''' <returns>A TList of ComponentSchema names.</returns>
+	''' <return>A TList of ComponentSchema names.</return>
 	Method getComponentSchemaList:TList()
 		Return Self._componentSchemaList
 	End Method
@@ -536,7 +539,7 @@ Type ContentDb
 	' ----------------------------------------------------------------------
 
 	''' <summary>Creates and initialises a new ContentDb object and returns it.</summary>
-	''' <returns>The newly created ContentDb object.</returns>
+	''' <return>The newly created ContentDb object.</return>
 	Function Create:ContentDb()
 		Return New ContentDb
 	End Function

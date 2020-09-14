@@ -42,7 +42,7 @@ Import "src/kernel/kernel_aware_interface.bmx"
 ''' <summary>Helper class for pangolin information.</summary>
 Type PangolinFramework
 
-   ''' <summary>Get the current version of the Pangolin framework.</summary>
+	''' <summary>Get the current version of the Pangolin framework.</summary>
 	Function GetVersion:String()
 		Return PANGOLIN_FRAMEWORK_VERSION
 	End Function

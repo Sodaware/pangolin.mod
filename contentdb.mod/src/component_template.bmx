@@ -15,7 +15,7 @@ SuperStrict
 Import brl.map
 Import "component_schema.bmx"
 
-
+''' <summary>A template for a single component within an EntityTemplate.</summary>
 Type ComponentTemplate
 
 	Field _fieldValues:TMap					'''< Map of fieldName => fieldValue.
@@ -48,7 +48,7 @@ Type ComponentTemplate
 		Return String(Self._fieldValues.ValueForKey(fieldName))
 	End Method
 
-	Method isFieldSet:Int(fieldName:String)
+	Method isFieldSet:Byte(fieldName:String)
 		Return (Self._fieldValues.ValueForKey(fieldName) <> Null)
 	End Method
 
@@ -65,10 +65,9 @@ Type ComponentTemplate
 	' -- Copying from other objects
 	' --------------------------------------------------
 
-	Method CopyFromTemplate:Int(template:ComponentTemplate)
-
-		If template = Null Then Return False
-		If template.countFields() = 0 Then Return False
+	Method copyFromTemplate(template:ComponentTemplate)
+		If template = Null Then Return
+		If template.countFields() = 0 Then Return
 
 		' Iterate through template schema fields, copying them to this template
 		For Local fieldName:String = EachIn template._fieldValues.Keys()
@@ -76,24 +75,19 @@ Type ComponentTemplate
 				Self._setFieldValue(fieldName, template.GetFieldValue(fieldName))
 			EndIf
 		Next
-
 	End Method
 
-	''' <summary>Copies the default field values from a schema to a component template.</summary>
-	Method CopyFromSchema:Int(schema:ComponentSchema)
-
-		If schema = Null Then Return False
-		If schema.CountFields() = 0 Then Return False
+	''' <summary>Copy the default field values from a schema to a component template.</summary>
+	Method copyFromSchema(schema:ComponentSchema)
+		If schema = Null Then Return
+		If schema.CountFields() = 0 Then Return
 
 		' Iterate through component schema fields, checking to see if they've been set in this template.
 		For Local fld:ComponentField = EachIn schema.getFields()
-			If Self.IsFieldSet(fld.getName()) = False Then
+			If Self.isFieldSet(fld.getName()) = False Then
 				Self._setFieldValue(fld.getName(), fld.getDefaultValue())
 			End If
 		Next
-
-		Return True
-
 	End Method
 
 	Method clone:ComponentTemplate()
@@ -101,23 +95,13 @@ Type ComponentTemplate
 	End Method
 
 	Method copy:ComponentTemplate()
-
 		Local this:ComponentTemplate	= ComponentTemplate.Create()
-		this._schema = Self._schema
-		this._fieldValues	= Self._fieldValues.Copy()
-		this._fieldCount	= Self._fieldCount
-		Return this
 
-		If Self.countFields() = 0 Then Return this
-
-		For Local fieldName:String = EachIn Self._fieldValues.Keys()
-			If Self.isFieldSet(fieldName) = False Then
-				this._setFieldValue(fieldName, Self.getFieldValue(fieldName))
-			End If
-		Next
+		this._schema      = Self._schema
+		this._fieldValues = Self._fieldValues.Copy()
+		this._fieldCount  = Self._fieldCount
 
 		Return this
-
 	End Method
 
 
@@ -151,23 +135,25 @@ Type ComponentTemplate
 	''' <summary>Creates and initialises a new ComponentTemplate object and returns it.</summary>
 	''' <returns>The newly created ComponentTemplate object.</returns>
 	Function Create:ComponentTemplate(schema:ComponentSchema = Null)
-
 		Local this:ComponentTemplate = New ComponentTemplate
-		this._schema = schema
-		Return this
 
+		this._schema = schema
+
+		Return this
 	End Function
 
 	Function CreateFromSchema:ComponentTemplate(schema:ComponentSchema)
 		Local this:ComponentTemplate = New ComponentTemplate
+
 		this._schema = schema
-		this.CopyFromSchema(schema)
+		this.copyFromSchema(schema)
+
 		Return this
 	End Function
 
 
 	' --------------------------------------------------
-	' -- Debugging!
+	' -- Debugging
 	' --------------------------------------------------
 
 	Method _dump:String()

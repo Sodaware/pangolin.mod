@@ -44,24 +44,24 @@ Type EntityFactory
 	''' <return>The created object, or null if there was an error.</return>
 	Function spawnObject:Entity(template:EntityTemplate, tag:String = "")
 
-		' Check inputs and configuration
+		' Check inputs and configuration.
 		If template = Null Then Return Null
 		If Self._world = Null Then
 			Throw "EntityFactory::spawnObject - No world set (use EntityFactory::setWorld first)"
 		End If
 
-		' Create new object
+		' Create new object.
 		Local objectInstance:Entity = EntityFactory._world.createEntity()
 		objectInstance.setGroup(tag)
 		objectInstance.setTag(tag)
 
-		' Add components based on each sub-template
+		' Add components based on each sub-template.
 		For Local component:ComponentTemplate = EachIn template.getComponentTemplates()
 
-			' Create the component from the template
+			' Create the component from the template.
 			Local componentInstance:EntityComponent = EntityFactory._createComponent(component)
 
-			' Add the component if valid
+			' Add the component if valid.
 			If componentInstance Then
 				objectInstance.addComponent(componentInstance)
 			EndIf
@@ -111,11 +111,11 @@ Type EntityFactory
 			Return Null
 		EndIf
 
-		' Create the component instance
-		Local instance:EntityComponent	= EntityComponent(typedef.NewObject())
-		Local initMethod:TMethod		= typeDef.FindMethod("intializeFromTemplate")
+		' Create the component instance.
+		Local instance:EntityComponent = EntityComponent(typedef.NewObject())
+		Local initMethod:TMethod       = typeDef.FindMethod("intializeFromTemplate")
 
-		' Allow instance to set itself up
+		' Allow instance to set itself up.
 		instance.beforeCreate()
 
 		' Call an initialize method (if present)
@@ -127,7 +127,7 @@ Type EntityFactory
 			Self._createComponentFromTypeId(instance, typeDef, template)
 		End If
 
-		' Call any post-setup actions
+		' Call any post-setup actions.
 		instance.afterCreate()
 
 		Return instance
