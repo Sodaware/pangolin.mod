@@ -1,13 +1,13 @@
 ' ------------------------------------------------------------------------------
 ' -- src/resource_manager.bmx
-' -- 
+' --
 ' -- Main resource manager class. A resource manager can load resource
 ' -- definitions either from an external definition or via code. Normally a game
-' -- will have only one resource manager, wrapped inside a service (see 
+' -- will have only one resource manager, wrapped inside a service (see
 ' -- Pangolin.Services for an existing ResourceManagerService).
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
-' -- Copyright (c) 2009-2018 Phil Newton
+' -- Copyright (c) 2009-2020 Phil Newton
 ' --
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
@@ -26,10 +26,14 @@ Import "base_resource.bmx"
 Import "resource_definition.bmx"
 Import "resource_file_serializer.bmx"
 
+Include "resource_events.bmx"
+
 ''' <summary>
-''' Main resource manager type. A resource manager can load resource 
-''' definitions either from an external definition or via code. Normally a 
-''' game will have only one resource manager wrapped inside a service.
+''' Main resource manager type.
+'''
+''' A resource manager can load resource definitions either from an external
+''' definition or via code. Normally a game will have only one resource manager
+''' wrapped inside a service.
 ''' </summary>
 Type ResourceManager
 
@@ -51,11 +55,12 @@ Type ResourceManager
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Event hook that is called when a resource definition file is loaded. Called 
-	''' before loading of individual resources.
+	''' Event hook that is called when a resource manifest file is loaded.
 	'''
-	''' Callbacks will receive a GameEvent, where the `extra` field contains the
-	''' name of the resource file being loaded.
+	''' This is called *before* individual resources are loaded.
+	'''
+	''' Handlers receive a `ResourceManifestEvent`, which contains the name of
+	''' the resource file being loaded, along with the current serializer.
 	''' </summary>
 	''' <param name="callback">Event handler.</param>
 	''' <return>ResourceManager instance.</return>
@@ -64,13 +69,12 @@ Type ResourceManager
 
 		Return Self
 	End Method
-	
+
 	''' <summary>
-	''' Event hook that is called when a resource definition file has finished being
-	''' loaded.
+	''' Event hook that is called when a resource manifest file has finished loading.
 	'''
-	''' Callbacks will receive a GameEvent, where the `extra` field contains the
-	''' name of the resource file that was loaded.
+	''' Handlers receive a `ResourceManifestEvent`, which contains the name of
+	''' the resource file being loaded, along with the current serializer.
 	''' </summary>
 	''' <param name="callback">Event handler.</param>
 	''' <return>ResourceManager instance.</return>
@@ -81,10 +85,9 @@ Type ResourceManager
 	End Method
 
 	''' <summary>
-	''' Event hook that is called when single resource in a resource definition has
-	''' been loaded.
+	''' Event hook that is called when single resource in a manifest has been loaded.
 	'''
-	''' Callbacks will receive a GameEvent, where the `extra` field contains the
+	''' Handlers receive a `ResourceLoadedEvent`, which contains the
 	''' `BaseResource` object that was loaded.
 	''' </summary>
 	''' <param name="callback">Event handler.</param>
@@ -101,31 +104,33 @@ Type ResourceManager
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Enable strict checking for the resource manager. When enabled, the
-	''' manager will throw exceptions when resources are not found.
+	''' Enable strict checking for the resource manager.
+	'''
+	''' When enabled, the manager will throw exceptions when resources are not
+	''' found.
 	''' </summary>
 	Method enableStrictChecking()
 		Self._isStrictCheckingEnabled = True
 	End Method
-	
+
 	''' <summary>Disable strict checking for the resource manager.</summary>
 	Method disableStrictChecking()
 		Self._isStrictCheckingEnabled = False
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Getting Resources
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Get a resource.</summary>
 	''' <param name="resourceName">name of the resource to load</param>
 	''' <param name="doNotLoad">If true, will not load file (if not already loaded)</param>
 	''' <return>The loaded result, or Null if the resource was not found.</return>
 	Method getResource:BaseResource(resourceName:String, doNotLoad:Byte = False)
-		
+
 		Local resource:BaseResource = Self._getResource(resourceName)
-		
+
 		If resource Then
 			resource._increaseCount()
 		Else
@@ -136,39 +141,39 @@ Type ResourceManager
 			End If
 			Return Null
 		EndIf
-		
+
 		' Load the resource if not already loaded
 		If doNotLoad = False And resource._isLoaded = False Then resource.reload()
-		
+
 		Return resource
-		
+
 	End Method
-	
+
 	''' <summary>
-	''' Free a resource by name. This unloads any data it has loaded, but does 
+	''' Free a resource by name. This unloads any data it has loaded, but does
 	''' not remove it from the resource manager.
 	''' </summary>
 	Method freeResource(resourceName:String)
 		Local resource:BaseResource = Self._getResource(resourceName)
 		If resource Then resource.free()
 	End Method
-	
+
 	''' <summary>Get a list of all resource names that have been added to the manager.</summary>
 	''' <return>A list of resource names that the resource manager contains.</return>
 	Method getResourceList:TList()
 		Local resources:TList = New TList
-		
+
 		For Local res:BaseResource = EachIn Self._resources.Values()
 			resources.AddLast(res._definition.getFullName())
 		Next
-		
+
 		Return resources
 	End Method
-	
+
 	Method _getResource:BaseResource(resourceName:String)
 		Return BaseResource(Self._resources.ValueForKey(resourceName))
 	End Method
-	
+
 	''' <summary>Remove a resource from the manager by name.</summary>
 	''' <param name="name">The name of the resource to remove.</param>
 	Method removeResource(name:String)
@@ -185,11 +190,11 @@ Type ResourceManager
 	''' <param name="isLazy">If true, resources will not be loaded until requested.</param>
 	Method loadResources(filename:String, isLazy:Byte = True)
 
-		Local loader:ResourceFileSerializer = Self._getSerializer(fileName)
+		Local loader:ResourceFileSerializer = Self._getSerializer(filename)
 		If loader = Null Then Throw "No resource serializer found for type: " + ExtractExt(filename)
 
 		' Notify listeners that loading has started.
-		Self._hooks.sendEvent(GameEvent.CreateSimple("load_started", filename))
+		Self._hooks.sendEvent(ResourceManifestEvent.Build(filename, loader, "load_started"))
 
 		' Setup loader.
 		loader.init(filename)
@@ -206,13 +211,13 @@ Type ResourceManager
 				resource.reload()
 
 				' Notify listeners.
-				Self._hooks.sendEvent(GameEvent.CreateSimple("resource_loaded", resource))
+				Self._hooks.sendEvent(ResourceLoadedEvent.Build(resource))
 			End If
 
-        Next
+		Next
 
 		' Notify listeners that loading has finished.
-		Self._hooks.sendEvent(GameEvent.CreateSimple("load_finished", filename))
+		Self._hooks.sendEvent(ResourceManifestEvent.Build(filename, loader, "load_finished"))
 
 	End Method
 
@@ -222,8 +227,8 @@ Type ResourceManager
 		' TODO: ResourceManager.reloadAll would be better to use an objectbag, rather than iterating through mapped resources
 		For Local resource:BaseResource = EachIn Self._resources.Values()
 			resource.reload()
-			Self._hooks.sendEvent(GameEvent.CreateSimple("resource_loaded", resource))
-		Next       
+			Self._hooks.sendEvent(ResourceLoadedEvent.Build(resource))
+		Next
 
 	End Method
 
@@ -233,8 +238,9 @@ Type ResourceManager
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Loads a Resource from a ResourceDefinition. Will throw an exception if
-	''' if no valid Resource exists for this type.
+	''' Loads a Resource from a ResourceDefinition.
+	'''
+	''' Will throw an exception if if no valid Resource exists for this type.
 	''' </summary>
 	''' <param name="definition">The resource definition to load.</param>
 	''' <return>Loaded resource</return>
@@ -251,6 +257,7 @@ Type ResourceManager
 		' Load the resource and return it.
 		Local resource:BaseResource = BaseResource(resourceType.NewObject())
 		resource.init(definition)
+
 		Return resource
 
 	End Method
@@ -288,43 +295,43 @@ Type ResourceManager
 	' ------------------------------------------------------------
 	' -- Resource type helpers
 	' ------------------------------------------------------------
-	
+
 	Method isValidResourceType:Byte(name:String)
 		Return Self._resourceTypes.ValueForKey(name) <> Null
 	End Method
-	
+
 	Method getResourceTypeByName:TTypeId(name:String)
 		Return TTypeId(Self._resourceTypes.ValueForKey(name))
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Cache Helpers
 	' ------------------------------------------------------------
-	
+
 	Method _initializeTypeCaches()
-		
+
 		' Get all available resource types
 		Local baseType:TTypeId = TTypeId.ForName("BaseResource")
 		For Local resourceType:TTypeId = EachIn baseType.DerivedTypes()
-		
+
 			' Type name meta may be comma separated, so split the name and add each item.
 			Local typeNames:String[] = resourceType.MetaData("resource_type").Split(",")
 			For Local typeName:String = EachIn typeNames
 				Self._resourceTypes.Insert(typeName.ToLower().Trim(), resourceType)
 			Next
-			
+
 		Next
-		
+
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Construction / Destruction
 	' ------------------------------------------------------------
-	
+
 	Method New()
-		Self._resources 	= New TMap
+		Self._resources		= New TMap
 		Self._resourceTypes = New TMap
 
 		Self._initializeTypeCaches()
@@ -335,5 +342,5 @@ Type ResourceManager
 		Self._hooks.registerHook("load_finished")
 		Self._hooks.registerHook("resource_loaded")
 	End Method
-			
+
 End Type

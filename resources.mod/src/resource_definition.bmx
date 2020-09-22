@@ -44,6 +44,7 @@ Type ResourceDefinition
 	''' <return>Full name in the format `{namespace}.{name}`.</return>
 	Method getFullName:String()
 		If Self._namespace = "" Then Return Self._name
+
 		Return Self._namespace + "." + Self._name
 	End Method
 
@@ -54,8 +55,9 @@ Type ResourceDefinition
 	End Method
 
 	''' <summary>
-	''' Get the resource file name. This is the location where the resource
-	''' is stored.
+	''' Get the resource file name.
+	'''
+	''' This is the location where the resource is stored.
 	''' </summary>
 	''' <return>Resource file name.</summary>
 	Method getFileName:String()
@@ -63,8 +65,10 @@ Type ResourceDefinition
 	End Method
 
 	''' <summary>
-	''' Check if autoloading is disabled. When autoloading is disabled, resources are
-	''' not loaded until they are requested.
+	''' Check if autoloading is disabled.
+	'''
+	''' When autoloading is disabled, resources are not loaded until they are
+	''' requested.
 	''' </summary>
 	''' <return>True if autoloading is disabled, false if not.</return>
 	Method skipAutoload:Byte()
@@ -77,8 +81,10 @@ Type ResourceDefinition
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Add a field to the definition. This should only be called when a resource
-	''' definition is being loaded (i.e. from within a serializer).
+	''' Add a field to the definition.
+	'''
+	''' This should only be called when a resource definition is being loaded
+	''' (i.e. from within a serializer).
 	''' </summary>
 	''' <param name="fieldName">The field to set.</param>
 	''' <param name="value">The value of the field.</param>
