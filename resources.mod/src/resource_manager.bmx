@@ -25,8 +25,7 @@ Import pangolin.events
 Import "base_resource.bmx"
 Import "resource_definition.bmx"
 Import "resource_file_serializer.bmx"
-
-Include "resource_events.bmx"
+Import "resource_events.bmx"
 
 ''' <summary>
 ''' Main resource manager type.

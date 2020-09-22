@@ -10,6 +10,13 @@
 ' ------------------------------------------------------------------------------
 
 
+SuperStrict
+
+Import pangolin.events
+
+Import "base_resource.bmx"
+Import "resource_file_serializer.bmx"
+
 ''' <summary>Base type that all resource-related events extend.</summary>
 Type ResourceEvent Extends GameEvent
 
