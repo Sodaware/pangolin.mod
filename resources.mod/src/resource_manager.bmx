@@ -26,6 +26,7 @@ Import "base_resource.bmx"
 Import "resource_definition.bmx"
 Import "resource_file_serializer.bmx"
 Import "resource_events.bmx"
+Import "resource_exceptions.bmx"
 
 ''' <summary>
 ''' Main resource manager type.
@@ -135,8 +136,7 @@ Type ResourceManager
 		Else
 			DebugLog "ResourceManager->getResource() - Could not find: " + resourceName
 			If Self._isStrictCheckingEnabled Then
-				' TODO: Replace with a proper exception.
-				Throw "ResourceManager->getResource() - Could not find: " + resourceName
+				Throw MissingResourceException.Create(resourceName)
 			End If
 			Return Null
 		EndIf
@@ -190,7 +190,7 @@ Type ResourceManager
 	Method loadResources(filename:String, isLazy:Byte = True)
 
 		Local loader:ResourceFileSerializer = Self._getSerializer(filename)
-		If loader = Null Then Throw "No resource serializer found for type: " + ExtractExt(filename)
+		If loader = Null Then Throw MissingResourceSerializerException.Create(filename)
 
 		' Notify listeners that loading has started.
 		Self._hooks.sendEvent(ResourceManifestEvent.Build(filename, loader, "load_started"))
@@ -250,7 +250,7 @@ Type ResourceManager
 
 		' If resource type is invalid, throw an exception.
 		If Null = resourceType Then
-			Throw "Resource type ~q" + definition.getType() + "~q does not exist"
+			Throw InvalidResourceTypeException.Create(definition.getType())
 		EndIf
 
 		' Load the resource and return it.
