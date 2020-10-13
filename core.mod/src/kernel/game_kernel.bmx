@@ -337,6 +337,14 @@ Type GameKernel
 	' -- Service utility functions
 	' ------------------------------------------------------------
 
+	''' <summary>Apply function `fn` to all registered services.</summary>
+	''' <param name="fn">The function to apply.</param>
+	Method applyFunctionToServices(fn(s:Object))
+		For Local s:GameService = EachIn Self.getServices()
+			fn(s)
+		Next
+	End Method
+
 	''' <summary>
 	''' Check if a service provider implements a function by checking its
 	''' "implements" meta data field.
