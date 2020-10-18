@@ -25,6 +25,12 @@ Type ResourceDbService Extends GameService
 	' -- Retrieving Resources
 	' ------------------------------------------------------------
 
+	''' <summary>Get a list of all resource names.</summary>
+	''' <return>A list of resource names that the resource manager contains.</return>
+	Method getResourceList:TList()
+		Return Self._resources.getResourceList()
+	End Method
+
 	''' <summary>Retrieve a resource by name.</summary>
 	''' <param name="resourceName">Full name of the resource to retrieve.</param>
 	''' <param name="doNotLoad">If true, the resource will not be loaded.</param>
