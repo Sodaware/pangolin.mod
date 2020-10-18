@@ -45,6 +45,15 @@ Type RenderGroup Extends AbstractRenderRequest
 		Next
 	End Method
 
+	Method setPosition(xPos:Float, yPos:Float)
+		Local xOff:Float = xPos - Self.getX()
+		Local yOff:Float = yPos - Self.getY()
+
+		For Local r:AbstractRenderRequest = EachIn Self._items
+			r.move(xOff, yOff)
+		Next
+	End Method
+
 	Method SetAlpha:RenderGroup(alpha:Float)
 	   	For Local r:AbstractRenderRequest = EachIn Self._items
 			r.SetAlpha(alpha)
