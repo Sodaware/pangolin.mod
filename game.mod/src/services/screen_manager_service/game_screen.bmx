@@ -77,6 +77,11 @@ Type GameScreen extends IGameScreen
 	' -- Managing renderable objects
 	' ------------------------------------------------------------
 
+	''' <summary>Get the sprite rendering service for this screen.</summary>
+	Method renderer:SpriteRenderingService()
+		Return Self.__renderer
+	End Method
+
 	''' <summary>Add a render request to this screen's render group.</summary>
 	''' <param name="obj">The request object to add.</param>
 	''' <param name="name">Optional identifier for the request.</param>
@@ -106,6 +111,46 @@ Type GameScreen extends IGameScreen
 	''' <param name="name">Optional identifier for the request.</param>
 	Method addGlobalRequest(obj:AbstractRenderRequest, name:String = "")
 		Self.__renderer.add(obj, name)
+	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Manging grouped render objects
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Add a render request to a specific group.
+	'''
+	''' Will raise an exception if the group does not exist.
+	''' </summary>
+	''' <param name="group">The group name to add to.</param>
+	''' <param name="request">The request object to add.</param>
+	''' <param name="name">Optional identifier for the request.</param>
+	Method addToGroup(group:String, request:AbstractRenderRequest, name:String = "")
+		Local rg:RenderGroup = Self.__renderer.getGroup(group)
+		If rg = Null Then Throw "Invalid render group: " + group
+
+		rg.add(request, name)
+	End Method
+
+	''' <summary>Remove a request from within a named group.</summary>
+	''' <param name="group">The group name to search.</param>
+	''' <param name="name">The request name to remove.</param>
+	Method removeGroupRequestByName(group:String, name:String)
+		Local rg:RenderGroup = Self.__renderer.getGroup(group)
+		If rg = Null Then Throw "Invalid render group: " + group
+
+		rg.removeByName(name)
+	End Method
+
+	''' <summary>Get a request from within a named group.</summary>
+	''' <param name="group">The group name to search.</param>
+	''' <param name="name">The request name to find.</param>
+	Method getGroupRequest:AbstractRenderRequest(group:String, name:String)
+		Local rg:RenderGroup = Self.__renderer.getGroup(group)
+		If rg = Null Then Throw "Invalid render group: " + group
+
+		Return rg.get(name)
 	End Method
 
 
