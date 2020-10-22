@@ -76,6 +76,7 @@ Type GameBase
 	''' <return>Any data generated. Basically nothing.</return>
 	Function handleEvents:Object(id:Int, data:Object, context:Object)
 		If GameBase(context) <> Null Then GameBase(context).HandleEvent(TEvent(data))
+
 		Return data
 	End Function
 
@@ -84,7 +85,7 @@ Type GameBase
 	' -- Abstract Methods
 	' ------------------------------------------------------------
 
-	''' <summary>Delegates an event to any function required.</summary>
+	''' <summary>Delegate an event to any function required.</summary>
 	Method handleEvent(event:TEvent)
 	End Method
 
@@ -94,8 +95,10 @@ Type GameBase
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Runs the main game loop. Updates all services and calls their render
-	''' function if set. Does NOT clear the screen every frame.
+	''' Runs the main game loop.
+	'''
+	''' Updates all services and calls their render function if set. It does NOT
+	''' clear the screen every frame.
 	''' </summary>
 	Method runLoop()
 
@@ -159,15 +162,15 @@ Type GameBase
 	''' <deprecated>Use `addServiceToKernel` instead.</deprecated>
 	Method _addKernelService(service:GameService, serviceType:TTypeId = Null)
 		DebugLog "Deprecated: Use `addServiceToKernel` instead"
-		self.addServiceToKernel(service, serviceType)
+		Self.addServiceToKernel(service, serviceType)
 	End Method
 
 	Method _getKernelService:GameService(serviceType:TTypeId)
-		return self._kernel.getService(serviceType)
+		Return Self._kernel.getService(serviceType)
 	End Method
 
 	Method _getKernelServiceByName:GameService(serviceTypeName:String)
-		return self._kernel.getService(TTypeId.ForName(serviceTypeName))
+		Return Self._kernel.getService(TTypeId.ForName(serviceTypeName))
 	End Method
 
 
@@ -176,10 +179,8 @@ Type GameBase
 	' ------------------------------------------------------------
 
 	Method New()
-
 		' Create event hook that is called during "handleEvents"
 		AddHook(EmitEventHook, GameBase.HandleEvents, Self, 0)
-
 	End Method
 
 End Type
