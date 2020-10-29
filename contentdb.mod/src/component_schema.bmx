@@ -88,12 +88,10 @@ Type ComponentSchema
 	End Method
 
 	Method getFieldType:String(propertyName:String)
-
 		Local fld:ComponentField = Self.getField(propertyName)
-
 		If fld = Null Then Throw "Field ~q" + propertyName + "~q not found"
-		Return fld.GetType()
 
+		Return fld.getType()
 	End Method
 
 
@@ -105,44 +103,34 @@ Type ComponentSchema
 		Return Self._internals
 	End Method
 
+	Method isFieldInternal:Byte(name:String)
+		For Local i:String = EachIn Self._internals
+			If Lower(i) = Lower(name) Then Return True
+		Next
+
+		Return False
+	End Method
+
 
 	' --------------------------------------------------
 	' -- Adding / Setting Information
 	' --------------------------------------------------
 
 	Method addField(newField:ComponentField)
-
-		' Check inputs
+		' Check inputs.
 		If newField = Null Then Return
 
 		' Add to list of fields and lookup
 		Self._fieldsList.AddLast(newField)
 		Self._fields.Insert(Lower(newField.getName()), newField)
-
 	End Method
 
-	' ----- Internal stuff
 
-	Method _addRequirement(name:String)
-		If Self.HasRequirement(name.ToLower()) = False Then
-			Self._requires.AddLast(name.ToLower())
-		End If
-	End Method
+	' --------------------------------------------------
+	' -- Display
+	' --------------------------------------------------
 
-	Method _addInternal(name:String)
-		Self._internals.AddLast(name)
-	End Method
-
-	' TODO: Rebuild this
-	Method _hasInternal:Byte(name:String)
-		For Local i:String = EachIn Self._internals
-			If i = name Then Return True
-		Next
-		Return False
-	End Method
-
-	Method _dump:String()
-
+	Method toString:String()
 		Local output:String
 
 		output:+ "Internals { "
@@ -152,7 +140,21 @@ Type ComponentSchema
 		output :+ "}"
 
 		Return output
+	End Method
 
+
+	' --------------------------------------------------
+	' -- Internal stuff
+	' --------------------------------------------------
+
+	Method _addRequirement(name:String)
+		If Self.hasRequirement(name.ToLower()) = False Then
+			Self._requires.AddLast(name.ToLower())
+		End If
+	End Method
+
+	Method _addInternal(name:String)
+		Self._internals.AddLast(name)
 	End Method
 
 

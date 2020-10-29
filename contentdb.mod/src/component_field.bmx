@@ -28,7 +28,7 @@ Type ComponentField
 
 	' Structure.
 	Field _defaultValue:String      '''< The default value for the field.
-	Field _protectionLevel:Byte     '''< The protection level for this type.
+	Field _protectionLevel:Byte     '''< The protection level for this type (e.g. public or private) .
 	Field _dataType:String          '''< The name of the data type for this field (e.g. int, bool, string).
 
 

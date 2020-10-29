@@ -57,7 +57,7 @@ Type ComponentTemplate
 	End Method
 
 	Method schemaHasInternal:Byte(fieldName:String)
-		Return Self._schema._hasInternal(fieldName)
+		Return Self._schema.isFieldInternal(fieldName)
 	End Method
 
 
