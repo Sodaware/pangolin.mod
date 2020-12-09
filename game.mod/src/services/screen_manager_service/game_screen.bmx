@@ -26,10 +26,6 @@ Import "screen_manager.bmx"
 ''' </summary>
 Type GameScreen extends IGameScreen
 
-	' -- Screen states (DEPRECATED).
-	Const STATE_TransitionOn:Byte   = 1     '''< Screen is appearing
-	Const STATE_TransitionOff:Byte  = 3     '''< Screen is disappearing
-
 	Const STATE_TRANSITION_ON:Byte  = 1     '''< Screen is appearing
 	Const STATE_ACTIVE:Byte         = 2     '''< Screen is running
 	Const STATE_TRANSITION_OFF:Byte = 3     '''< Screen is disappearing
