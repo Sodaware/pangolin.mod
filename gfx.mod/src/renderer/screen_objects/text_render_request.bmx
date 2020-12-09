@@ -15,7 +15,7 @@ SuperStrict
 Import brl.retro
 Import brl.max2d
 
-Import "../../../pangolin_gfx.bmx"
+Import "../../util/graphics_util.bmx"
 Import "../../util/text_render_style.bmx"
 Import "../abstract_sprite_request.bmx"
 
@@ -56,7 +56,6 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' </summary>
 	''' <param name="style">The render style to set.</param>
 	Method setStyle:TextRenderRequest(style:TextRenderStyle)
-
 		Self.setAlignment(style._alignment)
 		Self.setShadowAlpha(style._shadowAlpha)
 		Self.setShadowDistance(style._shadowXDistance, style._shadowYDistance)
@@ -73,7 +72,6 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		If style._width <> -1 Then Self.setWidth(style._width)
 
 		Return Self
-
 	End Method
 
 	''' <summary>Set the text to display.</summary>
@@ -92,6 +90,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <summary>Enable or disable text wrapping.</summary>
 	Method setWrap:TextRenderRequest(wrap:Byte)
 		Self._wrap = wrap
+
 		Return Self
 	End Method
 
@@ -99,6 +98,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	Method setDimensions:TextRenderRequest(w:Float, h:Float)
 		Self._width  = w
 		Self._height = h
+
 		Return Self
 	End Method
 
@@ -107,6 +107,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <return>TextRenderRequest object.</return>
 	Method setAlignment:TextRenderRequest(align:Byte)
 		Self._alignment = align
+
 		Return Self
 	End Method
 
@@ -114,6 +115,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="font">The image font to use.</param>
 	Method setFont:TextRenderRequest(font:TImageFont)
 		Self._font = font
+
 		Return Self
 	End Method
 
@@ -122,7 +124,8 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="g">Green value of the text colour.</param>
 	''' <param name="b">Blue value of the text colour.</param>
 	Method setFontColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._fontColor = PangolinGfx.rgbToInt(r, g, b)
+		Self._fontColor = RgbToInt(r, g, b)
+
 		Return Self
 	End Method
 
@@ -130,6 +133,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="color">Text colour in hex.</param>
 	Method setFontColorHex:TextRenderRequest(color:String)
 		Self._fontColor = HexToInt(color)
+
 		Return Self
 	End Method
 
@@ -138,7 +142,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="g">Green value of the shadow colour.</param>
 	''' <param name="b">Blue value of the shadow colour.</param>
 	Method setShadowColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._shadowColor = PangolinGfx.rgbToInt(r, g, b)
+		Self._shadowColor = RgbToInt(r, g, b)
 		Return Self
 	End Method
 
@@ -270,7 +274,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 
 		' Draw the shadow first (if present).
 		If Self._shadowColor <> -1 Then
-			PangolinGfx.SetColorInt(Self._shadowColor)
+			SetColorInt(Self._shadowColor)
 			Local oldAlpha:Float = brl.max2d.GetAlpha()
 			brl.max2d.SetAlpha(Self._shadowAlpha)
 			DrawText line, xOff + Self._shadowXDistance, yOff + Self._shadowyDistance
@@ -278,7 +282,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		EndIf
 
 		' Render the main text.
-		PangolinGfx.SetColorInt(Self._fontColor)
+		SetColorInt(Self._fontColor)
 		DrawText line, xOff, yOff
 
 	End Method

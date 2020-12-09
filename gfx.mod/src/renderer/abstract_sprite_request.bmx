@@ -17,9 +17,9 @@ Import brl.linkedlist
 
 Import "animation_handler.bmx"
 Import "abstract_render_request.bmx"
+Import "../util/graphics_util.bmx"
 Import "../util/hex_util.bmx"
 Import "../util/position.bmx"
-Import "../../pangolin_gfx.bmx"
 
 
 Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
@@ -181,7 +181,7 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	' TODO: Move to a private method
 	Method setRenderState()
 		' Initialise drawing stuff
-		PangolinGfx.SetColorInt(Self._color)
+		SetColorInt(Self._color)
 		brl.max2d.SetScale(Self._xScale, Self._yScale)
 		brl.max2d.SetRotation(Self._rotation)
 		brl.max2d.SetHandle(Self._xHandle, Self._yHandle)

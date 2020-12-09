@@ -12,13 +12,9 @@
 
 SuperStrict
 
-Import brl.retro
-Import brl.max2d
-
-Import "../../../pangolin_gfx.bmx"
+Import "../../util/graphics_util.bmx"
 Import "../abstract_sprite_request.bmx"
 Import "rectangle_render_request.bmx"
-
 
 Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	
@@ -44,11 +40,13 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	
 	Method setPadding:ProgressBarRenderRequest(padding:Int)
 		Self._padding = padding
+
 		Return Self
 	End Method
 	
 	Method setBarColor:ProgressBarRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._barColor = PangolinGfx.rgbToInt(r, g, b)
+		Self._barColor = RgbToInt(r, g, b)
+
 		Return Self
 	End Method
 	
@@ -65,12 +63,14 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	Method setMaxValue:ProgressBarRenderRequest(value:Float)
 		Self._maxValue = value
 		Self.updatePercentage()
+
 		Return Self
 	End Method
 	
 	Method setCurrentValue:ProgressBarRenderRequest(value:Float)
 		Self._currentValue = value
 		Self.updatePercentage()
+
 		Return Self
 	End Method
 	
@@ -127,7 +127,7 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 		brl.max2d.SetBlend(ALPHABLEND)
 		brl.max2d.SetAlpha(Self._barAlpha)
 		
-		PangolinGfx.SetColorInt(Self._barColor)
+		SetColorInt(Self._barColor)
 		DrawRect(xPos, yPos, width * Self._percentage, height)
 		
 		' Reset rendering
@@ -143,9 +143,11 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	
 	Function Create:ProgressBarRenderRequest(xPos:Int, yPos:Int, width:Int, height:Int)
 		Local this:ProgressBarRenderRequest = New ProgressBarRenderRequest
+
 		this.setPosition(xPos, yPos)
 		this.setDimensions(width, height)
 		this.hideBorder()
+
 		Return this
 	End Function
 	

@@ -27,6 +27,16 @@ Function SetColorInt(color:Int)
 	SetColor 255 & (color Shr 16), 255 & (color Shr 8), 255 & color
 End Function
 
+Function IntToRgb(color:Int, r:Byte Var, g:Byte Var, b:Byte Var)
+	r = color Shr 16
+	g = color Shr 8
+	b = color
+End Function
+
+Function RgbToInt:Int(r:Byte, g:Byte, b:Byte)
+	Return ColorRgb(r, g, b)
+End Function
+
 ''' <summary>Convert an RGB colour into a single integer.</summary>
 ''' <param name="r">Red value between 0 and 255.</param>
 ''' <param name="g">Green value between 0 and 255.</param>

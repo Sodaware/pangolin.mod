@@ -12,12 +12,8 @@
 
 SuperStrict
 
-Import brl.retro
-Import brl.max2d
-
-Import "../../../pangolin_gfx.bmx"
+Import "../../util/graphics_util.bmx"
 Import "../abstract_sprite_request.bmx"
-
 
 Type RectangleRenderRequest Extends AbstractSpriteRequest
 
@@ -80,62 +76,85 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 
 	Method setBorderThickness:RectangleRenderRequest(thickness:Byte)
 		Self._borderThickness = thickness
+
 		Return Self
 	End Method
 
 	Method setBorderVisibility:RectangleRenderRequest(borderVisibility:Byte = 0)
 		Self._borderVisibility = borderVisibility
+
 		Return Self
 	End Method
 
 	Method hideBackground:RectangleRenderRequest()
 		Self._showBackground = False
+
 		Return Self
 	End Method
 
 	Method showBackground:RectangleRenderRequest()
 		Self._showBackground = True
+
 		Return Self
 	End Method
 
 	Method setDimensions:RectangleRenderRequest(w:Float, h:Float)
 		Self._width  = w
 		Self._height = h
+
 		Return Self
 	End Method
 
 	Method setWidth:RectangleRenderRequest(width:Float)
 		Self.setDimensions(width, Self._height)
+
 		Return Self
 	End Method
 
 	Method setHeight:RectangleRenderRequest(height:Float)
 		Self.setDimensions(Self._width, height)
+
 		Return Self
 	End Method
 
 	Method setBorderColor:RectangleRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._borderColor = PangolinGfx.rgbToInt(r, g, b)
+		Self._borderColor = RgbToInt(r, g, b)
+
 		Return Self
 	End Method
 
 	Method setBackgroundColor:RectangleRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._backgroundColor = PangolinGfx.rgbToInt(r, g, b)
+		Self._backgroundColor = RgbToInt(r, g, b)
+
 		Return Self
+	End Method
+
+	Method setAlpha:RectangleRenderRequest(alpha:Float)
+		Self.setBackgroundAlpha(alpha) ..
+		    .setBorderAlpha(alpha)
+
+		Return Self
+	End Method
+
+	Method getAlpha:Float()
+		Return Self._backgroundAlpha
 	End Method
 
 	Method setBorderAlpha:RectangleRenderRequest(alpha:Float)
 		Self._borderAlpha = alpha
+
 		Return Self
 	End Method
 
 	Method setBackgroundAlpha:RectangleRenderRequest(alpha:Float)
 		Self._backgroundAlpha = alpha
+
 		Return Self
 	End Method
 
 	Method setBorderRounding:RectangleRenderRequest(enabled:Byte = False)
 		Self._roundedBorder = enabled
+
 		Return Self
 	End Method
 
@@ -145,18 +164,15 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 	' ------------------------------------------------------------
 
 	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
-
-		' Calculate new position
+		' Calculate new position.
 		Self._interpolate(1)
 
-		' Set up appearance
+		' Set up appearance.
 		Self.setRenderState()
 
-		' Render the background
+		' Render the background.
 		If Self._showBackground Then Self.renderBackground(camera, isFixed)
 		If Self._ShowBorder Then Self.renderBorder(camera, isFixed)
-
-
 	End Method
 
 	Method renderBackground(camera:AbstractRenderCamera = Null, isFixed:Byte = False)
@@ -182,7 +198,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		brl.max2d.SetBlend(ALPHABLEND)
 		brl.max2d.SetAlpha(Self._backgroundAlpha)
 
-		PangolinGfx.SetColorInt(Self._backgroundColor)
+		SetColorInt(Self._backgroundColor)
 		DrawRect(xPos, yPos, width, height)
 
 		' Reset rendering
@@ -207,7 +223,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		brl.max2d.SetBlend(ALPHABLEND)
 		brl.max2d.SetAlpha(Self._borderAlpha)
 
-		PangolinGfx.SetColorInt(Self._borderColor)
+		SetColorInt(Self._borderColor)
 
 		Local borderOffset:Int = 0
 		If Self._roundedBorder Then borderOffset = Self._borderThickness
@@ -245,9 +261,11 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 
 	Function Create:RectangleRenderRequest(xPos:Int, yPos:Int, width:Int, height:Int)
 		Local this:RectangleRenderRequest = New RectangleRenderRequest
+
 		this.setPosition(xPos, yPos)
 		this.setDimensions(width, height)
 		this.hideBorder()
+
 		Return this
 	End Function
 
