@@ -24,7 +24,6 @@ Type AbstractRenderRequest Abstract
 	Field _ignoreCamera:Byte	'''< Is this a fixed object or not
 	Field _isVisible:Byte		'''< Is object visible?
 
-
 	' ------------------------------------------------------------
 	' -- Required Methods
 	' ------------------------------------------------------------
@@ -107,6 +106,10 @@ Type AbstractRenderRequest Abstract
 
 	Method setAlpha:AbstractRenderRequest(alpha:Float)
 		Return Self
+	End Method
+
+	Method getAlpha:Float()
+		Return 1
 	End Method
 
 	Method setScale:AbstractRenderRequest(xScale:Float, yScale:Float)
