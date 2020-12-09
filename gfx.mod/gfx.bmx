@@ -52,17 +52,17 @@ Import "src/renderer/screen_objects/rectangle_render_request.bmx"
 Import "src/renderer/screen_objects/progress_bar_render_request.bmx"
 
 ' -- Import behaviours
-Import "src/behaviour/sequential_sprite_behaviour.bmx"
-Import "src/behaviour/parallel_sprite_behaviour.bmx"
-Import "src/behaviour/move_sprite_behaviour.bmx"
-Import "src/behaviour/pixel_move_sprite_behaviour.bmx"
-Import "src/behaviour/physics_move_sprite_behaviour.bmx"
-Import "src/behaviour/hide_sprite_behaviour.bmx"
-Import "src/behaviour/scale_sprite_behaviour.bmx"
-Import "src/behaviour/show_sprite_behaviour.bmx"
 Import "src/behaviour/fade_sprite_behaviour.bmx"
+Import "src/behaviour/hide_sprite_behaviour.bmx"
+Import "src/behaviour/move_sprite_behaviour.bmx"
+Import "src/behaviour/move_sprite_to_behaviour.bmx"
+Import "src/behaviour/parallel_sprite_behaviour.bmx"
 Import "src/behaviour/pause_behaviour.bmx"
-
+Import "src/behaviour/physics_move_sprite_behaviour.bmx"
+Import "src/behaviour/pixel_move_sprite_behaviour.bmx"
+Import "src/behaviour/scale_sprite_behaviour.bmx"
+Import "src/behaviour/sequential_sprite_behaviour.bmx"
+Import "src/behaviour/show_sprite_behaviour.bmx"
 
 ' -- Helper functions
 Import "src/util/hex_util.bmx"
