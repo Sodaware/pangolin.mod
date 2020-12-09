@@ -2,16 +2,19 @@
 ' -- services/game_entity_service.bmx
 ' --
 ' -- Wraps the World in a service that can be used inside the game kernel.
-' -- This is the preferred method if you want systems to access other services
-' -- more easily.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
-' -- Copyright (c) 2009-2017 Phil Newton
+' -- Copyright (c) 2009-2020 Phil Newton
 ' --
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
 
-
+''' <summary>
+''' Service that wraps a World instance and provides an interface to it.
+'''
+''' This is the preferred way to create a World if you want systems and services
+''' to access it.
+''' </summary>
 Type GameEntityService Extends GameService ..
 	{ implements = "update" }
 
@@ -65,26 +68,30 @@ Type GameEntityService Extends GameService ..
 	' ------------------------------------------------------------
 
 	''' <summary>Create a new game entity.</summary>
+	''' <return>The created entity.</return>
 	Method createEntity:Entity()
 		Return Self._world.createEntity()
 	End Method
 
-	''' <summary>Remove an entity from the world.</summary>
-	Method removeEntity(e:Entity)
-		Self.getEntityManager().remove(e)
+	''' <summary>Delete an entity from the world.</summary>
+	Method deleteEntity(e:Entity)
+		Self._world.deleteEntity(e)
 	End Method
 
-	''' <summary>Remove all entities in a collection.</summary>
+	''' <summary>Delete all entities in a collection.</summary>
 	''' <param name="entities">A list of all entities to remove.</param>
-	Method removeEntities(entities:EntityBag)
+	Method deleteEntities(entities:EntityBag)
 		If entities = Null Then Return
+
 		For Local e:Entity = EachIn entities
 			Self._world.deleteEntity(e)
 		Next
 	End Method
 
-	Method removeEntitiesInGroup(groupName:String)
-		Self.removeEntities(Self.getGroupManager().getEntities(groupName))
+	''' <summary>Delete all entities in a named group.</summary>
+	''' <param name="group">The name of the group to delete entities in.</param>
+	Method deleteEntitiesInGroup(group:String)
+		Self.deleteEntities(Self.getGroupManager().getEntities(group))
 	End Method
 
 
@@ -119,6 +126,7 @@ Type GameEntityService Extends GameService ..
 	Method countEntitiesWithComponent:Int(t:ComponentType)
 		Return Self.getEntityManager().countEntitiesWithComponent(t)
 	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Getting Component Types
@@ -158,17 +166,6 @@ Type GameEntityService Extends GameService ..
 		Self._world.getSystemManager().initializeAll()
 	End Method
 
-	Method stopSystem:byte(name:String)
-		Local systemType:TTypeId = TTypeId.ForName(name)
-		If Null = systemType Then DebugLog "stopSystem failed - Unknown system type: " + name
-
-		Local system:EntitySystem = Self.getSystemManager().getSystem(systemType)
-		If system = Null Then Return False
-
-		system.disableSystem()
-		Return True
-	End Method
-
 	Method startSystem:Byte(name:String)
 		Local systemType:TTypeId = TTypeId.ForName(name)
 		If Null = systemType Then DebugLog "startSystem failed - Unknown system type: " + name
@@ -180,9 +177,20 @@ Type GameEntityService Extends GameService ..
 		Return True
 	End Method
 
+	Method stopSystem:byte(name:String)
+		Local systemType:TTypeId = TTypeId.ForName(name)
+		If Null = systemType Then DebugLog "stopSystem failed - Unknown system type: " + name
+
+		Local system:EntitySystem = Self.getSystemManager().getSystem(systemType)
+		If system = Null Then Return False
+
+		system.disableSystem()
+		Return True
+	End Method
+
 
 	' ------------------------------------------------------------
-	' -- Updates/Rendering
+	' -- Updating entities
 	' ------------------------------------------------------------
 
 	Method update(delta:Float)
