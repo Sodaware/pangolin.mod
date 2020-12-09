@@ -78,4 +78,53 @@ Type PangolinGfx
 		Return VirtualScreenResolution.getInstance().getHeight()
 	End Function
 
+	''' <summary>Get the width of a virtual pixel.</summary>
+	Function getPixelWidth:Int()
+		Return VirtualScreenResolution.getInstance().getPixelWidth()
+	End Function
+
+	''' <summary>Get the height of a virtual pixel.</summary>
+	Function getPixelHeight:Int()
+		Return VirtualScreenResolution.getInstance().getPixelHeight()
+	End Function
+
+	Function getVirtualScale(xScale:Float var, yScale:Float var)
+		xScale = PangolinGfx.getScreenWidth() / PangolinGfx.getGraphicsWidth()
+		yScale = PangolinGfx.getScreenHeight() / PangolinGfx.getGraphicsHeight()
+	End Function
+
+	Function getAspectRatio:Float()
+		Return (Float(PangolinGfx.getScreenWidth()) / Float(PangolinGfx.getScreenHeight()))
+	End Function
+
+	''' <summary>Check if the current screen resolution widescreen.</summary>
+	''' <returns>True if the screen is widescreen (the aspect ratio >= 1.6).</returns>
+	Function isWidescreen:Byte()
+		Return PangolinGfx.getAspectRatio() >= 1.6
+	End Function
+
+	Function SetColorInt(color:Int)
+		SetColor 255 & (color Shr 16), 255 & (color Shr 8), 255 & color
+	End Function
+
+	Function IntToRgb(color:Int, r:Byte Var, g:Byte Var, b:Byte Var)
+		r = color Shr 16
+		g = color Shr 8
+		b = color
+	End Function
+
+	Function RgbToInt:Int(r:Byte, g:Byte, b:Byte)
+		Return ColorRgb(r, g, b)
+	End Function
+
+	''' <summary>Convert an RGB colour into a single integer.</summary>
+	''' <param name="r">Red value between 0 and 255.</param>
+	''' <param name="g">Green value between 0 and 255.</param>
+	''' <param name="b">Blue value between 0 and 255.</param>
+	''' <returns>Integer colour.</returns>
+	Function ColorRgb:Int(r:Byte, g:Byte, b:Byte)
+		Return 0 + (r Shl 16) + (g Shl 8) + (b)
+	End Function
+
+
 End Type

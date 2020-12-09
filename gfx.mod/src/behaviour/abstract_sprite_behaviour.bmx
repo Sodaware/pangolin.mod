@@ -24,9 +24,11 @@ Type AbstractSpriteBehaviour Abstract
 	Field _transitionType:Byte
 	Field _transitionFunction:Float(t:Float, s:Float, de:Float, du:Float)
 	Field _elapsedTime:Float
+
+	' TODO: Replace this with an EventHandlerList
 	Field _whenFinishedHooks:TList = New TList
 	
-	Field _isFinished:Byte	= False
+	Field _isFinished:Byte = False
 
 	Method isFinished:Byte()
 		Return Self._isFinished
@@ -74,6 +76,7 @@ Type AbstractSpriteBehaviour Abstract
 	
 	Method whenFinished:AbstractSpriteBehaviour(callback:EventHandler)
 		Self._whenFinishedHooks.AddLast(callback)
+
 		Return Self
 	End Method
 
@@ -89,6 +92,5 @@ Type AbstractSpriteBehaviour Abstract
 	Function TransitionFunction_EaseIn:Float(time:Float, start:Float, delta:Float, duration:Float)
 		Return start + (time * time * delta)
 	End Function
-
 
 End Type

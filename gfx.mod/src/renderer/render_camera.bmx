@@ -169,6 +169,7 @@ Type RenderCamera Extends AbstractRenderCamera
 	' TODO: Rename this!
 	Method getTargetPosition:position2d()
 		If Self._target = Null Then Return Null
+
 		Return Position2D.Create( ..
 			Self._target.getPosition()._xPos - Self._position._xPos, ..
 			Self._target.getPosition()._yPos - Self._position._yPos  ..

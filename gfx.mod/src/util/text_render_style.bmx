@@ -13,7 +13,7 @@
 
 SuperStrict
 
-Import "graphics_util.bmx"
+Import "../../pangolin_gfx.bmx"
 
 Type TextRenderStyle
 
@@ -49,13 +49,13 @@ Type TextRenderStyle
 	End Method
 
 	Method setFontColor:TextRenderStyle(r:Byte, g:Byte, b:Byte)
-		Self._fontColor = RgbToInt(r, g, b)
+		Self._fontColor = PangolinGfx.RgbToInt(r, g, b)
 
 		Return Self
 	End Method
 
 	Method setShadowColor:TextRenderStyle(r:Byte, g:Byte, b:Byte)
-		Self._shadowColor = RgbToInt(r, g, b)
+		Self._shadowColor = PangolinGfx.RgbToInt(r, g, b)
 
 		Return Self
 	End Method

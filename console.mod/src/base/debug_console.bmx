@@ -341,7 +341,7 @@ Type DebugConsole Extends IConsole
 		If brl.Graphics.GraphicsHeight() = 0 Then Return
 			
 		local xScale:Float, yScale:Float
-		GetVirtualScale(xScale, yScale)
+		PangolinGfx.getVirtualScale(xScale, yScale)
 		
 		setScale(1 / xScale, 1 / yScale)
 

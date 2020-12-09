@@ -12,7 +12,7 @@
 
 SuperStrict
 
-Import "../../util/graphics_util.bmx"
+Import "../../../pangolin_gfx.bmx"
 Import "../abstract_sprite_request.bmx"
 
 Type RectangleRenderRequest Extends AbstractSpriteRequest
@@ -118,13 +118,13 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 	End Method
 
 	Method setBorderColor:RectangleRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._borderColor = RgbToInt(r, g, b)
+		Self._borderColor = PangolinGfx.RgbToInt(r, g, b)
 
 		Return Self
 	End Method
 
 	Method setBackgroundColor:RectangleRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._backgroundColor = RgbToInt(r, g, b)
+		Self._backgroundColor = PangolinGfx.RgbToInt(r, g, b)
 
 		Return Self
 	End Method
@@ -198,7 +198,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		brl.max2d.SetBlend(ALPHABLEND)
 		brl.max2d.SetAlpha(Self._backgroundAlpha)
 
-		SetColorInt(Self._backgroundColor)
+		PangolinGfx.SetColorInt(Self._backgroundColor)
 		DrawRect(xPos, yPos, width, height)
 
 		' Reset rendering
@@ -223,7 +223,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 		brl.max2d.SetBlend(ALPHABLEND)
 		brl.max2d.SetAlpha(Self._borderAlpha)
 
-		SetColorInt(Self._borderColor)
+		PangolinGfx.SetColorInt(Self._borderColor)
 
 		Local borderOffset:Int = 0
 		If Self._roundedBorder Then borderOffset = Self._borderThickness

@@ -12,7 +12,7 @@
 
 SuperStrict
 
-Import "../../util/graphics_util.bmx"
+Import "../../../pangolin_gfx.bmx"
 Import "../abstract_sprite_request.bmx"
 Import "rectangle_render_request.bmx"
 
@@ -45,18 +45,20 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	End Method
 	
 	Method setBarColor:ProgressBarRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._barColor = RgbToInt(r, g, b)
+		Self._barColor = PangolinGfx.RgbToInt(r, g, b)
 
 		Return Self
 	End Method
 	
 	Method setBarAlpha:ProgressBarRenderRequest(alpha:Float)
 		Self._barAlpha = alpha
+
 		Return Self
 	End Method
 	
 	Method setPercentage:ProgressBarRenderRequest(percentage:Float)
 		Self._percentage = percentage
+
 		Return Self
 	End Method
 	
@@ -127,7 +129,7 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 		brl.max2d.SetBlend(ALPHABLEND)
 		brl.max2d.SetAlpha(Self._barAlpha)
 		
-		SetColorInt(Self._barColor)
+		PangolinGfx.SetColorInt(Self._barColor)
 		DrawRect(xPos, yPos, width * Self._percentage, height)
 		
 		' Reset rendering

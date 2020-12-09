@@ -15,7 +15,7 @@ SuperStrict
 Import brl.retro
 Import brl.max2d
 
-Import "../../util/graphics_util.bmx"
+Import "../../../pangolin_gfx.bmx"
 Import "../../util/text_render_style.bmx"
 Import "../abstract_sprite_request.bmx"
 
@@ -124,7 +124,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="g">Green value of the text colour.</param>
 	''' <param name="b">Blue value of the text colour.</param>
 	Method setFontColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._fontColor = RgbToInt(r, g, b)
+		Self._fontColor = PangolinGfx.RgbToInt(r, g, b)
 
 		Return Self
 	End Method
@@ -142,7 +142,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="g">Green value of the shadow colour.</param>
 	''' <param name="b">Blue value of the shadow colour.</param>
 	Method setShadowColor:TextRenderRequest(r:Byte, g:Byte, b:Byte)
-		Self._shadowColor = RgbToInt(r, g, b)
+		Self._shadowColor = PangolinGfx.RgbToInt(r, g, b)
 		Return Self
 	End Method
 
@@ -274,7 +274,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 
 		' Draw the shadow first (if present).
 		If Self._shadowColor <> -1 Then
-			SetColorInt(Self._shadowColor)
+			PangolinGfx.SetColorInt(Self._shadowColor)
 			Local oldAlpha:Float = brl.max2d.GetAlpha()
 			brl.max2d.SetAlpha(Self._shadowAlpha)
 			DrawText line, xOff + Self._shadowXDistance, yOff + Self._shadowyDistance
@@ -282,7 +282,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 		EndIf
 
 		' Render the main text.
-		SetColorInt(Self._fontColor)
+		PangolinGfx.SetColorInt(Self._fontColor)
 		DrawText line, xOff, yOff
 
 	End Method

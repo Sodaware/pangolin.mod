@@ -14,44 +14,7 @@ SuperStrict
 
 Import brl.max2d
 
-Function GetVirtualScale(xScale:Float var, yScale:Float var)
-	xScale = GraphicsWidth() / VirtualResolutionWidth()
-	yScale = GraphicsHeight() / VirtualResolutionHeight()
-End Function
-
-Function GetAspectRatio:Float()
-	Return (Float(GraphicsHeight()) / Float(GraphicsWidth()))
-End Function
-
-Function SetColorInt(color:Int)
-	SetColor 255 & (color Shr 16), 255 & (color Shr 8), 255 & color
-End Function
-
-Function IntToRgb(color:Int, r:Byte Var, g:Byte Var, b:Byte Var)
-	r = color Shr 16
-	g = color Shr 8
-	b = color
-End Function
-
-Function RgbToInt:Int(r:Byte, g:Byte, b:Byte)
-	Return ColorRgb(r, g, b)
-End Function
-
-''' <summary>Convert an RGB colour into a single integer.</summary>
-''' <param name="r">Red value between 0 and 255.</param>
-''' <param name="g">Green value between 0 and 255.</param>
-''' <param name="b">Blue value between 0 and 255.</param>
-''' <returns>Integer colour.</returns>
-Function ColorRgb:Int(r:Byte, g:Byte, b:Byte)
-	Return (r Shl 16) + (g Shl 8) + (b)
-End Function
-
-''' <summary>Check if the current screen resolution widescreen.</summary>
-''' <returns>True if the screen is widescreen (the aspect ratio >= 1.6).</returns>
-Function IsWidescreen:Byte()
-	Return GetAspectRatio() >= 1.6
-End Function
-
+' TODO: Move to the map request.
 Function TileImageScaled(image:TImage, x:Float = 0, y:Float = 0, frame:Int = 0)
 
 	' Get the current scale, viewport, origin and handle
