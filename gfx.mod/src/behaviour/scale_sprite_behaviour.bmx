@@ -16,10 +16,6 @@ SuperStrict
 Import "sprite_behaviour.bmx"
 
 Type ScaleSpriteBehaviour Extends SpriteBehaviour
-
-	Field _duration:Float
-	Field _scaleSpeed:Float
-	Field _scale:Float
 	Field _fromScale:Float
 	Field _toScale:Float
 
@@ -29,28 +25,21 @@ Type ScaleSpriteBehaviour Extends SpriteBehaviour
 	' --------------------------------------------------
 
 	Method onStart()
-		Self._scale = Self._fromScale
-		Self.getTarget().setScale(Self._scale, Self._scale)
+		Self.getTarget().setScale(Self._fromScale, Self._fromScale)
 	End Method
 
 	Method update(delta:Float)
 		Super.update(delta)
 
-		' Update scale size.
-		Self._scale :+ (Self._scaleSpeed * delta)
-
-		' Move the sprite
-		Self.getTarget().setScale(Self._scale, Self._scale)
+		' Scale the sprite.
+		Self.getTarget().setScale( ..
+			Self.tween(Self._fromScale, Self._toScale), ..
+			Self.tween(Self._fromScale, Self._toScale) ..
+		)
 
 		' If elapsed time is over, finish.
 		If Self._elapsedTime > Self._duration Then
-
-			' Shuffle back slightly
-			Local diff:Float   = Self._elapsedTime - Self._duration
-			Local offset:Float = diff * Self._scaleSpeed
-			Self.getTarget().setScale(Self._scale - offset, Self._scale - offset)
-
-			' Finish
+			Self.getTarget().setScale(Self._toScale, Self._toScale)
 			Self.finished()
 		End If
 	End Method
@@ -64,12 +53,10 @@ Type ScaleSpriteBehaviour Extends SpriteBehaviour
 		Local this:ScaleSpriteBehaviour = New ScaleSpriteBehaviour
 
 		this.setTarget(target)
+		this.setDuration(duration)
 
 		this._fromScale = fromScale
 		this._toScale   = toScale
-		this._duration  = duration
-
-		this._scaleSpeed = (toScale - fromScale) / duration
 
 		Return this
 	End Function
