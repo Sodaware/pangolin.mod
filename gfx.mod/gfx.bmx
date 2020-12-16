@@ -53,6 +53,8 @@ Import "src/renderer/screen_objects/progress_bar_render_request.bmx"
 
 ' -- Import behaviours
 Import "src/behaviour/fade_sprite_behaviour.bmx"
+Import "src/behaviour/fade_sprite_in_behaviour.bmx"
+Import "src/behaviour/fade_sprite_out_behaviour.bmx"
 Import "src/behaviour/hide_sprite_behaviour.bmx"
 Import "src/behaviour/move_sprite_behaviour.bmx"
 Import "src/behaviour/move_sprite_to_behaviour.bmx"
