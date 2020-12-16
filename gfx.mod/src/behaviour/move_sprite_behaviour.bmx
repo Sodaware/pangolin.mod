@@ -50,14 +50,18 @@ Type MoveSpriteBehaviour Extends SpriteBehaviour
 		Super.update(delta)
 
 		' Move the sprite.
-		Self.getTarget().setX(Self.tween(Self._startX, Self._xDistance))
-		Self.getTarget().setY(Self.tween(Self._startY, Self._yDistance))
+		Self.getTarget().move( ..
+			Self.tween(Self._startX, Self._xDistance) - Self.getTarget().getX(), ..
+			Self.tween(Self._startY, Self._yDistance) - Self.getTarget().getY() ..
+		)
 
 		' If elapsed time is over, finish.
 		If Self._elapsedTime >= Self._duration Then
-			' Shuffle back slightly
-			Self.getTarget().setX(Self._endX)
-			Self.getTarget().setY(Self._endY)
+			' Adjust to the end part.
+			Self.getTarget().move( ..
+				Self._endX - Self.getTarget().getX(), ..
+				Self._endY - Self.getTarget().getY() ..
+			)
 
 			Self.finished()
 		End If
