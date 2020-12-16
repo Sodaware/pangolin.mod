@@ -100,6 +100,14 @@ Type AbstractRenderRequest Abstract
 		' Do nothing (should be overridden)
 	End Method
 
+	Method setX:AbstractRenderRequest(x:Float)
+		Return Self
+	End Method
+
+	Method setY:AbstractRenderRequest(x:Float)
+		Return Self
+	End Method
+
 	Method setBlendMode:AbstractRenderRequest(blendMode:Byte)
 		Return Self
 	End Method
