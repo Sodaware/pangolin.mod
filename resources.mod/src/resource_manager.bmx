@@ -149,8 +149,10 @@ Type ResourceManager
 	End Method
 
 	''' <summary>
-	''' Free a resource by name. This unloads any data it has loaded, but does
-	''' not remove it from the resource manager.
+	''' Free a resource by name.
+	'''
+	''' This unloads any data it has loaded, but does not remove it from the
+	''' resource manager.
 	''' </summary>
 	Method freeResource(resourceName:String)
 		Local resource:BaseResource = Self._getResource(resourceName)

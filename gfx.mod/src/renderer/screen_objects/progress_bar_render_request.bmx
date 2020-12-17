@@ -131,7 +131,7 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 		
 		PangolinGfx.SetColorInt(Self._barColor)
 		DrawRect(xPos, yPos, width * Self._percentage, height)
-		
+
 		' Reset rendering
 		brl.max2d.SetBlend(MASKBLEND)
 		brl.max2d.SetAlpha(1)

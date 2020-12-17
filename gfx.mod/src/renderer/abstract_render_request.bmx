@@ -104,7 +104,7 @@ Type AbstractRenderRequest Abstract
 		Return Self
 	End Method
 
-	Method setY:AbstractRenderRequest(x:Float)
+	Method setY:AbstractRenderRequest(y:Float)
 		Return Self
 	End Method
 

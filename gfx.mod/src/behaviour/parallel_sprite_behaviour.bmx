@@ -28,6 +28,7 @@ Type ParallelSpriteBehaviour Extends SpriteBehaviour
 	Method add:AbstractSpriteBehaviour(anim:AbstractSpriteBehaviour)
 		Self._animations.AddLast(anim)
 		Self._animCount :+ 1
+
 		Return anim
 	End Method
 
@@ -37,24 +38,20 @@ Type ParallelSpriteBehaviour Extends SpriteBehaviour
 	' ----------------------------------------------------------------------
 
 	Method update(delta:Float)
-
 		' Do nothing if this group contains no animations.
 		If Self._animCount = 0 Then Return
 
 		Local finishedCount:Int = 0
 
 		For Local anim:AbstractSpriteBehaviour = EachIn Self._animations
-			If anim.isFinished() = False Then
-				anim.update(delta)
-			Else
+			If anim.isFinished() Then
 				finishedCount:+ 1
+			Else
+				anim.update(delta)
 			End If
 		Next
 
-		If Self._animCount = finishedCount Then
-			Self._isFinished = True
-		End If
-
+		If Self._animCount = finishedCount Then Self.finished()
 	End Method
 
 
