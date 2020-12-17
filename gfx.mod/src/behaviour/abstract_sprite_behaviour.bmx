@@ -64,7 +64,7 @@ Type AbstractSpriteBehaviour Abstract
 	' -- Easing Helpers
 	' --------------------------------------------------
 
-	Method setEasingType(easing:Byte)
+	Method setEasingType:AbstractSpriteBehaviour(easing:Byte)
 		Self._easingType = easing
 
 		Select easing
@@ -82,6 +82,8 @@ Type AbstractSpriteBehaviour Abstract
 				Self.setEasingFunction(EasingFunction_EaseInOut)
 
 		End Select
+
+		Return Self
 	End Method
 
 	Method setEasingFunction(fn:Float(t:Float, s:Float, f:Float, d:Float))
