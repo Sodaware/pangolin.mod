@@ -1,6 +1,6 @@
 ' ------------------------------------------------------------------------------
 ' -- src/renderer/screen_objects/render_group.bmx
-' -- 
+' --
 ' -- Holds a collection of renderable items.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
@@ -25,14 +25,14 @@ Type RenderGroup Extends AbstractRenderRequest
 
 	Field _items:TList = New TList
 	Field _itemLookup:TMap = New TMap
-		
+
 	Method getX:Float()
 		Return 0
 	End Method
-	
+
 	Method getY:Float()
 		Return 0
-	End Method		
+	End Method
 
 
 	' ------------------------------------------------------------
@@ -40,9 +40,29 @@ Type RenderGroup Extends AbstractRenderRequest
 	' ------------------------------------------------------------
 
 	Method move(xOff:Float, yOff:Float)
-    	For Local r:AbstractRenderRequest = EachIn Self._items
+		For Local r:AbstractRenderRequest = EachIn Self._items
 			r.move(xOff, yOff)
 		Next
+	End Method
+
+	Method setX:AbstractRenderRequest(xPos:Float)
+		Local xOff:Float = xPos - Self.getX()
+
+		For Local r:AbstractRenderRequest = EachIn Self._items
+			r.move(xOff, 0)
+		Next
+
+		Return Self
+	End Method
+
+	Method setY:AbstractRenderRequest(yPos:Float)
+		Local yOff:Float = yPos - Self.getY()
+
+		For Local r:AbstractRenderRequest = EachIn Self._items
+			r.move(0, yOff)
+		Next
+
+		Return Self
 	End Method
 
 	Method setPosition(xPos:Float, yPos:Float)
@@ -55,14 +75,14 @@ Type RenderGroup Extends AbstractRenderRequest
 	End Method
 
 	Method SetAlpha:RenderGroup(alpha:Float)
-	   	For Local r:AbstractRenderRequest = EachIn Self._items
+		For Local r:AbstractRenderRequest = EachIn Self._items
 			r.SetAlpha(alpha)
 		Next
 		Return Self
 	End Method
 
 	Method setScale:RenderGroup(xScale:Float, yScale:Float)
-	   	For Local r:AbstractRenderRequest = EachIn Self._items
+		For Local r:AbstractRenderRequest = EachIn Self._items
 			r.setScale(xScale, yScale)
 		Next
 		Return Self
@@ -72,43 +92,43 @@ Type RenderGroup Extends AbstractRenderRequest
 	' ------------------------------------------------------------
 	' -- Adding / Removing items
 	' ------------------------------------------------------------
-	
+
 	Method add(item:AbstractRenderRequest, name:String = "")
-		
+
 		' Check item is not null
 		If item = Null Then
 			Throw "Cannot add item ~q" + name + "~q to group - null request"
 		EndIf
-		
+
 		' Add it to request items
 		Self._items.AddLast(item)
-		
+
 		' Add a lookup
 		If name Then
 			item.setIdentifier(name)
 			Self._itemLookup.Insert(name, item)
 		EndIf
-		
+
 	End Method
-	
+
 	Method addArray(items:AbstractRenderRequest[])
 		For Local item:AbstractRenderRequest = EachIn items
 			Self.add(item)
 		Next
 	End Method
-	
+
 	Method get:AbstractRenderRequest(name:String)
 		Return AbstractRenderRequest(Self._itemLookup.ValueForKey(name))
 	End Method
-	
+
 	Method remove(item:AbstractRenderRequest)
 		Self._items.remove(item)
 		item.onRemoved()
 	End Method
-	
+
 	Method removeByName(name:String)
 		Local item:AbstractRenderRequest = Self.get(name)
-		If item Then 
+		If item Then
 			Self._items.remove(item)
 			item.onRemoved()
 		EndIf
@@ -117,22 +137,22 @@ Type RenderGroup Extends AbstractRenderRequest
 	Method sort(sortOrder:Int = True)
 		Self._items.sort(sortOrder, AbstractRenderRequest.SortByZIndex)
 	End Method
-	
+
 	Method clear()
 		For Local r:AbstractRenderRequest = EachIn Self._items
 			Self.remove(r)
 		Next
 	End Method
-	
+
 	Method onRemoved()
 		Self.clear()
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Updating & Rendering
 	' ------------------------------------------------------------
-	
+
 	Method update(delta:Float)
 		For Local item:AbstractRenderRequest = EachIn Self._items
 			item.update(delta)
@@ -148,16 +168,16 @@ Type RenderGroup Extends AbstractRenderRequest
 		Next
 		If Self._identifier Then PangolinProfiler.stopProfile("RenderGroup[" + Self._identifier + "]")
 	End Method
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Debug
 	' ------------------------------------------------------------
-	
+
 	Method trace:String()
-	
+
 		Local output:String = "RenderGroup.trace [" + Self.getIndentifier() + "] {~n"
-		
+
 		For Local r:AbstractRenderRequest = EachIn Self._items
 			Local t:TTypeId = TTypeId.ForObject(r)
 			If t.FindMethod("trace") Then
@@ -166,13 +186,13 @@ Type RenderGroup Extends AbstractRenderRequest
 				output:+ "    " + t.Name() + "~n"
 			EndIf
 		Next
-		
+
 		output:+ "}~n"
-		
+
 		Return output
-		
+
 	End Method
-	
+
 	Method countItems:Int()
 		Local count:Int = 0
 		For Local r:AbstractRenderRequest = EachIn Self._items
@@ -185,5 +205,5 @@ Type RenderGroup Extends AbstractRenderRequest
 		Next
 		Return count
 	End Method
-	
+
 End Type
