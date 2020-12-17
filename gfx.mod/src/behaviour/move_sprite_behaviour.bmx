@@ -15,16 +15,19 @@
 
 SuperStrict
 
-Import "../renderer/abstract_sprite_request.bmx"
 Import "sprite_behaviour.bmx"
 
+''' <summary>
+''' Moves a sprite a set number of pixels on the X and Y axes over a set time.
+'''
+''' This behaviour does not calculate co-ordinates, so it can be used in
+''' combination with other movers.
+''' </summary>
 Type MoveSpriteBehaviour Extends SpriteBehaviour
-	Field _xDistance:Float
-	Field _yDistance:Float
-	Field _startX:Float
-	Field _startY:Float
-	Field _endX:Float
-	Field _endY:Float
+	Field _xDistance:Float              ' The X distance this sprite will travel.
+	Field _yDistance:Float              ' The Y distance this sprite will travel.
+	Field _xLast:Float                  ' The total X travelled (previous frame).
+	Field _yLast:Float                  ' The total Y travelled (previous frame).
 
 
 	' --------------------------------------------------
@@ -35,8 +38,6 @@ Type MoveSpriteBehaviour Extends SpriteBehaviour
 	Method setDistance:MoveSpriteBehaviour(xDistance:Float, yDistance:Float)
 		Self._xDistance = xDistance
 		Self._yDistance = yDistance
-
-		self._updateInternals()
 
 		Return Self
 	End Method
@@ -49,18 +50,14 @@ Type MoveSpriteBehaviour Extends SpriteBehaviour
 	Method update(delta:Float)
 		Super.update(delta)
 
-		' Move the sprite.
-		Self.getTarget().move( ..
-			Self.tween(Self._startX, Self._xDistance) - Self.getTarget().getX(), ..
-			Self.tween(Self._startY, Self._yDistance) - Self.getTarget().getY() ..
-		)
+		' Calculate the delta to move and adjust the sprite.
+		Self.getTarget().move(Self._xDelta(), Self._yDelta())
 
-		' If elapsed time is over, finish.
+		' If time is over, adjust the sprite to its final position and finish.
 		If Self._elapsedTime >= Self._duration Then
-			' Adjust to the end part.
 			Self.getTarget().move( ..
-				Self._endX - Self.getTarget().getX(), ..
-				Self._endY - Self.getTarget().getY() ..
+				Self._xDistance - Self._xLast , ..
+				Self._yDistance - Self._yLast ..
 			)
 
 			Self.finished()
@@ -69,12 +66,35 @@ Type MoveSpriteBehaviour Extends SpriteBehaviour
 
 
 	' --------------------------------------------------
-	' -- Internal Helpers
+	' -- Internal helpers
 	' --------------------------------------------------
 
-	Method _updateInternals()
-		Self._endX = Self._startX + Self._xDistance
-		Self._endY = Self._startY + Self._yDistance
+	Method _xDelta:Float()
+		' Do nothing no movement at all on the x axis.
+		If Self._xDistance = 0 Then Return 0
+
+		' Calculate the amount to move.
+		Local xMovement:Float = Self.tween(0, Self._xDistance)
+		Local xOffset:Float   = xMovement - Self._xLast
+
+		' Store the tweened value so we can calculate a delta.
+		Self._xLast = xMovement
+
+		Return xOffset
+	End Method
+
+	Method _yDelta:Float()
+		' Do nothing no movement at all on the y axis.
+		If Self._yDistance = 0 Then Return 0
+
+		' Calculate the amount to move.
+		Local yMovement:Float = Self.tween(0, Self._yDistance)
+		Local yOffset:Float   = yMovement - Self._yLast
+
+		' Store the tweened value so we can calculate a delta.
+		Self._yLast = yMovement
+
+		Return yOffset
 	End Method
 
 
@@ -85,9 +105,6 @@ Type MoveSpriteBehaviour Extends SpriteBehaviour
 	''' <summary>Move a sprite xDistance and yDistance in duration milliseconds.</summary>
 	Function Create:MoveSpriteBehaviour(target:AbstractRenderRequest, xDistance:Float, yDistance:Float, duration:Float)
 		Local this:MoveSpriteBehaviour = New MoveSpriteBehaviour
-
-		this._startX = target.getX()
-		this._startY = target.getY()
 
 		this.setTarget(target)
 		this.setDistance(xDistance, yDistance)
