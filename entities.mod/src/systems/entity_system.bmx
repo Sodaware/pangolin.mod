@@ -13,10 +13,11 @@
 
 
 ''' <summary>
-''' An EntitySystem is used to perform actions on entities. The entities that
-''' are processed can be limited to just entities with one or more specific
-''' components. For example, a `PlayerInputSystem` that only processes entities
-''' with a`PlayerComponent`.
+''' An EntitySystem is used to perform actions on entities.
+'''
+''' The entities that are processed can be limited to just entities with one or
+''' more specific components. For example, a `PlayerInputSystem` that only
+''' processes entities with a`PlayerComponent`.
 '''
 ''' This is the base class that all other systems should extend.
 ''' </summary>
@@ -64,9 +65,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	Method onEnabled()
 	End Method
 
-	''' <summary>
-	''' Called when this system is removed from the World.
-	''' </summary>
+	''' <summary>Called when this system is removed from the World.</summary>
 	Method cleanup()
 	End Method
 
@@ -75,6 +74,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' -- Getters / Setters
 	' ------------------------------------------------------------
 
+	''' <summary>Get the entity manager attached to this system's world.</summary>
 	Method getEntityManager:EntityManager()
 		Return Self._world.getEntityManager()
 	End Method
@@ -109,13 +109,11 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 
 	' Processes all entities if the system is enabled and can process
 	Method process()
+		If Not Self._isEnabled Or Not Self.checkProcessing() Then Return
 
-		If Self._isEnabled And Self.checkProcessing() Then
-			Self.beforeProcessEntities()
-			Self.processEntities(Self._actives)
-			Self.afterProcessEntities()
-		End If
-
+		Self.beforeProcessEntities()
+		Self.processEntities(Self._actives)
+		Self.afterProcessEntities()
 	End Method
 
 
@@ -176,23 +174,20 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	End Method
 
 	Method registerComponents(componentTypeList:TTypeId[])
-
 		For Local t:TTypeId = EachIn componentTypeList
 			Self.registerComponent(t)
 		Next
-
 	End Method
 
 	Method registerComponent(t:TTypeId)
-		if t = null then return
+		If t = Null Then Return
+
 		Local ct:ComponentType = ComponentTypeManager.getTypeFor(t)
 		Self._typeFlags = Self._typeFlags | ct.getBit()
 	End Method
 
-	''
-	' Automates registering a system with component types
+	''' <summary>Automates registering a system with component types.</summary>
 	Method _autoRegisterComponentTypes()
-
 		If Self._typeFlags <> 0 Then Return
 
 		Local imp:String = TTypeId.ForObject(Self).MetaData("component_types")
@@ -202,7 +197,6 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 			typeName = typeName.Trim()
 			Self.registerComponentByName(typeName)
 		Next
-
 	End Method
 
 	''' <summary>
@@ -228,8 +222,8 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' ------------------------------------------------------------
 
 	Method New()
-		Self._actives	= EntityBag.Create()
-		Self._isEnabled	= True
+		Self._actives   = EntityBag.Create()
+		Self._isEnabled = True
 	End Method
 
 End Type

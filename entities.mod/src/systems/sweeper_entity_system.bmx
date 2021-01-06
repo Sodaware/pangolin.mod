@@ -16,13 +16,11 @@ Type SweeperEntitySystem Extends EntitySystem Abstract
 		Return True
 	End Method
 
-	' This is set to false so it doesn't run during normal execution
+	''' <summary>
+	''' This always returns False so it doesn't run during normal execution.
+	''' </summary>
 	Method checkProcessing:Byte() Final
 		Return False
-	End Method
-
-	Method initialize()
-		Super.initialize()
 	End Method
 
 End Type

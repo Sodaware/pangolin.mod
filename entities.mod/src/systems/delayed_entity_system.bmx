@@ -9,62 +9,75 @@
 ' -- See COPYING for full license information.
 ' ------------------------------------------------------------------------------
 
-
+''' <summary>
+''' System that runs only after a set amount of time has elapsed.
+''' </summary>
 Type DelayedEntitySystem Extends EntitySystem Abstract
+	Field _delay:Float              '< The number of milliseconds to wait before running.
+	Field _running:Byte             '< Is the timer running?
+	Field _elapsedtime:Float        '< The number of milliseconds elapsed.
 
-	Field _delay:Int
-	Field _running:Byte
-	Field _acc:Int
 
-	Method processEntity(e:Entity) Abstract
+	' ------------------------------------------------------------
+	' -- Starting / Stopping
+	' ------------------------------------------------------------
 
-	Method processEntities(entities:EntityBag)
-		Self._processEntities(entities, Self._acc)
-		Self.stop()
+	''' <summary>Start the system and wait for a set amount of time.</summary>
+	Method startDelayedRun(delayTime:Float)
+		Self._delay       = delayTime
+		Self._elapsedTime = 0
+		Self._running     = True
 	End Method
 
-	Method _processEntities(entities:EntityBag, acc:Float) Abstract
-
-	Method checkProcessing:Byte() Final
-
-		If Self._running Then
-			Self._acc = Self._acc + Self._world.getDelta()
-
-			If Self._acc >= Self._delay Then
-				Return True
-			End If
-		End If
-
-		Return False
-
+	Method stop()
+		Self._running     = False
+		Self._elapsedTime = 0
 	End Method
 
-	Method startDelayedRun(newDelay:Int)
-		Self._delay		= newDelay
-		Self._acc		= 0
-		Self._running	= True
-	End Method
 
-	Method getInitialTimeDelay:Int()
-		Return Self._delay
-	End Method
+	' ------------------------------------------------------------
+	' -- Querying
+	' ------------------------------------------------------------
 
-	Method getRemainingTimeUntilProcessing:Int()
-
-		If Self._running Then
-			Return Self._delay - Self._acc
-		End If
-		Return 0
-
-	End Method
-
+	''' <summary>Is this system's timer running?</summary>
 	Method isRunning:Byte()
 		Return Self._running
 	End Method
 
-	Method stop()
-		Self._running	= False
-		Self._acc		= 0
+	Method getInitialTimeDelay:Float()
+		Return Self._delay
+	End Method
+
+	Method getRemainingTimeUntilProcessing:Float()
+		If Self._running = False Then Return 0
+
+		Return Self._delay - Self._elapsedTime
+	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Processing entities
+	' ------------------------------------------------------------
+
+	''' <summary>Process a single entity.</summary>
+	Method processEntity(e:Entity) Abstract
+
+	''' <summary>Internal method to process a collection of entities.</summary>
+	Method _processEntities(entities:EntityBag, acc:Float) Abstract
+
+	''' <summary>Process all related entities and then stops the system.</summary>
+	Method processEntities(entities:EntityBag)
+		Self._processEntities(entities, Self._elapsedTime)
+		Self.stop()
+	End Method
+
+	''' <summary>Check if this system can process entities.</summary>
+	Method checkProcessing:Byte() Final
+		If Not Self._running Then Return False
+
+		Self._elapsedTime :+ Self._world.getDelta()
+
+		Return Self._elapsedTime >= Self._delay
 	End Method
 
 End Type

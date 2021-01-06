@@ -10,24 +10,26 @@
 ' ------------------------------------------------------------------------------
 
 
+''' <summary>
+''' System for processing entities that are about to be deleted.
+'''
+''' Use these for freeing resources or deleting sprites that are not required
+''' once the entity is deleted.
+''' </summary>
 Type SweeperEntityProcessingSystem Extends SweeperEntitySystem Abstract
 
-	Method process()
+	Method processEntity(e:Entity) Abstract
+
+	Method process() Final
 		Self.beforeProcessEntities()
 		Self.processEntities(Self._world._deleted)
 		Self.afterProcessEntities()
 	End Method
 
-	Method processEntity(e:Entity) Abstract
-
-	Method processEntities(entities:EntityBag)
+	Method processEntities(entities:EntityBag) Final
 		For Local e:Entity = EachIn entities
 			Self.processEntity(e)
 		Next
-	End Method
-
-	Method initialize()
-		Super.initialize()
 	End Method
 
 End Type

@@ -11,11 +11,14 @@
 ' ------------------------------------------------------------------------------
 
 
-Type InitializerEntityProcessingSystem Extends EntitySystem Abstract
+''' <summary>
+''' Base system that processes entities when they are added to the world.
+'''
+''' Use these for loading assets and setting up initial data.
+''' </summary>
+Type InitializerEntityProcessingSystem Extends InitializerEntitySystem Abstract
 
-	Method checkProcessing:Byte()
-		Return false
-	End Method
+	Method processEntity(e:Entity) Abstract
 
 	Method process()
 
@@ -28,7 +31,5 @@ Type InitializerEntityProcessingSystem Extends EntitySystem Abstract
 	Method processEntities(entities:EntityBag)
 
 	End Method
-
-	Method processEntity(e:Entity) Abstract
 
 End Type

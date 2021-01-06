@@ -22,10 +22,13 @@ Type IntervalEntitySystem Extends EntitySystem Abstract
 
 	Method checkProcessing:Byte()
 		Self._timeSinceLastExecution :+ Self._world.getDelta()
+
 		If Self._timeSinceLastExecution >= Self._interval Then
 			Self._timeSinceLastExecution :- Self._interval
-			return True;
+
+			Return True;
 		EndIf
+
 		Return False
 	End Method
 

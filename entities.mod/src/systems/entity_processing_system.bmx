@@ -13,7 +13,16 @@
 ''' <summary>Base system that processes entities.</summary>
 Type EntityProcessingSystem Extends EntitySystem
 
+	' ------------------------------------------------------------
+	' -- Required methods
+	' ------------------------------------------------------------
+
 	Method processEntity(e:Entity) Abstract
+
+
+	' ------------------------------------------------------------
+	' -- Entity processing
+	' ------------------------------------------------------------
 
 	Method processEntities(entities:EntityBag) Final
 		For Local e:Entity = EachIn entities
@@ -21,7 +30,7 @@ Type EntityProcessingSystem Extends EntitySystem
 		Next
 	End Method
 
-	''' <summary>Run every loop by default.</summary>
+	''' <summary>Check if this system can process entities.</summary>
 	Method checkProcessing:Byte()
 		Return True
 	End Method
