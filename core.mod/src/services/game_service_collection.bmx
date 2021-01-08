@@ -273,7 +273,7 @@ Type GameServiceCollection
 	''' <summary>Sort the contents of the bag.</summary>
 	''' <param name="sortOrder">The order to use (either SORT_ASC or SORT_DESC). Default is SORT_ASC.</param>
 	''' <param name="compareFunction">The function used to compare the two objects.</param>
-	Method sort(sortOrder:Byte = SORT_ASC, compareFunction:Int(obj1:GameService, obj2:GameService) = Null)
+	Method sort(sortOrder:Int = SORT_ASC, compareFunction:Int(obj1:GameService, obj2:GameService) = Null)
 
 		' Get sort method
 		If compareFunction = Null Then compareFunction = Self._sortMethod
