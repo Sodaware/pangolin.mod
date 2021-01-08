@@ -32,7 +32,7 @@ Type Position2D
 		Return Self._yPos
 	End Method
 
-	Method setPosition(xPos:float, yPos:int)
+	Method setPosition(xPos:Float, yPos:Float)
 		self._xPos = xPos
 		self._yPos = yPos
 	End Method
