@@ -26,9 +26,9 @@
 ' ------------------------------------------------------------------------------
 
 
-Module pangolin.contentdb
-
 SuperStrict
+
+Module pangolin.contentdb
 
 Import "src/content_db.bmx"
 Import "src/entity_factory.bmx"

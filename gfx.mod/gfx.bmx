@@ -22,9 +22,10 @@
 ' ------------------------------------------------------------------------------
 
 
+SuperStrict
+
 Module pangolin.gfx
 
-SuperStrict
 
 Import brl.graphics
 Import brl.retro

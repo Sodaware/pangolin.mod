@@ -23,9 +23,10 @@
 ' ------------------------------------------------------------------------------
 
 
+SuperStrict
+
 Module pangolin.entities
 
-SuperStrict
 
 Import brl.map
 Import brl.reflection

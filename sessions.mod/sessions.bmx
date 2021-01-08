@@ -22,9 +22,9 @@
 ' ------------------------------------------------------------------------------
 
 
-Module pangolin.sessions
-
 SuperStrict
+
+Module pangolin.sessions
 
 ' -- Core files
 Import "src/game_session_service.bmx"

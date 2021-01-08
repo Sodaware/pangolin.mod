@@ -10,12 +10,10 @@
 ' ------------------------------------------------------------------------------
 
 
-Import brl.linkedlist
-
-Import "sprite_animation/abstract_sprite_animation.bmx"
-
 SuperStrict
 
+Import brl.linkedlist
+Import "sprite_animation/abstract_sprite_animation.bmx"
 
 Type AnimationHandler
 	

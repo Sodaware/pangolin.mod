@@ -24,9 +24,10 @@
 ' ------------------------------------------------------------------------------
 
 
+SuperStrict
+
 Module pangolin.resources
 
-SuperStrict
 
 ' -- Core files
 Import "src/resource_manager.bmx"

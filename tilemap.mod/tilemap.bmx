@@ -23,12 +23,12 @@
 ' ------------------------------------------------------------------------------
 
 
+SuperStrict
+
 Module pangolin.TileMap
 
 ModuleInfo "Simple tilemap engine"
 ModuleInfo "Version: 0.0.1.0"
-
-SuperStrict
 
 ' -- Import core types
 Import "src/tile_map.bmx"

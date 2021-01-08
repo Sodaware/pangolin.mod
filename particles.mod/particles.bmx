@@ -23,11 +23,9 @@
 ' ------------------------------------------------------------------------------
 
 
-Module pangolin.particles
-
 SuperStrict
 
-Import pangolin.gfx
+Module pangolin.particles
 
 Import "src/particles_request.bmx"
 Import "src/particle_bag.bmx"

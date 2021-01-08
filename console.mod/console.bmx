@@ -22,11 +22,12 @@
 ' ------------------------------------------------------------------------------
 
 
+SuperStrict
+
 Module pangolin.console
 
 ModuleInfo "Implementation of a Quake style console"
 ModuleInfo "Version: 1.0.0.0"
 
-SuperStrict
 
 Import "src/services/debug_console_service.bmx"
