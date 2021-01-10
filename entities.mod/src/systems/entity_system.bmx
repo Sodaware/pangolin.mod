@@ -23,11 +23,11 @@
 ''' </summary>
 Type EntitySystem Extends KernelAwareInterface Abstract
 
-	Field _isEnabled:Byte
-	Field _systemBit:Long
-	Field _typeFlags:Long
-	Field _world:World
-	Field _actives:EntityBag
+	Field _isEnabled:Byte                   '''< Is this system enabled?
+	Field _systemBit:Long                   '''< The unique bit for this system.
+	Field _typeFlags:Long                   '''< Types that this system is interested in.
+	Field _world:World                      '''< World this system belongs to.
+	Field _actives:EntityBag                '''< All entities this system is interested in.
 
 
 	' ------------------------------------------------------------
@@ -148,7 +148,6 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	End Method
 
 	Method change(e:Entity)
-
 		Local contains:Byte = ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
 		Local interest:Byte = ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
 
@@ -159,9 +158,11 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		ElseIf (Not(interest) And contains And Self._typeFlags > 0) Then
 			Self.remove(e)
 		End If
-
 	End Method
 
+	''' <summary>
+	''' Remove an entity from the list of entities this system is interested in.
+	''' </summary>
 	Method remove(e:Entity)
 		Self._actives.removeObject(e)
 		e.removeSystemBit(Self._systemBit)

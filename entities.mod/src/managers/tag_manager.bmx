@@ -36,6 +36,11 @@ Type TagManager Extends BaseManager
 		Return (Self._entityByTag.ValueForKey(tag) <> Null)
 	End Method
 
+	''' <summary>Check if an entity with a specific tag exists.</summary>
+	Method tagEntityExists:Byte(tag:String)
+		Return (Self._entityByTag.ValueForKey(tag) <> Null)
+	End Method
+
 	''' <deprecated>Use getTagEntity</deprecated>
 	Method getEntity:Entity(tag:String)
 		Return Entity(Self._entityByTag.ValueForKey(tag))

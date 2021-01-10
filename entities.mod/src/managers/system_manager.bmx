@@ -34,6 +34,7 @@ Type SystemManager Extends BaseManager
 	''' <summary>Get a system based on its Type</summary>
 	Method getSystem:EntitySystem(t:TTypeId)
 		If t = Null Then Return Null
+
 		Return EntitySystem(Self._systems.ValueForKey(t))
 	End Method
 
@@ -102,8 +103,10 @@ Type SystemManager Extends BaseManager
 	End Method
 
 	''' <summary>
-	''' Refresh an entity. Notifies all systems that the entity has changed
-	''' so that they can add/remove their interest.
+	''' Refresh an entity.
+	'''
+	''' Notifies all systems that the entity has changed so that they can
+	''' add/remove their interest.
 	''' </summary>
 	Method refreshEntity(e:Entity)
 		For Local system:EntitySystem = EachIn Self._systemList

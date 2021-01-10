@@ -198,13 +198,11 @@ Type World
 
 		' Delete entities on the delete list.
 		If False = Self._deleted.isEmpty() Then
-
 			' Process sweepers.
 			Self.runSweepers()
 
 			' Delete all entities in the delete list.
 			For Local e:Entity = EachIn Self._deleted
-
 				' Remove entity from entity list, all groups and tags.
 				Self._entityManager.remove(e)
 				Self._groupManager.remove(e)
@@ -212,7 +210,6 @@ Type World
 
 				' Kill the entity completely (so GC will get it).
 				e = Null
-
 			Next
 
 			Self._deleted.clear()

@@ -146,28 +146,27 @@ Type EntityManager Extends BaseManager
 	End Method
 
 	''' <summary>
-	''' Remove an entity from the World. This should not be called directly - use
-	''' world.delete instead.
+	''' Remove an entity from the World.
+	'''
+	''' This should not be called directly - use world.delete instead.
 	''' </summary>
 	''' <param name="e">The entity to remove.</param>
 	Method remove(e:Entity)
-
-		' Remove from the list of active entities
+		' Remove from the list of active entities.
 		Self._activeEntities.set(e.getId(), Null)
 
-		' Remove any component mapping
+		' Remove any component mapping.
 		e.setTypeBits(0)
-		Self.refresh(e)
 		Self.removeEntityComponents(e)
+		Self.refresh(e)
 
-		' Update internal counters
+		' Update internal counters.
 		Self._count:- 1
 		Self._totalRemoved:+ 1
 
-		' Completely reset the internals and add it back to the pool
+		' Completely reset the internals and add it back to the pool.
 		e.reset()
 		Self._addEntityToPool(e)
-
 	End Method
 
 
