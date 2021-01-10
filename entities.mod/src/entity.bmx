@@ -63,12 +63,12 @@ Type Entity
 
 	''' <summary>Get the World instance this entity belongs to.</summary>
 	Method getWorld:World()
-		return Self._world
+		Return Self._world
 	End Method
 
 	''' <summary>Get the entity manager this entity is managed by.</summary>
 	Method getEntityManager:EntityManager()
-		return Self._entityManager
+		Return Self._entityManager
 	End Method
 
 	''' <summary>Get the ID of this entity.</summary>
@@ -110,6 +110,7 @@ Type Entity
 	''' <summary>Set the unique ID for this Entity.</summary>
 	Method setUniqueId:Entity(uniqueId:Long)
 		Self._uniqueId = uniqueId
+
 		Return Self
 	End Method
 
@@ -121,6 +122,7 @@ Type Entity
 	''' <summary>Add a type bit to the entity.</summary>
 	Method addTypeBit:Entity(bit:Long)
 		Self._typeBits = Self._typeBits | bit
+
 		Return Self
 	End Method
 
@@ -130,18 +132,21 @@ Type Entity
 	''' </summary>
 	Method setTypeBits:Entity(typeBits:Long)
 		Self._typeBits = typeBits
+
 		Return Self
 	End Method
 
 	''' <summary>Remove a type bit from the entity.</summary>
 	Method removeTypeBit:Entity(bit:Long)
 		Self._typeBits = Self._typeBits & ~bit
+
 		Return Self
 	End Method
 
 	''' <summary>Add a system bit to the entity.</summary>
 	Method addSystemBit:Entity(bit:Long)
 		Self._systemBits =Self._systemBits | bit
+
 		Return Self
 	End Method
 
@@ -151,12 +156,14 @@ Type Entity
 	''' </summary>
 	Method setSystemBits:Entity(systemBits:Long)
 		Self._systemBits = systemBits
+
 		Return Self
 	End Method
 
 	''' <summary>Remove a system bit from the entity.</summary>
 	Method removeSystemBit:Entity(bit:Long)
 		Self._systemBits = Self._systemBits & ~bit
+
 		Return Self
 	End Method
 
@@ -169,6 +176,7 @@ Type Entity
 	''' <seealso cref="TagManager">See TagManager for more information on tags.</seealso>
 	Method setTag:Entity(tagName:String)
 		Self._world.getTagManager().register(tagName, Self)
+
 		Return Self
 	End Method
 
@@ -183,8 +191,9 @@ Type Entity
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Called when an entity has had components changed. This causes the world
-	''' to update the system relationships.
+	''' Called when an entity has had components changed.
+	'''
+	''' Refreshing an entity causes the world to update the system relationships.
 	''' </summary>
 	Method refresh()
 		Self._world.refreshEntity(Self)
@@ -205,6 +214,7 @@ Type Entity
 	''' <summary>Add a component to the entity.</summary>
 	Method addComponent:Entity(c:EntityComponent)
 		Self._entityManager.addComponent(Self, c)
+
 		Return Self
 	End Method
 
