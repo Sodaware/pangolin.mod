@@ -92,6 +92,10 @@ Type Entity
 		Return Self._systemBits
 	End Method
 
+	Method hasSystemBit:Byte(bit:Byte)
+		Return Self._systemBits.hasBit(bit)
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Setting object information

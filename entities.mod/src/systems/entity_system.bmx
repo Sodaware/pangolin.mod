@@ -157,7 +157,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		' Does the entity have all the components this system is interested in?
 		Local interest:Byte = e.getTypeBits().containsAllBits(Self._typeBits)
 
-		If e.getTag() = "player" Then 
+		If e.getTag() = "player" Then
 			DebugLog "Change: " + e.getTag()
 			DebugLog contains + " // " + interest
 
@@ -172,30 +172,22 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 						Next
 					EndIf
 				Next
-				
+
 				DebugLog Bin(e.getTypeBits()._bits.peeklong(0))
 			EndIf
 		EndIf
-		
-		
+
+
 		' If the entity is interested and doesn't alreadt
 		If interest And Not(contains) Then
 			Self._actives.add(e)
-			DebugLog TTypeId.forobject(self).name() + " => " + Self._actives.getSize()
 			e.addSystemBit(Self._systemBit)
 			Self.added(e)
 		ElseIf Not(interest) And contains Then
-			Self.remove(e)
+			Self._actives.removeObject(e)
+			e.removeSystemBit(Self._systemBit)
+			Self.removed(e)
 		End If
-	End Method
-
-	''' <summary>
-	''' Remove an entity from the list of entities this system is interested in.
-	''' </summary>
-	Method remove(e:Entity)
-		Self._actives.removeObject(e)
-		e.removeSystemBit(Self._systemBit)
-		Self.removed(e)
 	End Method
 
 	Method registerComponentByName(componentTypeName:String)
@@ -213,9 +205,6 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		If t = Null Then Return
 
 		Local ct:ComponentType = ComponentTypeManager.getTypeFor(t)
-
-		DebugLog "  component bit: " + ct.getBit()
-		
 		Self._typeBits.setBit(ct.getBit())
 	End Method
 
@@ -232,7 +221,6 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 
 		For Local typeName:String = EachIn typeList
 			typeName = typeName.Trim()
-			DebugLog "Registering " + typeName
 			Self.registerComponentByName(typeName)
 		Next
 	End Method
