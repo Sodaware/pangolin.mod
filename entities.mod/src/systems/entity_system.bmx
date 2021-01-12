@@ -187,6 +187,10 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		Self._typeFlags = Self._typeFlags | ct.getBit()
 	End Method
 
+	Method isInterestedInComponent:Byte(ct:ComponentType)
+		Return (Self._typeFlags & ct.getBit()) = ct.getBit()
+	End Method
+
 	''' <summary>Automates registering a system with component types.</summary>
 	Method _autoRegisterComponentTypes()
 		If Self._typeFlags <> 0 Then Return

@@ -102,6 +102,10 @@ Type Entity
 		Return Self._systemBits
 	End Method
 
+	Method hasSystemBit:Byte(bit:Long)
+		Return (Self._systemBits & bit) = bit
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Setting object information
