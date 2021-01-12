@@ -2,8 +2,8 @@
 ' -- Pangolin.Entities -- entity.bmx
 ' --
 ' -- A basic entity that exists in a game world. Consists of two identifiers:
-' --	o ID		- An id that may be re-used when the entity is destroyed
-' --	o UniqueUd	- A unique ID that will not be re-used.
+' --	* ID        - An id that may be re-used when the entity is destroyed
+' --	* UniqueUd  - A unique ID that will not be re-used.
 ' --
 ' -- Entities must be created via world.createEntity so that their identifiers
 ' -- are set correctly.
@@ -37,8 +37,8 @@ Type Entity
 	Field _id:Int                       '''< ID of the object that may be re-used when the entity is destroyed.
 	Field _uniqueId:Long                '''< An ID that is unique to this object.
 
-	Field _typeBits:Long                '''< A list of component types this entity is interested in.
-	Field _systemBits:Long              '''< A list of systems that this entity is processed by.
+	Field _typeBits:BitStorage          '''< A list of component types this entity is interested in.
+	Field _systemBits:BitStorage        '''< A list of systems that this entity is processed by.
 
 	Field _world:World                  '''< The world this entity belongs to.
 	Field _entityManager:EntityManager  '''< The manager for the world.
@@ -83,27 +83,17 @@ Type Entity
 	End Method
 
 	''' <summary>Get the Type Bits for this entity.</summary>
-	''' <description>
-	''' Type Bits are a quick way to look up component types. Each component
-	''' type has a unique bit assigned to it (1, 2, 4 etc). These can then be
-	''' set in a Long and queried quickly using binary functions (AND, OR etc).
-	''' </description>
-	Method getTypeBits:Long()
+	Method getTypeBits:BitStorage()
 		Return Self._typeBits
 	End Method
 
 	''' <summary>Get the System Bits for this entity.</summary>
-	''' <description>
-	''' System Bits are a quick way to look up systems. Each system has a unique
-	''' bit assigned to it (1, 2, 4 etc). These can then be set in a Long and
-	''' queried quickly using binary functions (AND, OR etc).
-	''' </description>
-	Method getSystemBits:Long()
+	Method getSystemBits:BitStorage()
 		Return Self._systemBits
 	End Method
 
-	Method hasSystemBit:Byte(bit:Long)
-		Return (Self._systemBits & bit) = bit
+	Method hasSystemBit:Byte(bit:Byte)
+		Return Self._systemBits.hasBit(bit)
 	End Method
 
 
@@ -124,32 +114,41 @@ Type Entity
 	' ------------------------------------------------------------
 
 	''' <summary>Add a type bit to the entity.</summary>
-	Method addTypeBit:Entity(bit:Long)
-		Self._typeBits = Self._typeBits | bit
+	Method addTypeBit:Entity(bit:Byte)
+		Self._typeBits.setBit(bit)
 
 		Return Self
 	End Method
 
 	''' <summary>
-	''' Set all type bits for the entity. This will overwrite any
-	''' existing type bit information.
+	''' Set all type bits for the entity.
+	'''
+	''' This will overwrite any existing type bit information.
 	''' </summary>
-	Method setTypeBits:Entity(typeBits:Long)
-		Self._typeBits = typeBits
+	Method _setTypeBits:Entity(typeBits:Long)
+		Throw "oh no"
+'		Self._typeBits = typeBits
 
 		Return Self
 	End Method
 
 	''' <summary>Remove a type bit from the entity.</summary>
-	Method removeTypeBit:Entity(bit:Long)
-		Self._typeBits = Self._typeBits & ~bit
+	Method removeTypeBit:Entity(bit:Byte)
+		Self._typeBits.clearBit(bit)
 
 		Return Self
 	End Method
 
+	''' <summary>Remove a type bit from the entity.</summary>
+	Method resetTypeBits:Entity()
+		Self._typeBits.clearBits()
+
+		Return Self
+	End Method
+	
 	''' <summary>Add a system bit to the entity.</summary>
-	Method addSystemBit:Entity(bit:Long)
-		Self._systemBits =Self._systemBits | bit
+	Method addSystemBit:Entity(bit:Byte)
+		Self._systemBits.setBit(bit)
 
 		Return Self
 	End Method
@@ -158,15 +157,15 @@ Type Entity
 	''' Set all system bits for the entity. This will overwrite any
 	''' existing system bit information.
 	''' </summary>
-	Method setSystemBits:Entity(systemBits:Long)
-		Self._systemBits = systemBits
+	Method _setSystemBits:Entity(systemBits:Long)
+		'Self._systemBits = systemBits
 
 		Return Self
 	End Method
 
 	''' <summary>Remove a system bit from the entity.</summary>
-	Method removeSystemBit:Entity(bit:Long)
-		Self._systemBits = Self._systemBits & ~bit
+	Method removeSystemBit:Entity(bit:Byte)
+		Self._systemBits.clearBit(bit)
 
 		Return Self
 	End Method
@@ -205,8 +204,8 @@ Type Entity
 
 	''' <summary>Clear this entity's systems and components.</summary>
 	Method reset()
-		Self._systemBits = 0
-		Self._typeBits   = 0
+		Self._systemBits.clearBits()
+		Self._typeBits.clearBits()
 
 		' Remove all components (may need to clear from a manager).
 		For Local c:EntityComponent = EachIn Self._components
@@ -232,6 +231,7 @@ Type Entity
 	Method removeComponentByType(t:ComponentType)
 		Local c:EntityComponent = Self.getComponent(t)
 		If c = Null Then Return
+
 		Self.removeComponent(c)
 	End Method
 
@@ -239,12 +239,13 @@ Type Entity
 	Method removeComponentByName(typeName:String)
 		Local c:EntityComponent = Self.getComponentByName(typeName)
 		If c = Null Then Return
+
 		Self.removeComponent(c)
 	End Method
 
 	''' <summary>Check if the entity has a component type.</summary>
 	Method hasComponent:Byte(t:ComponentType)
-		Return (Self._typeBits & t.getBit() > 0)
+		Return Self._typeBits.hasBit(t.getBit())
 	End Method
 
 	''' <summary>
@@ -330,6 +331,8 @@ Type Entity
 
 	Method New()
 		Self._components = ObjectBag.Create()
+		Self._typeBits   = New BitStorage
+		Self._systemBits = New BitStorage
 	End Method
 
 End Type

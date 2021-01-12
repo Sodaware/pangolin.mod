@@ -55,6 +55,7 @@ Type EntityManager Extends BaseManager
 		If bag <> Null And e.getId() < bag.getCapacity() Then
 			Return EntityComponent(bag.get(e.getId()))
 		End If
+
 		Return Null
 	End Method
 
@@ -132,13 +133,13 @@ Type EntityManager Extends BaseManager
 		' Get an entity from the pool.
 		Local e:Entity = Self._getEntityFromPool()
 
-		' Set entity values and return
+		' Set entity values and update stats.
 		e.setUniqueId(Self._uniqueEntityId)
 		Self._uniqueEntityId:+ 1
 		Self._count:+ 1
 		Self._totalCreated:+ 1
 
-		' Add to list of active entities and return
+		' Add to list of active entities and return.
 		Self._activeEntities.set(e.getId(), e)
 
 		Return e
@@ -156,7 +157,7 @@ Type EntityManager Extends BaseManager
 		Self._activeEntities.set(e.getId(), Null)
 
 		' Remove any component mapping.
-		e.setTypeBits(0)
+		e.resetTypeBits()
 		Self.removeEntityComponents(e)
 		Self.refresh(e)
 
@@ -175,7 +176,6 @@ Type EntityManager Extends BaseManager
 	' ------------------------------------------------------------
 
 	Method addComponent(e:Entity, c:EntityComponent)
-
 		' TODO: Can probably clean this up a little bit more, but it's better for now.
 
 		' Get the component type for this component.
@@ -195,7 +195,6 @@ Type EntityManager Extends BaseManager
 		' Add to entity's internal lookup and map
 		e._components.add(c)
 		c._parent = e
-
 	End Method
 
 	''' <summary>Remove all components from an entity.</summary>
@@ -210,21 +209,17 @@ Type EntityManager Extends BaseManager
 	''' <param name="e">The Entity to remove a component from.</param>
 	''' <param name="c">The Component to remove.</param>
 	Method removeComponent(e:Entity, c:EntityComponent)
-
-		Local typeToRemove:ComponentType = ComponentTypeManager.getTypeFor(TTypeId.ForObject(c));
-		Self.removeComponentByType(e, typeToRemove)
-
+		Self.removeComponentByType(e, ComponentTypeManager.getTypeFor(TTypeId.forObject(c)))
 	End Method
 
 	''' <summary>Remove a component from an entity by its ComponentType.</summary>
 	Method removeComponentByType(e:Entity, c:ComponentType)
+		' TODO: Try and improve this method - it's relatively slow has it has to alter 2 object bags.
 
-		' TODO: Try and improve this method - it's relatively slow has it has to alter 2 object bags
-
-		' Remove cached component from this entity
+		' Remove cached component from this entity.
 		e._components.removeObject(Self.getComponent(e, c))
 
-		' Remove the component type bit
+		' Remove the component type bit.
 		Local components:ObjectBag = ObjectBag(_componentsByType.get(c.getId()))
 		components.set(e.getId(), Null)
 		e.removeTypeBit(c.getBit())

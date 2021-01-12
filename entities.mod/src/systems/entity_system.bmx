@@ -24,8 +24,8 @@
 Type EntitySystem Extends KernelAwareInterface Abstract
 
 	Field _isEnabled:Byte                   '''< Is this system enabled?
-	Field _systemBit:Long                   '''< The unique bit for this system.
-	Field _typeFlags:Long                   '''< Types that this system is interested in.
+	Field _systemBit:Byte                   '''< The unique bit for this system.
+	Field _typeBits:BitStorage              '''< Types that this system is interested in.
 	Field _world:World                      '''< World this system belongs to.
 	Field _actives:EntityBag                '''< All entities this system is interested in.
 
@@ -121,7 +121,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' -- Configuration
 	' ------------------------------------------------------------
 
-	Method setSystemBit(bit:Long)
+	Method setSystemBit(bit:Byte) Final
 		Self._systemBit = bit
 	End Method
 
@@ -162,12 +162,14 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		End If
 	End Method
 
+	' Does the entity system bits already contain this system?
 	Method contains:Byte(e:Entity)
-		Return Self._typeFlags > 0 And ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
+		Return e.getSystemBits().hasBit(Self._systemBit) And Not Self._typeBits.isEmpty()
 	End Method
 
+	' Does the entity have all the components this system is interested in?
 	Method interest:Byte(e:Entity)
-		Return Self._typeFlags > 0 And ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
+		Return e.getTypeBits().containsAllBits(Self._typeBits) And Not Self._typeBits.isEmpty()
 	End Method
 
 	Method registerComponentByName(componentTypeName:String)
@@ -185,16 +187,16 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		If t = Null Then Return
 
 		Local ct:ComponentType = ComponentTypeManager.getTypeFor(t)
-		Self._typeFlags = Self._typeFlags | ct.getBit()
+		Self._typeBits.setBit(ct.getBit())
 	End Method
 
 	Method isInterestedInComponent:Byte(ct:ComponentType)
-		Return (Self._typeFlags & ct.getBit()) = ct.getBit()
+		Return Self._typeBits.hasBit(ct.getBit())
 	End Method
 
 	''' <summary>Automates registering a system with component types.</summary>
 	Method _autoRegisterComponentTypes()
-		If Self._typeFlags <> 0 Then Return
+		If Not Self._typeBits.isEmpty() Then Return
 
 		Local imp:String = TTypeId.ForObject(Self).MetaData("component_types")
 		Local typeList:String[] = imp.Split(",")
@@ -230,6 +232,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	Method New()
 		Self._actives   = EntityBag.Create()
 		Self._isEnabled = True
+		Self._typeBits  = New BitStorage
 	End Method
 
 End Type

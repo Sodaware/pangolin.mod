@@ -44,10 +44,10 @@ Type SystemManager Extends BaseManager
 
 		' TODO: Should there be some hooks here?
 
-		' Check system is valid
+		' Check system is valid.
 		If system = Null Then Throw "Cannot add a null system"
 
-		' Get the TTypeId for this system for the fetching system bits
+		' Get the TTypeId for this system for the fetching system bits.
 		Local systemType:TTypeId = TTypeId.ForObject(system)
 
 		' Register component interests for the system.
@@ -56,16 +56,16 @@ Type SystemManager Extends BaseManager
 		' Register the system with this world.
 		system.setWorld(Self._world)
 
-		' Add as a sweeper if needed
+		' Add as a sweeper if needed.
 		If system.isSweeper() Then Self._addSweeperSystem(system)
 
-		' Add system to the internal list and lookup
+		' Add system to the internal list and lookup.
 		Self._addSystem(system, systemType)
 
-		' Setup bit for fast access
+		' Setup bit for fast access.
 		system.setSystemBit(SystemBitManager.getBitFor(systemType))
 
-		' Return the system
+		' Return the system.
 		Return system
 
 	End Method

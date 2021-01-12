@@ -25,7 +25,7 @@ Type ComponentFieldValueEntityQueryFilter extends BaseEntityQueryFilter
 			If bag._objects[i] = Null Then Continue
 
 			' Remove if the object does not have the component type.
-			If bag._objects[i]._typeBits & Self._componentType._bit <> Self._componentType._bit Then
+			If Not bag._objects[i].hasComponent(Self._componentType) Then
 				bag._objects[i] = Null
 				Continue
 			End If
