@@ -46,7 +46,8 @@ Type BitStorage
 	' TODO: THIS IS SLOW! FIX IT!!!
 	' Check that this object contains all bits from `bits`. They do not need to match.
 	Method containsAllBits:Byte(bits:BitStorage)
-		For Local i:Int = 1 To 16 * 8
+		' TODO: Peek each long and compare them using bitwise operators
+		For Local i:Int = 1 To 15 * 8
 			If Self.hasBit(i) <> bits.hasBit(i) Then Return False
 		Next
 
@@ -55,8 +56,8 @@ Type BitStorage
 
 	' TODO: THIS IS SLOW! FIX IT!!!
 	Method isEmpty:Byte()
-		For Local i:Int = 1 To 16 * 8
-			If Self.hasBit(i) Then Return False
+		For Local i:Int = 0 To Self._bits.size() - 1
+			If Self._bits.peekbyte(i) Then Return False
 		Next
 
 		Return True
@@ -71,12 +72,12 @@ Type BitStorage
 		)
 	End Method
 
-	Method clearBit:Byte(identifier:Byte)
+	Method clearBit(identifier:Byte)
 		identifier :- 1
 
 		Self._bits.PokeByte( ..
 			identifier Shr 3, ..
-			Self._bits.PeekByte(identifier Shr 3) | (0 Shl (identifier Mod 8)) ..
+			Self._bits.PeekByte(identifier Shr 3) & (0 Shl (identifier Mod 8)) ..
 		)
 	End Method
 
@@ -90,7 +91,7 @@ Type BitStorage
 
 	Method clearBits()
 		For Local i:Int = 0 To Self._bits.size() - 1
-			Self.clearBit(i)
+			Self._bits.PokeByte(i, 0)
 		Next
 	End Method
 

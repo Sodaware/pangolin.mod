@@ -214,10 +214,9 @@ Type EntityManager Extends BaseManager
 
 	''' <summary>Remove a component from an entity by its ComponentType.</summary>
 	Method removeComponentByType(e:Entity, c:ComponentType)
+		' TODO: Try and improve this method - it's relatively slow has it has to alter 2 object bags.
 
-		' TODO: Try and improve this method - it's relatively slow has it has to alter 2 object bags
-
-		' Remove cached component from this entity
+		' Remove cached component from this entity.
 		e._components.removeObject(Self.getComponent(e, c))
 
 		' Remove the component type bit.
