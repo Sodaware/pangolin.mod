@@ -28,6 +28,7 @@ Type ScaleSpriteBehaviour Extends SpriteBehaviour
 		Self.getTarget().setScale(Self._fromScale, Self._fromScale)
 	End Method
 
+	' TODO: When scaling from 1 to 0, setScale(1 - tween)
 	Method update(delta:Float)
 		Super.update(delta)
 

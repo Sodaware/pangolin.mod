@@ -21,24 +21,28 @@ Import "sprite_behaviour.bmx"
 ''' useful for requests that ignore the camera.
 ''' </summary>
 Type MoveSpriteToBehaviour Extends SpriteBehaviour
-	Field _duration:Float
-	Field _xSpeed:Float
-	Field _ySpeed:Float
 	Field _xDistance:Float
 	Field _yDistance:Float
+	Field _startX:Float
+	Field _startY:Float
+	Field _endX:Float
+	Field _endY:Float
 
-	''' <summary>Set the duration of movement in milliseconds.</summary>
-	Method setDuration:MoveSpriteToBehaviour(duration:Float)
-		Self._duration = duration
 
-		self._updateInternals()
+	' --------------------------------------------------
+	' -- Configuration
+	' --------------------------------------------------
 
-		Return Self
+	Method setTarget(target:Object)
+		Super.setTarget(target)
+
+		Self._startX = Self._target.getX()
+		Self._startY = Self._target.getY()
 	End Method
 
-	Method setTargetPosition:MoveSpriteToBehaviour(xPos:Float, yPos:Float)
-		Self._xDistance = xPos - Self._target.getX()
-		Self._yDistance = yPos - Self._target.getY()
+	Method setDestination:MoveSpriteToBehaviour(xPos:Float, yPos:Float)
+		Self._endX = xPos
+		Self._endY = yPos
 
 		Self._updateInternals()
 
@@ -53,18 +57,15 @@ Type MoveSpriteToBehaviour Extends SpriteBehaviour
 	Method update(delta:Float)
 		Super.update(delta)
 
-		' Move the sprite
-		Self.getTarget().move(Self._xSpeed * delta, Self._ySpeed * delta)
+		' Move the sprite.
+		Self.getTarget().setX(Self.tween(Self._startX, Self._xDistance))
+		Self.getTarget().setY(Self.tween(Self._startY, Self._yDistance))
 
 		' If elapsed time is over, finish.
 		If Self._elapsedTime > Self._duration Then
-			' Shuffle back slightly
-			Local diff:Float = Self._elapsedTime - Self._duration
-			Local xOff:Float = diff * Self._xSpeed
-			Local yOff:Float = diff * Self._ySpeed
-			Self.getTarget().move(0 - xOff, 0 - yOff)
+			Self.getTarget().setX(Self._endX)
+			Self.getTarget().setY(Self._endY)
 
-			' Finish
 			Self.finished()
 		End If
 
@@ -76,8 +77,8 @@ Type MoveSpriteToBehaviour Extends SpriteBehaviour
 	' --------------------------------------------------
 
 	Method _updateInternals()
-		Self._xSpeed = Self._xDistance / Self._duration
-		Self._ySpeed = Self._yDistance / Self._duration
+		Self._xDistance = Self._endX - Self._startX
+		Self._yDistance = Self._endY - Self._startY
 	End Method
 
 
@@ -85,15 +86,14 @@ Type MoveSpriteToBehaviour Extends SpriteBehaviour
 	' -- Constructors
 	' --------------------------------------------------
 
-
 	Function Create:MoveSpriteToBehaviour(target:AbstractRenderRequest, targetX:Float, targetY:Float, duration:Float)
+		Local this:MoveSpriteToBehaviour = New MoveSpriteToBehaviour
 
-		Local this:MoveSpriteToBehaviour	= New MoveSpriteToBehaviour
 		this.setTarget(target)
-		this.setTargetPosition(targetX, targetY)
+		this.setDestination(targetX, targetY)
 		this.setDuration(duration)
-		Return this
 
+		Return this
 	End Function
 
 End Type

@@ -20,7 +20,6 @@ Import "sprite_behaviour.bmx"
 Import "../renderer/abstract_sprite_request.bmx"
 
 Type FadeSpriteBehaviour Extends SpriteBehaviour
-
 	Const FADE_IN:Int	= 1
 	Const FADE_OUT:Int	= 2
 	Const DISPLAY:Int	= 3
@@ -66,7 +65,6 @@ Type FadeSpriteBehaviour Extends SpriteBehaviour
 	' ------------------------------------------------------------
 
 	Method update(delta:Float)
-
 		Super.update(delta)
 
 		Select Self._state
@@ -185,7 +183,7 @@ Type FadeSpriteBehaviour Extends SpriteBehaviour
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	Function Create:FadeSpriteBehaviour(request:AbstractRenderRequest, fadeInTime:Int, displayTime:Int, fadeOutTime:Int, repeatLimit:Int = 0)
+	Function Create:FadeSpriteBehaviour(request:AbstractRenderRequest, fadeInTime:Int, displayTime:Int = 0, fadeOutTime:Int = 0, repeatLimit:Int = 0)
 
 		Local this:FadeSpriteBehaviour	= New FadeSpriteBehaviour
 

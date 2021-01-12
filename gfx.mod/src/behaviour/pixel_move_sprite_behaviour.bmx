@@ -35,11 +35,6 @@ Type PixelMoveSpriteBehaviour Extends SpriteBehaviour
 		Self._ySpeed = ySpeed
 		Return Self
 	End Method
-
-	Method setDuration:PixelMoveSpriteBehaviour(duration:Int)
-		Self._duration = duration
-		Return Self
-	End Method
 	
 	
 	' --------------------------------------------------
@@ -47,13 +42,13 @@ Type PixelMoveSpriteBehaviour Extends SpriteBehaviour
 	' --------------------------------------------------
 	
 	'' Duration is number of frames
-	Function Create:PixelMoveSpriteBehaviour(target:AbstractRenderRequest, xSpeed:Float, ySpeed:Float, duration:Int, transition:Int = SpriteBehaviour.TRANSITION_LINEAR)
+	Function Create:PixelMoveSpriteBehaviour(target:AbstractRenderRequest, xSpeed:Float, ySpeed:Float, duration:Int, transition:Int = SpriteBehaviour.EASING_LINEAR)
 		
 		Local this:PixelMoveSpriteBehaviour	= New PixelMoveSpriteBehaviour
 		this.setTarget(target)
 		this.setSpeed(xSpeed, ySpeed)
 		this.setDuration(duration)
-		this.setTransition(transition)
+		this.setEasingType(transition)
 		Return this
 
 	End Function

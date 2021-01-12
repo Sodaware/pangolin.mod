@@ -14,6 +14,7 @@
 SuperStrict
 
 Import pangolin.gfx
+
 Import "particle_bag.bmx"
 
 Type ParticlesRequest Extends AbstractRenderRequest
@@ -47,6 +48,7 @@ Type ParticlesRequest Extends AbstractRenderRequest
 			brl.max2d.SetAlpha(p._alpha)
 			DrawRect p.x_pos, p.y_pos, p.width, p.height
 		Next
+
 		brl.max2d.SetAlpha(1)
 	End Method
 	
