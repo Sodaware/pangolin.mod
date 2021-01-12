@@ -24,8 +24,8 @@
 Type EntitySystem Extends KernelAwareInterface Abstract
 
 	Field _isEnabled:Byte                   '''< Is this system enabled?
-	Field _systemBit:Long                   '''< The unique bit for this system.
-	Field _typeFlags:Long                   '''< Types that this system is interested in.
+	Field _systemBit:Byte                   '''< The unique bit for this system.
+	Field _typeBits:BitStorage              '''< Types that this system is interested in.
 	Field _world:World                      '''< World this system belongs to.
 	Field _actives:EntityBag                '''< All entities this system is interested in.
 
@@ -121,7 +121,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	' -- Configuration
 	' ------------------------------------------------------------
 
-	Method setSystemBit(bit:Long)
+	Method setSystemBit(bit:Byte) Final
 		Self._systemBit = bit
 	End Method
 
@@ -148,14 +148,43 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	End Method
 
 	Method change(e:Entity)
-		Local contains:Byte = ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
-		Local interest:Byte = ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
+		' TODO: This is slooooooow.
+		If Self._typeBits.isEmpty() Then Return
 
-		If interest And Not(contains) And Self._typeFlags > 0 Then
+		' Does the entity system bits already contain this system?
+		Local contains:Byte = e.getSystemBits().hasBit(Self._systemBit)
+
+		' Does the entity have all the components this system is interested in?
+		Local interest:Byte = e.getTypeBits().containsAllBits(Self._typeBits)
+
+		If e.getTag() = "player" Then 
+			DebugLog "Change: " + e.getTag()
+			DebugLog contains + " // " + interest
+
+			If interest = 0 Then
+				' The list of components this entity has. Should not be what it is.
+				For Local i:Int = 1 To 64
+					If e.getTypeBits().hasBit(i) Then
+						For Local k:TTypeId = EachIn SystemBitManager._systemBits.Keys()
+							If String(i) = String(SystemBitManager._systemBits.valueForKey(k)) Then
+								DebugLog k.name()
+							EndIf
+						Next
+					EndIf
+				Next
+				
+				DebugLog Bin(e.getTypeBits()._bits.peeklong(0))
+			EndIf
+		EndIf
+		
+		
+		' If the entity is interested and doesn't alreadt
+		If interest And Not(contains) Then
 			Self._actives.add(e)
+			DebugLog TTypeId.forobject(self).name() + " => " + Self._actives.getSize()
 			e.addSystemBit(Self._systemBit)
 			Self.added(e)
-		ElseIf (Not(interest) And contains And Self._typeFlags > 0) Then
+		ElseIf Not(interest) And contains Then
 			Self.remove(e)
 		End If
 	End Method
@@ -184,18 +213,22 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		If t = Null Then Return
 
 		Local ct:ComponentType = ComponentTypeManager.getTypeFor(t)
-		Self._typeFlags = Self._typeFlags | ct.getBit()
+
+		DebugLog "  component bit: " + ct.getBit()
+		
+		Self._typeBits.setBit(ct.getBit())
 	End Method
 
 	''' <summary>Automates registering a system with component types.</summary>
 	Method _autoRegisterComponentTypes()
-		If Self._typeFlags <> 0 Then Return
+		If Not Self._typeBits.isEmpty() Then Return
 
 		Local imp:String = TTypeId.ForObject(Self).MetaData("component_types")
 		Local typeList:String[] = imp.Split(",")
 
 		For Local typeName:String = EachIn typeList
 			typeName = typeName.Trim()
+			DebugLog "Registering " + typeName
 			Self.registerComponentByName(typeName)
 		Next
 	End Method
@@ -225,6 +258,7 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	Method New()
 		Self._actives   = EntityBag.Create()
 		Self._isEnabled = True
+		Self._typeBits  = New BitStorage
 	End Method
 
 End Type

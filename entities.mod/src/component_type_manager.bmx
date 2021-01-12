@@ -17,8 +17,7 @@ Import brl.reflection
 Import "component_type.bmx"
 
 ''' <summary>
-''' Static type that maps ComponentType objects to TTypeId. This is a static
-''' type because BlitzMax type information cannot be changed at runtime.
+''' Static type that maps ComponentType objects to TTypeId.
 ''' </summary>
 Type ComponentTypeManager
 
@@ -59,7 +58,7 @@ Type ComponentTypeManager
 		Return ComponentTypeManager.getTypeFor(ComponentTypeManager._getTypeForMeta(name))
 	End Function
 
-	Function getBit:Long(t:TTypeId)
+	Function getBit:Byte(t:TTypeId)
 		Return ComponentTypeManager.getTypeFor(t).getBit()
 	End Function
 
@@ -111,6 +110,7 @@ Type ComponentTypeManager
 		Local t:TTypeId = TTypeId(ComponentTypeManager._componentTypesMeta.ValueForKey(metaName))
 		If t = Null Then
 			DebugLog "Could not find TTypeId for " + metaName
+
 			Return Null
 		End If
 

@@ -34,6 +34,9 @@ Import brl.reflection
 Import pangolin.core
 
 
+' -- Utilities.
+Import "src/bit_storage.bmx"
+
 ' -- Managers
 Import "src/system_bit_manager.bmx"
 Import "src/component_type_manager.bmx"

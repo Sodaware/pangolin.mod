@@ -76,7 +76,6 @@ Type GameEntityService Extends GameService ..
 	''' <summary>Delete an entity from the world.</summary>
 	Method deleteEntity(e:Entity)
 		Self._world.deleteEntity(e)
-		Self._world.refreshEntity(e)
 	End Method
 
 	''' <summary>Delete all entities in a collection.</summary>
@@ -86,7 +85,6 @@ Type GameEntityService Extends GameService ..
 
 		For Local e:Entity = EachIn entities
 			Self._world.deleteEntity(e)
-			Self._world.refreshEntity(e)
 		Next
 	End Method
 

@@ -22,7 +22,9 @@ Type ComponentTypeEntityQueryFilter extends BaseEntityQueryFilter
 		For Local i:Int = 0 To size
 			If bag._objects[i] = Null Then Continue
 
-			hasComponent = bag._objects[i]._typeBits & Self._componentType._bit = Self._componentType._bit 			
+			' TODO: Optimize this
+			hasComponent = bag._objects[i].hasComponent(Self._componentType)
+'			hasComponent = bag._objects[i]._typeBits & Self._componentType._bit = Self._componentType._bit 			
 
 			Select Self._invert
 				Case True
