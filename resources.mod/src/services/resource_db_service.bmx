@@ -22,6 +22,26 @@ Type ResourceDbService Extends GameService
 
 
 	' ------------------------------------------------------------
+	' -- Setting Options
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Enable strict checking for the resource manager.
+	'''
+	''' When enabled, the manager will throw exceptions when resources are not
+	''' found.
+	''' </summary>
+	Method enableStrictChecking()
+		Self._resources.enableStrictChecking()
+	End Method
+
+	''' <summary>Disable strict checking for the resource manager.</summary>
+	Method disableStrictChecking()
+		Self._resources.disableStrictChecking()
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Retrieving Resources
 	' ------------------------------------------------------------
 
