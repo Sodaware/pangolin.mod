@@ -96,6 +96,15 @@ Type ResourceDbService Extends GameService
 
 
 	' ------------------------------------------------------------
+	' -- Clearing assets
+	' ------------------------------------------------------------
+
+	Method unloadAssets(assets:TList)
+		' TODO: Add this - it should remove resources from the manager AND free them
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Callbacks
 	' ------------------------------------------------------------
 
