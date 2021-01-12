@@ -31,7 +31,7 @@ Type BitStorage
 	Field _bits:TBank
 
 	Method getSize:Short()
-		Return Self._bits.size() Shr 4
+		Return Self._bits.size() Shl 3
 	End Method
 
 	Method hasBit:Byte(identifier:Byte)
