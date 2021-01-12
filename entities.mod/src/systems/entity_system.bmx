@@ -148,35 +148,8 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	End Method
 
 	Method change(e:Entity)
-		' TODO: This is slooooooow.
-		If Self._typeBits.isEmpty() Then Return
-
-		' Does the entity system bits already contain this system?
-		Local contains:Byte = e.getSystemBits().hasBit(Self._systemBit)
-
-		' Does the entity have all the components this system is interested in?
-		Local interest:Byte = e.getTypeBits().containsAllBits(Self._typeBits)
-
-		If e.getTag() = "player" Then
-			DebugLog "Change: " + e.getTag()
-			DebugLog contains + " // " + interest
-
-			If interest = 0 Then
-				' The list of components this entity has. Should not be what it is.
-				For Local i:Int = 1 To 64
-					If e.getTypeBits().hasBit(i) Then
-						For Local k:TTypeId = EachIn SystemBitManager._systemBits.Keys()
-							If String(i) = String(SystemBitManager._systemBits.valueForKey(k)) Then
-								DebugLog k.name()
-							EndIf
-						Next
-					EndIf
-				Next
-
-				DebugLog Bin(e.getTypeBits()._bits.peeklong(0))
-			EndIf
-		EndIf
-
+		Local contains:Byte = Self.contains(e)
+		Local interest:Byte = Self.interest(e)
 
 		' If the entity is interested and doesn't alreadt
 		If interest And Not(contains) Then
@@ -188,6 +161,16 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 			e.removeSystemBit(Self._systemBit)
 			Self.removed(e)
 		End If
+	End Method
+
+	' Does the entity system bits already contain this system?
+	Method contains:Byte(e:Entity)
+		Return e.getSystemBits().hasBit(Self._systemBit) And Not Self._typeBits.isEmpty()
+	End Method
+
+	' Does the entity have all the components this system is interested in?
+	Method interest:Byte(e:Entity)
+		Return e.getTypeBits().containsAllBits(Self._typeBits) And Not Self._typeBits.isEmpty()
 	End Method
 
 	Method registerComponentByName(componentTypeName:String)
