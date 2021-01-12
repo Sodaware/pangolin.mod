@@ -132,36 +132,42 @@ Type AbstractSpriteRequest Extends AbstractRenderRequest Abstract
 	End Method
 
 	Method setColorHex:AbstractSpriteRequest(hexColor:String)
-		local r:int, g:int, b:int
+		Local r:Byte, g:Byte, b:Byte
 		HexToRGB(hexColor, r, g, b)
 		Self._color = 0 + (r Shl 16) + (g Shl 8) + (b)
-		return self
+
+		Return Self
 	End Method
 
 	Method SetScale:AbstractSpriteRequest(xScale:Float, yScale:Float)
-		self._xScale = xScale
-		self._yScale = yScale
-		return self
+		Self._xScale = xScale
+		Self._yScale = yScale
+
+		Return Self
 	End Method
 
 	Method setPosition:AbstractSpriteRequest(xPos:Float, yPos:Float)
 		Self._currentPosition.setPosition(xPos, yPos)
+
 		Return Self
 	End Method
 
 	Method setPositionX:AbstractSpriteRequest(xPos:Float)
 		Self._currentPosition.setPositionX(xPos)
+
 		Return Self
 	End Method
 
 	Method setPositionY:AbstractSpriteRequest(yPos:Float)
 		Self._currentPosition.setPositionY(yPos)
+
 		Return Self
 	End Method
 
 	Method SetAlpha:AbstractSpriteRequest(alpha:Float)
 		If alpha <> 1 Then Self.setBlendMode(ALPHABLEND)
 		Self._alpha	= alpha
+
 		Return Self
 	End Method
 
