@@ -148,7 +148,7 @@ Type GameEntityService Extends GameService ..
 	Method addSystem(system:EntitySystem)
 
 		' Set the system in the world
-		Self.getSystemManager().setSystem(system)
+		Self.getSystemManager().addSystem(system)
 
 		' Set the kernel
 		system.setKernel(Self._kernelInformation.getKernel())
