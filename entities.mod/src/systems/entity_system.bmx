@@ -156,17 +156,10 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 			e.addSystemBit(Self._systemBit)
 			Self.added(e)
 		ElseIf (Not(interest) And contains And Self._typeFlags > 0) Then
-			Self.remove(e)
+			Self._actives.removeObject(e)
+			e.removeSystemBit(Self._systemBit)
+			Self.removed(e)
 		End If
-	End Method
-
-	''' <summary>
-	''' Remove an entity from the list of entities this system is interested in.
-	''' </summary>
-	Method remove(e:Entity)
-		Self._actives.removeObject(e)
-		e.removeSystemBit(Self._systemBit)
-		Self.removed(e)
 	End Method
 
 	Method registerComponentByName(componentTypeName:String)
