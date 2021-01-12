@@ -148,18 +148,26 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	End Method
 
 	Method change(e:Entity)
-		Local contains:Byte = ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
-		Local interest:Byte = ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
+		Local contains:Byte = Self.contains(e)
+		Local interest:Byte = Self.interest(e)
 
-		If interest And Not(contains) And Self._typeFlags > 0 Then
+		If interest And Not(contains) Then
 			Self._actives.add(e)
 			e.addSystemBit(Self._systemBit)
 			Self.added(e)
-		ElseIf (Not(interest) And contains And Self._typeFlags > 0) Then
+		ElseIf Not(interest) And contains Then
 			Self._actives.removeObject(e)
 			e.removeSystemBit(Self._systemBit)
 			Self.removed(e)
 		End If
+	End Method
+
+	Method contains:Byte(e:Entity)
+		Return Self._typeFlags > 0 And ((Self._systemBit & e.getSystemBits()) = Self._systemBit)
+	End Method
+
+	Method interest:Byte(e:Entity)
+		Return Self._typeFlags > 0 And ((Self._typeFlags & e.getTypeBits()) = Self._typeFlags)
 	End Method
 
 	Method registerComponentByName(componentTypeName:String)
