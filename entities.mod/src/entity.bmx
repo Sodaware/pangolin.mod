@@ -120,18 +120,6 @@ Type Entity
 		Return Self
 	End Method
 
-	''' <summary>
-	''' Set all type bits for the entity.
-	'''
-	''' This will overwrite any existing type bit information.
-	''' </summary>
-	Method _setTypeBits:Entity(typeBits:Long)
-		Throw "oh no"
-'		Self._typeBits = typeBits
-
-		Return Self
-	End Method
-
 	''' <summary>Remove a type bit from the entity.</summary>
 	Method removeTypeBit:Entity(bit:Byte)
 		Self._typeBits.clearBit(bit)
@@ -149,16 +137,6 @@ Type Entity
 	''' <summary>Add a system bit to the entity.</summary>
 	Method addSystemBit:Entity(bit:Byte)
 		Self._systemBits.setBit(bit)
-
-		Return Self
-	End Method
-
-	''' <summary>
-	''' Set all system bits for the entity. This will overwrite any
-	''' existing system bit information.
-	''' </summary>
-	Method _setSystemBits:Entity(systemBits:Long)
-		'Self._systemBits = systemBits
 
 		Return Self
 	End Method
