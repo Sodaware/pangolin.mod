@@ -14,6 +14,9 @@ Type EntitySystemException Extends TBlitzException
 
 End Type
 
+''' <summary>
+''' Exception that is thrown if an entity is missing a required component.
+''' </summary>
 Type MissingEntityComponentException Extends EntitySystemException
 	Field _entity:Entity
 	Field _component:ComponentType
@@ -36,4 +39,10 @@ Type MissingEntityComponentException Extends EntitySystemException
 
 		Return exception
 	End Function
+End Type
+
+Type InvalidWorldInstanceException Extends EntitySystemException
+	Method toString:String()
+		Return "Entity must belong to a valid World instance."
+	End Method
 End Type

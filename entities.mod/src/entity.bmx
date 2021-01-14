@@ -92,6 +92,7 @@ Type Entity
 		Return Self._systemBits
 	End Method
 
+	''' <summary>Does this entity have a specific system bit attached?</summary>
 	Method hasSystemBit:Byte(bit:Byte)
 		Return Self._systemBits.hasBit(bit)
 	End Method
@@ -243,13 +244,11 @@ Type Entity
 
 	''' <summary>Get a component type by its meta name.</summary>
 	Method getComponentByName:EntityComponent(name:String, required:Byte = False)
-
-		' Get type with this meta-data
+		' Get type with this meta-data.
 		Local ct:ComponentType = ComponentTypeManager.getTypeForMetaName(name)
 		If ct = Null Then Return Null
 
 		Return Self.getComponent(ct)
-
 	End Method
 
 
@@ -294,8 +293,7 @@ Type Entity
 	''' <param name="id">The identifier of the new entity.</param>
 	''' <return>The newly created entity.</return>
 	Function Create:Entity(w:World, id:Int)
-
-		If w = Null Then Throw "Entity must belong to a valid World instance"
+		If w = Null Then Throw New InvalidWorldInstanceException
 
 		Local this:Entity = New Entity
 
@@ -304,7 +302,6 @@ Type Entity
 		this._id            = id
 
 		Return this
-
 	End Function
 
 	Method New()
