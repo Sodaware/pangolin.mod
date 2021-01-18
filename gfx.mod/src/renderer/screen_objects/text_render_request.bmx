@@ -31,7 +31,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 
 	Field _font:TImageFont
 	Field _width:Float
-	Field _height: Float
+	Field _height:Float
 
 	Field _fontColor:Int            = 0
 	Field _shadowColor:Int          = -1
@@ -39,6 +39,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	Field _shadowXDistance:Short    = 1
 	Field _shadowYDistance:Short    = 1
 	Field _alignment:Byte           = ALIGN_LEFT
+	Field _lineHeight:Float         = -1
 
 	' Internal state
 	Field _oldFont:TImageFont
@@ -179,6 +180,13 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	''' <param name="width">Width of the request in pixels.</param>
 	Method setWidth:TextRenderRequest(width:Float)
 		Self._width = width
+
+		Return Self
+	End Method
+
+	Method setLineHeight:TextRenderRequest(height:Float)
+		Self._lineHeight = height
+
 		Return Self
 	End Method
 
@@ -240,16 +248,16 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			Local lines:String[] = wrappedText.Split("~n")
 			Local yPos:Float = Self._currentPosition._yPos
 
-			' TODO: Store this
-			Local h:Float = TextHeight("`j")
-
 			' Limit viewport when wrapping
 			' [todo] - do we need this?
-		'	SetViewport Self._tweenedPosition._xPos, Self._tweenedPosition._yPos, Self._width, Self._height
+			'	SetViewport Self._tweenedPosition._xPos, Self._tweenedPosition._yPos, Self._width, Self._height
+			If Self._lineHeight = -1 Then
+				Self._lineHeight = TextHeight("`j")
+			EndIf
 
 			For Local line:String = EachIn lines
 				Self.renderTextLine(line, Self._tweenedPosition._xPos, yPos)
-				yPos:+ h
+				yPos:+ Self._lineHeight
 			Next
 
 		'	SetViewport(0, 0, PangolinGfx.getGraphicsWidth(), PangolinGfx.getGraphicsHeight())
