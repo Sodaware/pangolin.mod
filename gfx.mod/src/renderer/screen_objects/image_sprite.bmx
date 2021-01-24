@@ -101,6 +101,10 @@ Type ImageSprite Extends AbstractSpriteRequest
 		Else
 			DrawImage Self._image, Self._tweenedPosition._xPos - camera.getX(), Self._tweenedPosition._yPos - camera.getY(), Self._frame
 		EndIf
+
+		' Reset the render state.
+		' TODO: Do this properly.
+		brl.max2d.SetRotation(0)
 	End Method
 
 
@@ -108,11 +112,15 @@ Type ImageSprite Extends AbstractSpriteRequest
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	Function Create:ImageSprite(image:TImage, xPos:Int, yPos:Int)
+	Function Create:ImageSprite(image:TImage, xPos:Int, yPos:Int, frame:Int = -1)
 		Local this:ImageSprite = New ImageSprite
 
 		this.setImage(image)
 		this.setPosition(xPos, yPos)
+
+		If frame <> -1 Then
+			this.setFrame(frame)
+		EndIf
 
 		Return this
 	End Function
