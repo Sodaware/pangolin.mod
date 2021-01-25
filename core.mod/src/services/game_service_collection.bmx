@@ -150,12 +150,14 @@ Type GameServiceCollection
 	End Method
 
 	''' <summary>
-	''' Set an object at a specific index. Will expand the bag if
-	''' the index is greater than the current bag size.
+	''' Set an object at a specific index.
+	'''
+	''' Will expand the bag if the index is greater than the current bag size.
 	''' </summary>
 	''' <param name="index">The index to set at.</param>
 	''' <param name="obj">The object value.</param>
-	Method set(index:Int, obj:GameService)
+	''' <param name="doSort">Sort the collection after setting?.</param>
+	Method set(index:Int, obj:GameService, doSort:Byte = True)
 
 		' Check bounds
 		If index < 0 Then Throw "Cannot set element at index < 0"
@@ -174,7 +176,7 @@ Type GameServiceCollection
 
 		Self._objects[index] = obj
 
-		Self.sort(GameServiceCollection.SORT_DESC)
+		If doSort Then Self.sort(GameServiceCollection.SORT_DESC)
 
 	End Method
 
@@ -274,25 +276,23 @@ Type GameServiceCollection
 	''' <param name="sortOrder">The order to use (either SORT_ASC or SORT_DESC). Default is SORT_ASC.</param>
 	''' <param name="compareFunction">The function used to compare the two objects.</param>
 	Method sort(sortOrder:Int = SORT_ASC, compareFunction:Int(obj1:GameService, obj2:GameService) = Null)
-
 		' Get sort method
 		If compareFunction = Null Then compareFunction = Self._sortMethod
 
 		' Check if bag needs to be sorted
 		If Self.getSize() <= 1 Then Return
 
-		Local isSwapped:Byte	= False
-		Local pos:Int			= 0
-		Local startPos:Int		= -1
-		Local endPos:Int		= Self.getSize() - 2
+		Local isSwapped:Byte = False
+		Local pos:Int        = 0
+		Local startPos:Int   = -1
+		Local endPos:Int     = Self.getSize() - 2
 
 		Repeat
-
-			' Move start position + reset swap flag
+			' Move start position + reset swap flag.
 			startPos:+ 1
 			isSwapped = False
 
-			' Forward search
+			' Forward search.
 			For pos = startPos To endPos
 				If compareFunction(Self.get(pos), Self.get(pos + 1)) = sortOrder Then
 					Self._swap(pos, pos + 1)
@@ -321,11 +321,10 @@ Type GameServiceCollection
 	''' <param name="targetPos">The element to move.</param>
 	''' <param name="destinationPos">The element to move to.</param>
 	Method _swap(targetPos:Int, destinationPos:Int)
-
 		Local temp:GameService = Self.get(destinationPos)
-		Self.set(destinationPos, Self.get(targetPos))
-		Self.set(targetPos, temp)
 
+		Self.set(destinationPos, Self.get(targetPos), False)
+		Self.set(targetPos, temp, False)
 	End Method
 
 
