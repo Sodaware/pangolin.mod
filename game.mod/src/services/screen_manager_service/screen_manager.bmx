@@ -14,7 +14,6 @@
 SuperStrict
 
 Import brl.reflection
-Import sodaware.blitzmax_array
 
 Include "igame_screen.bmx"
 
@@ -50,14 +49,22 @@ Type ScreenManager
 		EndIf
 
 		' Add to the list of screens and enter.
-		array_append(Self._screens, screen)
+		Self._screens = Self._screens[..Self._screens.length + 1]
+		Self._screens[Self._screens.length - 1] = screen
+
 		Self._enterScreen(screen)
 	End Method
 
 	''' <summary>Pop the last screen added and exit it.</summary>
 	Method popScreen:IGameScreen()
-		Local screen:IGameScreen = IGameScreen(array_pop(Self._screens))
+		If Self._screens.length = 0 Then Return Null
+
+		Local screen:IGameScreen = Self._screens[Self._screens.length - 1]
+		Self._screens = Self._screens[..Self._screens.length - 1]
+
 		screen.exitScreen()
+
+		Return screen
 	End Method
 
 	''' <summary>
@@ -72,8 +79,8 @@ Type ScreenManager
 		screen.freeResources()
 
 		' Remove from lists.
-		Self._screens        = IGameScreen[](array_remove(Self._screens, screen))
-		Self.screensToUpdate = IGameScreen[](array_remove(Self.screensToUpdate, screen))
+		Self._screens        = Self._removeFromArray(Self._screens, screen)
+		Self.screensToUpdate = Self._removeFromArray(Self.screensToUpdate, screen)
 
 		Return screen
 	End Method
@@ -137,7 +144,8 @@ Type ScreenManager
 		' Loop as long as there are screens waiting to be updated.
 		While Self.screensToUpdate.length > 0
 			' Pop screen & update.
-			Local currentScreen:IGameScreen	= IGameScreen(array_pop(Self.screensToUpdate))
+			Local currentScreen:IGameScreen = Self.screensToUpdate[Self.screensToUpdate.length - 1]
+			Self.screensToUpdate = Self.screensToUpdate[..Self.screensToUpdate.length - 1]
 
 			currentScreen.setIsCovered(coveredByOtherScreen)
 			currentScreen.update(delta, otherScreenHasFocus, coveredByOtherScreen)
@@ -174,6 +182,21 @@ Type ScreenManager
 			EndIf
 		Next
 
+	End Method
+
+	Method _removeFromArray:IGameScreen[](arr:IGameScreen[], toRemove:IGameScreen)
+		Local newList:IGameScreen[]
+		Local i:Int
+
+		For Local s:IGameScreen = EachIn arr
+			If s <> toRemove Then
+				newList    = newList[..i + 1]
+				newList[i] = s
+				i :+ 1
+			EndIf
+		Next
+
+		Return newList
 	End Method
 
 
