@@ -385,9 +385,9 @@ Type GameKernel
 	''' is an internal method used to add services to the render/update
 	''' collections when needed.
 	''' </summary>
-	Method _addIfImplements(serviceProvider:GameService, implements:String, collection:GameServiceCollection)
+	Method _addIfImplements(serviceProvider:GameService, imp:String, collection:GameServiceCollection)
 
-		If GameKernel.serviceImplements(serviceProvider, implements) Then
+		If GameKernel.serviceImplements(serviceProvider, imp) Then
 			collection.add(serviceProvider, False)
 			collection.sort(GameServiceCollection.SORT_ASC)
 		End If
