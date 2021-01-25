@@ -77,7 +77,7 @@ Type VirtualScreenResolution
 		' Set the virtual resolution + refresh
 		SetVirtualResolution(Self._width, Self._height)
 		If Self._isEnabled Then
-			SetViewport(0, 0, Self._width, Self._height)
+			SetViewport(0, 0, Int(Self._width), Int(Self._height))
 		Else
 			SetViewport(0, 0, GraphicsWidth(), GraphicsHeight())
 		EndIf

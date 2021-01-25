@@ -27,12 +27,14 @@ Type PixelMoveSpriteBehaviour Extends SpriteBehaviour
 	Method setTargetPosition:PixelMoveSpriteBehaviour(xPos:Float, yPos:Float)
 		Self._targetX = xPos
 		Self._targetY = yPos
+
 		Return Self
 	End Method
 	
 	Method setSpeed:PixelMoveSpriteBehaviour(xSpeed:Float, ySpeed:Float)
 		Self._xSpeed = xSpeed
 		Self._ySpeed = ySpeed
+
 		Return Self
 	End Method
 	
@@ -42,13 +44,15 @@ Type PixelMoveSpriteBehaviour Extends SpriteBehaviour
 	' --------------------------------------------------
 	
 	'' Duration is number of frames
-	Function Create:PixelMoveSpriteBehaviour(target:AbstractRenderRequest, xSpeed:Float, ySpeed:Float, duration:Int, transition:Int = SpriteBehaviour.EASING_LINEAR)
+	Function Create:PixelMoveSpriteBehaviour(target:AbstractRenderRequest, xSpeed:Float, ySpeed:Float, duration:Int, transition:Byte = SpriteBehaviour.EASING_LINEAR)
 		
 		Local this:PixelMoveSpriteBehaviour	= New PixelMoveSpriteBehaviour
+
 		this.setTarget(target)
 		this.setSpeed(xSpeed, ySpeed)
 		this.setDuration(duration)
 		this.setEasingType(transition)
+
 		Return this
 
 	End Function
@@ -57,14 +61,15 @@ Type PixelMoveSpriteBehaviour Extends SpriteBehaviour
 	' --------------------------------------------------
 	' -- Inherited functions (update/draw)
 	' --------------------------------------------------
-	
+
+	' TODO: Use the easing function here.
 	Method update(delta:Float)
 		
 		' Move the sprite
 		Self.getTarget().move(Self._xSpeed, Self._ySpeed)
 		
 		Self._elapsed:+ 1
-		If Self._elapsed = Self._duration Then Self._isFinished = True
+		If Self._elapsed >= Self._duration Then Self._isFinished = True
 		
 	End Method
 

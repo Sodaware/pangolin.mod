@@ -24,7 +24,7 @@ Function scaleImage:TPixmap(inputImage:TPixmap, xScale:Float, yScale:Float)
 	Local newWidth:Float  = inputImage.width * xScale
 	Local newHeight:Float = inputImage.height * yScale
 	
-	scaledImage = CreatePixmap(newWidth, newHeight, PF_RGBA8888)
+	scaledImage = CreatePixmap(Int(newWidth), Int(newHeight), PF_RGBA8888)
 
 	' TODO: Optimize this a little bit	
 	For Local x:Int = 0 To inputImage.width - 1
@@ -34,7 +34,7 @@ Function scaleImage:TPixmap(inputImage:TPixmap, xScale:Float, yScale:Float)
 		
 			For Local x1:Int = 0 To xScale - 1
 				For Local y1:Int = 0 To yScale - 1
-					WritePixel(scaledImage, xPos + x1, yPos + y1, ReadPixel(inputImage, x, y))
+					WritePixel(scaledImage, Int(xPos + x1), Int(yPos + y1), ReadPixel(inputImage, x, y))
 				Next
 			Next
 			

@@ -181,10 +181,10 @@ Type BinaryTileSetSerializer Extends BaseTileSetSerializer
 		fileOut.WriteByte(t.CollideRight)
 		fileOut.WriteByte(t.CollideDown)
 		fileOut.WriteByte(t.CollideLeft)
-		
-		' Alpha
-		fileOut.WriteByte(t.Alpha * 255.0)
-		
+
+		' Alpha.
+		fileOut.WriteByte(Byte(t.Alpha * 255.0))
+
 		' Write any meta fields for his tile
 		Local metaCount:Short = t.countMeta()
 		fileOut.WriteShort(metaCount)

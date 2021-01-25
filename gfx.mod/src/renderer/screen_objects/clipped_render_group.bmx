@@ -88,10 +88,10 @@ Type ClippedRenderGroup Extends RenderGroup
 		If Self._boundingBox And Self._clippingEnabled Then
 			GetViewport(x, y, w, h)
 			SetViewport( ..
-				Self.getX() + Self._boundingBox.getX(), ..
-				Self.getY() + Self._boundingBox.getY(), ..
-				Self._boundingBox.getWidth(), ..
-				Self._boundingBox.getHeight() ..
+				Int(Self.getX() + Self._boundingBox.getX()), ..
+				Int(Self.getY() + Self._boundingBox.getY()), ..
+				Int(Self._boundingBox.getWidth()), ..
+				Int(Self._boundingBox.getHeight()) ..
 			)
 		EndIf
 
