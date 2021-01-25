@@ -106,7 +106,7 @@ Type RenderCamera Extends AbstractRenderCamera
 	' -- Configuring
 	' ------------------------------------------------------------
 
-	Method setPosition(xPos:Int, yPos:Int)
+	Method setPosition(xPos:Float, yPos:Float)
 		Self._position.setPosition(xPos, yPos)
 	End Method
 

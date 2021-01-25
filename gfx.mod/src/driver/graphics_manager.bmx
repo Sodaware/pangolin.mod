@@ -160,7 +160,11 @@ Type GraphicsManager
 		End Select
 
 		' Create graphics mode.
+		?bmxng
+		Self._driver = CreateGraphics(Self._width, Self._height, (Not(Self._isWindowed) * Self._depth), Self._refreshRate, Self._flags, 0, 0)
+		?notbmxng
 		Self._driver = CreateGraphics(Self._width, Self._height, (Not(Self._isWindowed) * Self._depth), Self._refreshRate, Self._flags)
+		?
 		If Self._driver = Null Then Throw "Could not make the graphics"
 
 		SetGraphics(Self._driver)

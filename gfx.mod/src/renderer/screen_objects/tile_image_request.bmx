@@ -67,7 +67,7 @@ Type TileImageRequest Extends AbstractSpriteRequest
 			
 			If Self._width And Self._height Then
 				GetViewport(x, y, w, h)
-				SetViewport(Self._tweenedPosition._xPos, Self._tweenedPosition._yPos, Self._width, Self._height)
+				SetViewport(Int(Self._tweenedPosition._xPos), Int(Self._tweenedPosition._yPos), Int(Self._width), Int(Self._height))
 			End If
 			
 			TileImageScaled(Self._image, Self._tweenedPosition._xPos + Self._xOff, Self._tweenedPosition._yPos + Self._yOff, Self._frame)
