@@ -11,11 +11,6 @@
 ' ------------------------------------------------------------------------------
 
 
-SuperStrict
-
-Import brl.map
-Import brl.reflection
-
 Type SystemBitManager
 
 	Global _currentBitPosition:Byte     = 1
@@ -35,11 +30,9 @@ Type SystemBitManager
 	Function getBitFor:Byte(entitySystemType:TTypeId)
 		' Check the passed in system type is a type of EntitySystem.
 		If False = entitySystemType.ExtendsType(SystemBitManager.getEntitySystemTypeId()) Then
-			' TODO: Should throw "InvalidObjectTypeException" here
-			Throw "Must extend EntitySystem"
+			Throw InvalidSystemTypeException.Create(entitySystemType)
 		EndIf
 
-		' Check if this system bit has already been added.
 		' TODO: Convert this to ByteMap or something.
 		Local bitObject:Object = SystemBitManager._systemBits.ValueForKey(entitySystemType)
 		If bitObject Then

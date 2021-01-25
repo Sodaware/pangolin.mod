@@ -46,3 +46,19 @@ Type InvalidWorldInstanceException Extends EntitySystemException
 		Return "Entity must belong to a valid World instance."
 	End Method
 End Type
+
+Type InvalidSystemTypeException Extends EntitySystemException
+	Field _systemType:TTypeId
+
+	Method toString:String()
+		Return "System type `" + Self._systemType.Name() + "` does not extend EntitySystem"
+	End Method
+
+	Function Create:InvalidSystemTypeException(t:TTypeId)
+		Local exception:InvalidSystemTypeException = New InvalidSystemTypeException
+
+		exception._systemType = t
+
+		Return exception
+	End Function
+End Type
