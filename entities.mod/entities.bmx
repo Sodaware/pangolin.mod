@@ -27,20 +27,18 @@ SuperStrict
 
 Module pangolin.entities
 
-
 Import brl.map
 Import brl.reflection
 
 Import pangolin.core
 
-
 ' -- Utilities.
 Import "src/bit_storage.bmx"
 
-' -- Managers
-Import "src/system_bit_manager.bmx"
+' -- Managers.
 Import "src/component_type_manager.bmx"
 Import "src/component_type.bmx"
+Include "src/system_bit_manager.bmx"
 
 ' -- Core
 Include "src/entity_component_mapper.bmx"
