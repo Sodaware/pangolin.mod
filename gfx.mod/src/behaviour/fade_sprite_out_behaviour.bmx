@@ -15,8 +15,8 @@ SuperStrict
 Import "sprite_behaviour.bmx"
 
 Type FadeSpriteOutBehaviour Extends SpriteBehaviour
-	Field _startAlpha:Float = 1
-	Field _endAlpha:Float   = 0
+	Field _startAlpha:Float = 0
+	Field _endAlpha:Float   = 1
 
 
 	' ------------------------------------------------------------
@@ -26,11 +26,11 @@ Type FadeSpriteOutBehaviour Extends SpriteBehaviour
 	Method update(delta:Float)
 		Super.update(delta)
 
-		Self.getTarget().setAlpha(Self.tween(Self._startAlpha, Self._endAlpha))
+		Self.getTarget().setAlpha(1 - Self.tween(Self._startAlpha, Self._endAlpha))
 
 		' If elapsed time is over, finish.
 		If Self._elapsedTime >= Self._duration Then
-			Self.getTarget().SetAlpha(Self._endAlpha)
+			Self.getTarget().SetAlpha(Self._startAlpha)
 			Self.finished()
 		End If
 	End Method
