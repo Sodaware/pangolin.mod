@@ -39,18 +39,14 @@ Type EventHandler
 	''' <summary>Call the event handler for an event.</summary>
 	''' <param name="event">The emitted event.</param>
 	Method call:Object(event:GameEvent)
+		If Self._caller = Null Then Return Self._callback(event)
 
-		If Self._caller = Null Then
-			Return Self._callback(event)
+		' Only send event to the method if it as an `event` parameter
+		If Self._method.ArgTypes() = Null Or Self._method.ArgTypes().Length = 0 Then
+			Return Self._method.Invoke(Self._caller, Null)
 		Else
-			' Only send event to the method if it as an `event` parameter
-			If Self._method.ArgTypes() = Null Or Self._method.ArgTypes().Length = 0 Then
-				Return Self._method.Invoke(Self._caller, Null)
-			Else
-				Return Self._method.Invoke(Self._caller, [event])
-			End If
+			Return Self._method.Invoke(Self._caller, [event])
 		EndIf
-
 	End Method
 
 
@@ -80,7 +76,6 @@ Type EventHandler
 	End Function
 
 	Function CreateCallback:EventHandler(caller:Object, methodName:String)
-
 		Assert callback,   "Cannot create callback for null object"
 		Assert methodName, "Cannot create callback for empty method name"
 
@@ -93,7 +88,6 @@ Type EventHandler
 		If this._method = Null Then Throw "Cannot create a callback for missing method: " + methodName
 
 		Return this
-
 	End Function
 
 End Type
