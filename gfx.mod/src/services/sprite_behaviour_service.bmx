@@ -30,17 +30,22 @@ Type SpriteBehaviourService Extends GameService ..
 	Method add:SpriteBehaviour(behaviour:SpriteBehaviour)
 		Self._behaviours.AddLast(behaviour)
 		behaviour.onStart()
+
 		Return behaviour
 	End Method
-	
+
+	Method clear()
+		Self._behaviours.clear()
+	End Method
+
 	Method update(delta:Float)
-		
+
 		If Self._behaviours.Count() = 0 Then Return
-	
+
 		' Run all behaviours
 		For Local b:SpriteBehaviour = EachIn Self._behaviours
 			b.update(delta)
-			
+
 			' If the behaviour is finished, call its `onFinished` method and
 			' remove it from the active list.
 			If b.isFinished() Then
