@@ -49,7 +49,7 @@ Type Rectangle2D
 		Return Self._position._xPos + Self._width
 	End Method
 
-	Method setPosition(xPos:float, yPos:int)
+	Method setPosition(xPos:Float, yPos:Float)
 		Self._position.setPosition(xPos, yPos)
 	End Method
 
