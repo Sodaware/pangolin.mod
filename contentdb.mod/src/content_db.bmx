@@ -482,6 +482,10 @@ Type ContentDb
 			fieldSchema.setDescription(fieldInfo.MetaData("doc"))
 			fieldSchema.setProtectionLevel(ComponentField.PROTECTIONLEVEL_PUBLIC)
 
+			If fieldInfo.metaData("default_value") Then
+				fieldSchema.setDefaultValue(fieldInfo.MetaData("default_value"))
+			End If
+
 			' Add to the component schema.
 			schema.addField(fieldSchema)
 		Next
