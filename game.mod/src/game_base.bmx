@@ -74,7 +74,7 @@ Type GameBase
 	''' <param name="data">A TEvent object.</param>
 	''' <param name="context">The GameBase that emitted this event.</param>
 	''' <return>Any data generated. Basically nothing.</return>
-	Function handleEvents:Object(id:Int, data:Object, context:Object)
+	Function handleEvents:Object(id:Int, data:Object, context:Object) Final
 		If GameBase(context) <> Null Then GameBase(context).HandleEvent(TEvent(data))
 
 		Return data
@@ -101,34 +101,29 @@ Type GameBase
 	''' clear the screen every frame.
 	''' </summary>
 	Method runLoop()
-
 		Local frameTimer:TTimer = CreateTimer(Self._frameRate)
-
 		Local delta:Float		= 1000 / Self._frameRate
 		Local lastTime:Int		= MilliSecs()
 
-		' Start the kernel and all services
+		' Start the kernel and all services.
 		Self._kernel.start()
 
 		Repeat
-
-			' Update kernel and run renderer
+			' Update kernel and run renderer.
 			Self._kernel.update(delta)
 			Self._kernel.render(delta)
 
-			' Wait for next frame and flip
+			' Wait for next frame and flip.
 			WaitTimer(frameTimer)
 			Flip False
 
-			' Calculate delta
+			' Calculate delta.
 			delta		= MilliSecs() - lastTime
 			lastTime	= MilliSecs()
-
 		Until AppTerminate() Or Self._finished
 
-		' Stop the kernel and return
+		' Stop the kernel and return.
 		Self._kernel.stop()
-
 	End Method
 
 	Method shutdown()
