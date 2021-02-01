@@ -49,7 +49,29 @@ Const XBOX_BUTTON_DPAD_DOWN:Float  = 0.5
 Const XBOX_BUTTON_DPAD_LEFT:Float  = 0.75
 Const XBOX_BUTTON_DPAD_RIGHT:Float = 0.25
 
-Type JoypadButtonControllerInput Extends BaseControllerInput
+Type JoypadControllerInput Extends BaseControllerInput
+	Function build:JoypadControllerInput(name:String)
+		Select name
+			Case "yaw_left"    ; Return JoypadYawControllerInput.Create(-1)
+			Case "yaw_right"   ; Return JoypadYawControllerInput.Create(1)
+			Case "pitch_up"    ; Return JoypadPitchControllerInput.Create(-1)
+			Case "pitch_down"  ; Return JoypadPitchControllerInput.Create(1)
+			Case "hat_up"      ; Return JoypadHatControllerInput.Create(XBOX_BUTTON_DPAD_UP)
+			Case "hat_down"    ; Return JoypadHatControllerInput.Create(XBOX_BUTTON_DPAD_DOWN)
+			Case "hat_left"    ; Return JoypadHatControllerInput.Create(XBOX_BUTTON_DPAD_LEFT)
+			Case "hat_right"   ; Return JoypadHatControllerInput.Create(XBOX_BUTTON_DPAD_RIGHT)
+
+			Default
+				' Buttons
+				If name.startsWith("button_") Then
+					Local buttonName:String = name.Replace("button_", "")
+					Return JoypadButtonControllerInput.CreateSingle(Int(buttonName))
+				EndIf
+		End Select
+	End Function
+End Type
+
+Type JoypadButtonControllerInput Extends JoypadControllerInput
 
 	Field _buttons:Byte[]
 
@@ -81,10 +103,18 @@ Type JoypadButtonControllerInput Extends BaseControllerInput
 		Return this
 	End Function
 
+	Function CreateSingle:JoypadButtonControllerInput(button:Int)
+		Local this:JoypadButtonControllerInput = New JoypadButtonControllerInput
+
+		this._buttons = [Byte(button)]
+
+		Return this
+	End Function
+
 End Type
 
 
-Type JoypadHatControllerInput Extends BaseControllerInput
+Type JoypadHatControllerInput Extends JoypadControllerInput
 
 	Field _direction:Float
 
@@ -107,7 +137,7 @@ Type JoypadHatControllerInput Extends BaseControllerInput
 
 End Type
 
-Type JoypadYawControllerInput Extends BaseControllerInput
+Type JoypadYawControllerInput Extends JoypadControllerInput
 
 	Field _direction:Float
 
@@ -130,7 +160,7 @@ Type JoypadYawControllerInput Extends BaseControllerInput
 
 End Type
 
-Type JoypadPitchControllerInput Extends BaseControllerInput
+Type JoypadPitchControllerInput Extends JoypadControllerInput
 
 	Field _direction:Float
 

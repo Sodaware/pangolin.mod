@@ -14,6 +14,7 @@ SuperStrict
 
 Import brl.linkedlist
 Import brl.map
+Import brl.reflection
 Import sodaware.ObjectBag
 
 Import "base_controller_input.bmx"
@@ -32,7 +33,36 @@ Type VirtualController
 		Self._actions.Insert(name, New TList)
 	End Method
 
+	Method clearActionInputs(name:String)
+		Local actions:TList = TList(Self._actions.valueForKey(name))
+		actions.clear()
+	End Method
+
+	Method clearJoypadInputs(name:String)
+		Local joypadBase:TTypeId = TTypeId.forName("JoypadControllerInput")
+		Local actions:TList = TList(Self._actions.valueForKey(name))
+		For Local action:BaseControllerInput = EachIn actions
+			Local controlType:TTypeId = TTypeId.forObject(action)
+			If controlType.extendsType(joypadBase) Then
+				actions.remove(action)
+			EndIf
+		Next
+	End Method
+
+	Method getActionNames:String[]()
+		Local actions:String[]
+
+		For Local key:String = EachIn Self._actions.keys()
+			actions = actions[..actions.length + 1]
+			actions[actions.length - 1] = key
+		Next
+
+		Return actions
+	End Method
+
 	Method addInput(name:String, listener:BaseControllerInput)
+		If listener = Null Then Return
+
 		Local a:TList = TList(Self._actions.ValueForKey(name))
 		a.AddFirst(listener)
 		Self._listeners.add(listener)
