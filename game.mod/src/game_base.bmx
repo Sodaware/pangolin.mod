@@ -124,7 +124,7 @@ Type GameBase
 			delta		= MilliSecs() - lastTime
 			lastTime	= MilliSecs()
 
-		Until Self._finished
+		Until AppTerminate() Or Self._finished
 
 		' Stop the kernel and return
 		Self._kernel.stop()
