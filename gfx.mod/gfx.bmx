@@ -26,11 +26,6 @@ SuperStrict
 
 Module pangolin.gfx
 
-
-Import brl.graphics
-Import brl.retro
-
-
 ' -- Main helper class
 Import "pangolin_gfx.bmx"
 
