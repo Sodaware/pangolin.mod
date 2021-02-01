@@ -56,10 +56,9 @@ Type BaseParticle Abstract
 	End Method
 
 	Method update(delta:Float)
-
 		' All velocities should be in pixels per second (so divide this by 1000 and multiply by delta)
-		self.x_velocity :+ (self.x_acceleration / 1000) * delta
-		self.y_velocity :+ (self.y_acceleration / 1000) * delta
+		self.x_velocity :+ (self.x_acceleration / 1000.0) * delta
+		self.y_velocity :+ (self.y_acceleration / 1000.0) * delta
 
 		self.x_velocity = Self._clampVelocity(self.x_velocity, self.x_max_velocity)
 		self.y_velocity = Self._clampVelocity(self.y_velocity, self.y_max_velocity)
@@ -77,8 +76,8 @@ Type BaseParticle Abstract
 		End If
 
 		' Apply velocities to co-ordinates.
-		Self.x_pos :+ (Self.x_velocity / 1000) * delta
-		Self.y_pos :+ (Self.y_velocity / 1000) * delta
+		Self.x_pos :+ (Self.x_velocity / 1000.0) * delta
+		Self.y_pos :+ (Self.y_velocity / 1000.0) * delta
 
 	End Method
 
