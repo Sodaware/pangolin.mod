@@ -14,15 +14,16 @@
 SuperStrict
 
 Import pangolin.core
+Import pangolin.events
 
 Import "../behaviour/sprite_behaviour.bmx"
 
 
-Type SpriteBehaviourService Extends GameService .. 
+Type SpriteBehaviourService Extends GameService ..
 	{ implements = "update" }
-	
+
 	Field _behaviours:TList = New TList
-	
+
 	''' <summary>
 	''' Add a sprite behaviour to the list of running behaviours and
 	''' call its `onStart` method.
@@ -32,6 +33,10 @@ Type SpriteBehaviourService Extends GameService ..
 		behaviour.onStart()
 
 		Return behaviour
+	End Method
+
+	Method remove(behaviour:SpriteBehaviour)
+		Self._behaviours.remove(behaviour)
 	End Method
 
 	Method clear()
@@ -53,12 +58,12 @@ Type SpriteBehaviourService Extends GameService ..
 				Self._behaviours.Remove(b)
 			EndIf
 		Next
-		
+
 	End Method
-	
+
 	Method init()
 		Super.init()
 		Self._behaviours = New TList
 	End Method
-	
+
 End Type
