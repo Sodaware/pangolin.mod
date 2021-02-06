@@ -111,6 +111,7 @@ Type ScreenManagerService extends GameService ..
 			screen.afterLeave()
 			Self.removeScreen(screen)
 		Next
+
 		Self.clearScreens()
 	End Method
 

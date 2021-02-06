@@ -38,7 +38,7 @@ Include "content_db_loader.bmx"
 ''' The ContentDb class is a database of entity templates.
 '''
 ''' These templates can be used to spawn `pangolin.entities` objects from a
-''' text-based template instead of creating them by hand,
+''' text-based template instead of creating them by hand.
 ''' </summary>
 Type ContentDb
 

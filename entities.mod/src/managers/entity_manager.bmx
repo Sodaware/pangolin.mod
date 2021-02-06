@@ -59,7 +59,7 @@ Type EntityManager Extends BaseManager
 		Return Null
 	End Method
 
-	''' <summary>Get all components attached to an entity.</summary>
+	''' <summary>Get all CACHED components attached to an entity.</summary>
 	''' <param name="e">Entity object to get components for.</param>
 	''' <return>ObjectBag of components.</return>
 	Method getEntityComponents:ObjectBag(e:Entity)
@@ -67,8 +67,7 @@ Type EntityManager Extends BaseManager
 	End Method
 
 	''' <summary>
-	''' Get an EntityBag containing all entities that have a
-	''' specific component.
+	''' Get an EntityBag containing all entities that have a specific component.
 	''' </summary>
 	''' <param name="t">The type of component to search for.</param>
 	''' <return>A collection of entities. May be empty.</return>
