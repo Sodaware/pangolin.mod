@@ -14,7 +14,7 @@
 Type SystemBitManager
 
 	Global _currentBitPosition:Byte     = 1
-	Global _systemBits:TMap             = New TMap
+	Global _systemBits:TTypeIdByteMap   = New TTypeIdByteMap
 	Global _entitySystemTypeId:TTypeId  = Null
 
 
@@ -33,15 +33,12 @@ Type SystemBitManager
 			Throw InvalidSystemTypeException.Create(entitySystemType)
 		EndIf
 
-		' TODO: Convert this to ByteMap or something.
-		Local bitObject:Object = SystemBitManager._systemBits.ValueForKey(entitySystemType)
-		If bitObject Then
-			Return Byte(bitObject.ToString())
-		End If
+		Local bit:Byte = SystemBitManager._systemBits.get(entitySystemType)
+		If bit > 0 Then Return bit
 
 		' Bit is not in cache, so assign a new one and return it
 		SystemBitManager._currentBitPosition :+ 1
-		SystemBitManager._systemBits.Insert(entitySystemType, String(SystemBitManager._currentBitPosition - 1))
+		SystemBitManager._systemBits.set(entitySystemType, SystemBitManager._currentBitPosition - 1)
 
 		Return SystemBitManager._currentBitPosition - 1
 	End Function

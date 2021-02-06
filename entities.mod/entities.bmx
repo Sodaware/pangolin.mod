@@ -34,6 +34,7 @@ Import pangolin.core
 
 ' -- Utilities.
 Import "src/bit_storage.bmx"
+Import "src/ttypeid_byte_map.bmx"
 
 ' -- Managers.
 Import "src/component_type_manager.bmx"
