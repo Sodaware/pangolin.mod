@@ -13,8 +13,13 @@
 
 SuperStrict
 
+' Raspberry Pi uses SDL, everything else uses Max2D.
+?raspberrypi
+Import sdl.gl2sdlmax2d
+?Not raspberrypi
 Import brl.max2d
 Import brl.glmax2d
+?
 
 ?Win32
 Import brl.d3d7max2d
@@ -34,6 +39,7 @@ Type GraphicsManager
 	Const DRIVER_TYPE_DX7:Byte      = 1
 	Const DRIVER_TYPE_DX9:Byte      = 2
 	Const DRIVER_TYPE_OPENGL:Byte   = 3
+	Const DRIVER_TYPE_SDL:Byte      = 4
 
 	Global _instance:GraphicsManager
 
@@ -154,8 +160,14 @@ Type GraphicsManager
 				?
 
 			Case DRIVER_TYPE_OPENGL
+				?raspberrypi
+				throw "You cannot use the GLMax2DDriver on this operating system"
+				?Not raspberrypi
 				GLShareContexts()
 				SetGraphicsDriver(GLMax2DDriver())
+				?
+
+			Case DRIVER_TYPE_SDL
 
 		End Select
 
@@ -165,6 +177,7 @@ Type GraphicsManager
 		?Not bmxng
 		Self._driver = CreateGraphics(Self._width, Self._height, (Not(Self._isWindowed) * Self._depth), Self._refreshRate, Self._flags)
 		?
+
 		If Self._driver = Null Then Throw "Could not make the graphics"
 
 		SetGraphics(Self._driver)
