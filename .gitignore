@@ -9,3 +9,6 @@
 *.x64.i2
 *.s
 *.o
+*.arm.a
+*.arm.i
+*.arm.i2
