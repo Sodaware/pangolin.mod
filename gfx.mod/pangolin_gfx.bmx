@@ -38,7 +38,7 @@ Type PangolinGfx
 	''' <param name="depth">Colour depth of the screen.</param>
 	''' <param name="waitVBlank">If true will wait for a VBlank between frames.</param>
 	''' <param name="driverType">The type of graphics driver to use. Defaults to OpenGL.</param>
-	Function initGraphics(width:Int, height:Int, scale:Float = 1.0, refreshRate:Int = 60, isWindowed:Byte = False, depth:Int = 32, waitVBlank:Int = True, driverType:Byte = GraphicsManager.DRIVER_TYPE_OPENGL)
+	Function initGraphics(width:Int, height:Int, scale:Float = 1.0, refreshRate:Int = 60, isWindowed:Byte = False, depth:Int = 32, waitVBlank:Byte = True, driverType:Byte = GraphicsManager.DRIVER_TYPE_OPENGL)
 
 		' Set up graphics manager.
 		GraphicsManager.getInstance() ..
