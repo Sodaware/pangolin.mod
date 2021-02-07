@@ -38,7 +38,7 @@ Type SystemBitManager
 
 		' Bit is not in cache, so assign a new one and return it
 		SystemBitManager._currentBitPosition :+ 1
-		SystemBitManager._systemBits.set(entitySystemType, SystemBitManager._currentBitPosition - 1)
+		SystemBitManager._systemBits.set(entitySystemType, Byte(SystemBitManager._currentBitPosition - 1))
 
 		Return SystemBitManager._currentBitPosition - 1
 	End Function
