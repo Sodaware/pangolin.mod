@@ -56,10 +56,13 @@ Type GameEntityService Extends GameService ..
 		Return Self._world.getTagManager()
 	End Method
 
-	''' <summary>Create an EntityQuery for all active entities in the World.</summary>
-	''' <return>EntityQuery with active entities as its list to filter.</return>
-	Method query:EntityQuery()
-		Return EntityQuery.Create(Self.getEntityManager().getActiveEntities())
+	''' <summary>Create an EntityQuery for entities in the World.</summary>
+	''' <param name="entities">Entities to query. If null, will use all active entities.</param>
+	''' <return>EntityQuery with entities as its list to filter.</return>
+	Method query:EntityQuery(entities:EntityBag = null)
+		If entities = Null Then entities = Self.getEntityManager().getActiveEntities()
+
+		Return EntityQuery.Create(entities)
 	End Method
 
 
