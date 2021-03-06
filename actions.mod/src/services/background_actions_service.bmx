@@ -160,6 +160,11 @@ Type BackgroundActionsService Extends GameService ..
 
 	End Method
 
+	Method clear()
+		Self._actionList.clear()
+		Self._actionCount = 0
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Construction / Destruction
