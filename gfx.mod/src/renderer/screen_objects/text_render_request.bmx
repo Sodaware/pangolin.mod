@@ -219,11 +219,10 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	' [todo] - Needs to take the camera into account
 
 	Method render(tween:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
-
-		' Don't render if set to invisible
+		' Don't render if set to invisible.
 		If Self._isVisible = False Then Return
 
-		' Calculate new position
+		' Calculate new position.
 		Self._interpolate(1)
 		Self.setRenderState()
 		brl.max2d.SetBlend(alphablend)
@@ -234,14 +233,13 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			SetImageFont(Self._font)
 		EndIf
 
-		' Set up appearance
+		' Set up appearance.
 		' TODO: Is this really needed? It's rather slow. Maybe only set the state if something fancy is going on?
 		' Self.setRenderState()
 
 		' Wrap the text (if required)
 		If Self.needsWrap() Then
-
-			' Add new lines to wrapped text and split it
+			' Add new lines to wrapped text and split it.
 			' [todo] - Only wrap text when something is changed - it's slow!
 			Local wrappedText:String = Self._text
 
@@ -314,7 +312,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 
 		For Local pos:Int = 1 To text.Length
 			If Mid(text, pos, 1) = " " Then
-				If TextWidth(currentLine + " " + currentWord) > Self._width Then
+				If TextWidth(currentLine + " " + currentWord) >= Self._width Then
 					wrappedText:+ currentLine + "~n"
 					currentLine = currentWord + " "
 					currentWord = ""
@@ -333,7 +331,13 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 			EndIf
 		Next
 
-		wrappedText:+ currentLine + currentWord
+		' Check if final word takes us over the limit.
+		If TextWidth(currentLine + " " + currentWord) >= Self._width Then
+			wrappedText :+ currentLine + "~n" + currentWord
+			lineCount :+ 1
+		Else
+			wrappedText :+ currentLine + currentWord
+		EndIf
 
 		Self._textHeight = TextHeight(wrappedText) * lineCount
 
