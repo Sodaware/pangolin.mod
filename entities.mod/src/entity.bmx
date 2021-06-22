@@ -139,7 +139,7 @@ Type Entity
 
 		Return Self
 	End Method
-	
+
 	''' <summary>Add a system bit to the entity.</summary>
 	Method addSystemBit:Entity(bit:Byte)
 		Self._systemBits.setBit(bit)
@@ -331,6 +331,7 @@ Type Entity
 	''' <seealso cref="GroupManager">See GroupManager for more information on groups.</seealso>
 	Method setGroup:Entity(groupName:String)
 		Self._world.getGroupManager().set(groupName, Self)
+
 		Return Self
 	End Method
 

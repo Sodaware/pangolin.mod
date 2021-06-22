@@ -18,7 +18,7 @@ Import brl.bank
 
 
 Type TileMap
-	
+
 	' -- Map info
 	Field _layerCount:Int		''' Number of layers
 	Field _width:Int			''' Width of the map in tiles
@@ -26,12 +26,12 @@ Type TileMap
 
 	' -- Meta
 	Field _metaData:TMap		''' Meta data, such as tileset name
-	
+
 	 ' -- Internal fields
- 	Field _mapData:TBank		''' Bank of tile ID's
+	Field _mapData:TBank		''' Bank of tile ID's
 	Field _layerOffset:Int		''' Internal memory offset for each layer
-	
-	
+
+
 	' ------------------------------------------------------------
 	' -- Public access methods
 	' ------------------------------------------------------------
@@ -40,24 +40,24 @@ Type TileMap
 	''' <param name="layer">The map layer for the tile.</param>
 	''' <param name="xPos">The X (horizontal) position of the tile.</param>
 	''' <param name="yPos">The Y (vertical) position of the tile.</param>
-	''' <returns>The TileID for the position, or -1 if the tile is out of bounds.</returns> 
+	''' <returns>The TileID for the position, or -1 if the tile is out of bounds.</returns>
 	Method getTile:Short(layer:Int, xPos:Int, yPos:Int)
-		
+
 		' Check inputs
 		If layer < 0 Or layer >= Self._layerCount Then Return -1
 		If xPos < 0 Or xPos >= Self._width Then Return -1
 		If yPos < 0 Or yPos >= Self._height Then Return -1
-		
+
 		' Get tile ID
 		Return Self._mapData.PeekShort((layer * Self._layerOffset) + (((yPos * Self._width) + xPos) Shl 1))
-		
+
 	End Method
-	
+
 	''' <summary>Get the height of the map in tiles.</summary>
-	Method getHeight:Int() 
+	Method getHeight:Int()
 		Return Self._height
 	End Method
-	
+
 	''' <summary>Get the width of the map in tiles.</summary>
 	Method getWidth:Int()
 		Return Self._width
@@ -96,17 +96,17 @@ Type TileMap
 	' ------------------------------------------------------------
 
 	Method setTile:Byte(layer:Int, xPos:Int, yPos:Int, tileID:Short)
-		
+
 		' Check inputs
 		If layer < 0 Or layer >= Self._layerCount Then Return False
 		If xPos < 0 Or xPos >= Self._width Then Return False
 		If yPos < 0 Or yPos >= Self._height Then Return False
 		If tileID < 0 Then Return False
-		
+
 		' Set the tile
 		Self._mapData.PokeShort((layer * Self._layerOffset) + (((yPos * Self._width) + xPos) Shl 1), tileID)
 		Return True
-		
+
 	End Method
 
 	Method fillRange(layer:Int, xPos:Int, yPos:Int, width:Int, height:Int, tileID:Short)
@@ -116,56 +116,56 @@ Type TileMap
 			Next
 		Next
 	End Method
-	
+
 	Method addLayer()
-		
-	End Method
-	
-	Method insertLayer(position:Int)
-	End Method
-	
-	Method removeLayer(layerID:Int)
-		
+
 	End Method
 
-	
+	Method insertLayer(position:Int)
+	End Method
+
+	Method removeLayer(layerID:Int)
+
+	End Method
+
+
 	' ------------------------------------------------------------
 	' -- Creation & Initialisation
 	' ------------------------------------------------------------
-	
+
 	Function Create:TileMap(width:Short, height:Short, layers:Short)
-		
+
 		' -- Check inputs
 		If width < 1 Or height < 1 Or layers < 1 Then Return Null
-		
+
 		Local this:TileMap = New TileMap
-		
+
 		this._width      = width
 		this._height     = height
 		this._layerCount = layers
-		
+
 		this._initialiseMapData()
-		
+
 		Return this
-		
+
 	End Function
-	
+
 	Method New()
 		Self._metaData = New TMap
 	End Method
-	
+
 	Method _initialiseMapData()
 		' TODO: Check inputs
-	
+
 		' Clear old data
 		Self._mapData = Null
-		
+
 		' used to calculate offset
 		Local s:Short
-		
+
 		Self._layerOffset = Self._height * Self._width * SizeOf(s)
 		Self._mapData = TBank.Create(Self._layerCount * Self._layerOffset)
-		
+
 	End Method
-	
+
 End Type
