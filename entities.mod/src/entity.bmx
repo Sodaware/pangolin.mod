@@ -258,6 +258,66 @@ Type Entity
 
 
 	' ------------------------------------------------------------
+	' -- Component Field Access
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Directly set a component field value.
+	'''
+	''' This is slower and riskier than setting via the component instance, but
+	''' is a useful shortcut if you know what you're doing.
+	'''
+	''' Be warned that it will throw runtime errors if tying to access invalid
+	''' components or fields.
+	''' </summary>
+	''' <param name="componentName">The component name to modify.</param>
+	''' <param name="fieldName">The field to modify.</param>
+	''' <param name="value">The new value of the field.</param>
+	''' <return>The entity instance.</return>
+	Method setComponentField:Entity(componentName:String, fieldName:String, value:Object)
+		Local c:EntityComponent = Self.getComponentByName(componentName)
+		Local t:TTypeId         = TTypeId.ForObject(c)
+		Local f:TField          = t.findField(fieldName)
+
+		f.set(c, value)
+
+		Return Self
+	End Method
+
+	''' <summary>
+	''' Directly get a component field value.
+	'''
+	''' Like `setComponentField`, this is slower and riskier than getting via the
+	''' component instance. It also needs to be converted to whatever data type
+	''' you need.
+	'''
+	''' Be warned that it will throw runtime errors if tying to access invalid
+	''' components or fields.
+	''' </summary>
+	''' <param name="componentName">The component name to get.</param>
+	''' <param name="fieldName">The field to get.</param>
+	''' <return>The component field value.</return>
+	Method getComponentField:Object(componentName:String, fieldName:String)
+		Local c:EntityComponent = Self.getComponentByName(componentName)
+		Local t:TTypeId         = TTypeId.ForObject(c)
+		Local f:TField          = t.findField(fieldName)
+
+		Return f.get(c)
+	End Method
+
+	''' <summary>
+	''' Directly get a component field value and cast to an integer.
+	''' </summary>
+	''' <seealso cref="getComponentField">Wrapper for getComponentField.</seealso>
+	''' <param name="componentName">The component name to get.</param>
+	''' <param name="fieldName">The field to get.</param>
+	''' <return>The component field value.</return>
+	Method getComponentFieldI:Int(componentName:String, fieldName:String)
+		Return Int(String(Self.getComponentField(componentName, fieldName)))
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Group management
 	' ------------------------------------------------------------
 
