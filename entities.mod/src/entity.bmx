@@ -92,6 +92,11 @@ Type Entity
 		Return Self._systemBits
 	End Method
 
+	''' <summary>Does this entity have a specific type bit attached?</summary>
+	Method hasTypeBit:Byte(bit:Byte)
+		Return Self._typeBits.hasBit(bit)
+	End Method
+
 	''' <summary>Does this entity have a specific system bit attached?</summary>
 	Method hasSystemBit:Byte(bit:Byte)
 		Return Self._systemBits.hasBit(bit)
