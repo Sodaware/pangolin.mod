@@ -41,6 +41,8 @@ Type EntityQuery
 	''' <summary>Run query filters and return the filtered collection.</summary>
 	''' <return>EntityBag of filtered results.</return>
 	Method getResults:EntityBag()
+		If Self._toFilter = Null Then Return Null
+
 		' Create a fast copy of the bag.
 		Local results:EntityBag = Self._toFilter.copy()
 
