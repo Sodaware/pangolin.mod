@@ -35,6 +35,7 @@ Import "src/tile_map.bmx"
 Import "src/tile_set.bmx"
 Import "src/animated_tile.bmx"
 Import "src/tile.bmx"
+Import "src/map_coordinate.bmx"
 
 ' -- Serialization
 Import "src/serializers/tilemap_loader.bmx"
