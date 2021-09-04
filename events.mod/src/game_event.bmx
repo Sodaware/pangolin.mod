@@ -51,4 +51,8 @@ Type GameEvent extends TEvent
 		Return this
 	End Function
 
+	Method setExtra(extra:Object)
+		Self.extra = extra
+	End Method
+
 End Type
