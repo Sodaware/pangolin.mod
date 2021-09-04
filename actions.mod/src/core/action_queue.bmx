@@ -23,6 +23,38 @@ Type ActionQueue Extends BackgroundAction
 
 
 	' ------------------------------------------------------------
+	' -- Querying
+	' ------------------------------------------------------------
+
+	Method getSize:Int()
+		Return Self._actions.count()
+	End Method
+
+	Method getPosition:Int()
+		Return Self._position
+	End Method
+
+	Method get:BackgroundAction(position:Int)
+		Return BackgroundAction(Self._actions.valueAtIndex(position))
+	End Method
+
+	''' <summary>
+	''' Insert an item at the front of the queue.
+	''' </summary>
+	Method insertFront:ActionQueue(action:BackgroundAction)
+		Self._actions.addFirst(action)
+
+		Return Self
+	End Method
+
+	Method push:ActionQueue(action:BackgroundAction)
+		Self._actions.addLast(action)
+
+		Return Self
+	End Method
+
+
+	' ------------------------------------------------------------
 	' -- Adding Items
 	' ------------------------------------------------------------
 
