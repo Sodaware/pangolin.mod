@@ -156,8 +156,7 @@ Type ComponentTemplate
 	' -- Debugging
 	' --------------------------------------------------
 
-	Method _dump:String()
-
+	Method toString:String()
 		Local o:String = "ComponentTemplate[" + Self.getSchemaName() + "] {~n"
 
 		For Local name:String = EachIn Self._fieldValues.Keys()
@@ -165,6 +164,7 @@ Type ComponentTemplate
 		Next
 
 		o:+ "}"
+
 		Return o
 	End Method
 
