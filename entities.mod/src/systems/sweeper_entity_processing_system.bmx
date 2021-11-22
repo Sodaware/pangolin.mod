@@ -28,6 +28,10 @@ Type SweeperEntityProcessingSystem Extends SweeperEntitySystem Abstract
 
 	Method processEntities(entities:EntityBag) Final
 		For Local e:Entity = EachIn entities
+			' If system has declared any interests, check it's interested in
+			' this entity.
+			If Self.hasInterests() And Not Self.isInterestedInEntity(e) Then Continue
+
 			Self.processEntity(e)
 		Next
 	End Method
