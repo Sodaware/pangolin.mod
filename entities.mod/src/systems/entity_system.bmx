@@ -24,7 +24,7 @@
 Type EntitySystem Extends KernelAwareInterface Abstract
 
 	Field _isEnabled:Byte                   '''< Is this system enabled?
-	Field _systemBit:Byte                   '''< The unique bit for this system.
+	Field _systemBit:Byte                   '''< The bit offset for this system.
 	Field _typeBits:BitStorage              '''< Types that this system is interested in.
 	Field _world:World                      '''< World this system belongs to.
 	Field _actives:EntityBag                '''< All entities this system is interested in.
@@ -69,6 +69,23 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	Method cleanup()
 	End Method
 
+	''' <summary>Called before all entities are processed by this system.</summary>
+	Method beforeProcessEntities()
+	End Method
+
+	''' <summary>Called after all entities are processed by this system.</summary>
+	Method afterProcessEntities()
+	End Method
+
+	''' <summary>Called when an entity has been added to this system's list of interests.</summary>
+	Method added(e:Entity)
+
+	End Method
+
+	''' <summary>Called when an entity has been removed from this system's list of interests.</summary>
+	Method removed(e:Entity)
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Getters / Setters
@@ -90,6 +107,33 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		Return Self._world._delta
 	End Method
 
+	''' <summary>Get the world this system belongs to.</summary>
+	Method getWorld:World() Final
+		Return Self._world
+	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Interests
+	' ------------------------------------------------------------
+
+	Method hasInterests:Byte()
+		Return Not Self._typeBits.isEmpty()
+	End Method
+
+	Method isInterestedInEntity:Byte(e:Entity)
+		Return e.getTypeBits().containsAllBits(Self._typeBits) And Not Self._typeBits.isEmpty()
+	End Method
+
+	Method isInterestedInComponent:Byte(ct:ComponentType)
+		Return Self._typeBits.hasBit(ct.getBit())
+	End Method
+
+	' Does the entity system bits already contain this system?
+	Method contains:Byte(e:Entity)
+		Return e.getSystemBits().hasBit(Self._systemBit) And Not Self._typeBits.isEmpty()
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Processing
@@ -98,14 +142,6 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 	Method processEntities(entities:EntityBag) Abstract
 
 	Method checkProcessing:Byte() Abstract
-
-	''' <summary>Called before all entities are processed by this system.</summary>
-	Method beforeProcessEntities()
-	End Method
-
-	''' <summary>Called after all entities are processed by this system.</summary>
-	Method afterProcessEntities()
-	End Method
 
 	' Processes all entities if the system is enabled and can process
 	Method process()
@@ -129,52 +165,14 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		Self._world = w
 	End Method
 
-	Method getWorld:World() Final
-		Return Self._world
-	End Method
 
-	Method initialize()
-		Self._autoInjectComponentLookups()
-		Self.autoloadServices()
-	End Method
-
-	''' <summary>Called when an entity has been added to this system's list of interests.</summary>
-	Method added(e:Entity)
-
-	End Method
-
-	''' <summary>Called when an entity has been removed from this system's list of interests.</summary>
-	Method removed(e:Entity)
-	End Method
-
-	Method change(e:Entity)
-		Local contains:Byte = Self.contains(e)
-		Local interest:Byte = Self.interest(e)
-
-		If interest And Not(contains) Then
-			Self._actives.add(e)
-			e.addSystemBit(Self._systemBit)
-			Self.added(e)
-		ElseIf Not(interest) And contains Then
-			Self._actives.removeObject(e)
-			e.removeSystemBit(Self._systemBit)
-			Self.removed(e)
-		End If
-	End Method
-
-	' Does the entity system bits already contain this system?
-	Method contains:Byte(e:Entity)
-		Return e.getSystemBits().hasBit(Self._systemBit) And Not Self._typeBits.isEmpty()
-	End Method
-
-	' Does the entity have all the components this system is interested in?
-	Method interest:Byte(e:Entity)
-		Return e.getTypeBits().containsAllBits(Self._typeBits) And Not Self._typeBits.isEmpty()
-	End Method
+	' ------------------------------------------------------------
+	' -- Registering components and entities
+	' ------------------------------------------------------------
 
 	Method registerComponentByName(componentTypeName:String)
 		' TODO: Add some error handling here
-		Self.registerComponent(TTypeId.ForName(componentTypeName))
+		Self.registerComponent(TTypeId.ForName(componentTypeName.Trim()))
 	End Method
 
 	Method registerComponents(componentTypeList:TTypeId[])
@@ -190,19 +188,42 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 		Self._typeBits.setBit(ct.getBit())
 	End Method
 
-	Method isInterestedInComponent:Byte(ct:ComponentType)
-		Return Self._typeBits.hasBit(ct.getBit())
+	''' <summary>
+	''' Called whenever an entity has had components added or removed.
+	'''
+	''' Updates this system's list of interested entities.
+	''' </summary>
+	Method change(e:Entity)
+		Local contains:Byte = Self.contains(e)
+		Local interest:Byte = Self.isInterestedInEntity(e)
+
+		If interest And Not(contains) Then
+			Self._actives.add(e)
+			e.addSystemBit(Self._systemBit)
+			Self.added(e)
+		ElseIf Not(interest) And contains Then
+			Self._actives.removeObject(e)
+			e.removeSystemBit(Self._systemBit)
+			Self.removed(e)
+		End If
 	End Method
+
+
+	' ------------------------------------------------------------
+	' -- Internal helpers
+	' ------------------------------------------------------------
 
 	''' <summary>Automates registering a system with component types.</summary>
 	Method _autoRegisterComponentTypes()
+		' Do nothing if interested type bits have already been set.
 		If Not Self._typeBits.isEmpty() Then Return
 
-		Local imp:String = TTypeId.ForObject(Self).MetaData("component_types")
+		' Get a list of watched Type names from the `component_types` meta.
+		Local imp:String        = TTypeId.ForObject(Self).MetaData("component_types")
 		Local typeList:String[] = imp.Split(",")
 
+		' Add them all to the list of registered components.
 		For Local typeName:String = EachIn typeList
-			typeName = typeName.Trim()
 			Self.registerComponentByName(typeName)
 		Next
 	End Method
@@ -226,8 +247,13 @@ Type EntitySystem Extends KernelAwareInterface Abstract
 
 
 	' ------------------------------------------------------------
-	' -- Enabling / Disabling
+	' -- Construction / Initialization
 	' ------------------------------------------------------------
+
+	Method initialize()
+		Self._autoInjectComponentLookups()
+		Self.autoloadServices()
+	End Method
 
 	Method New()
 		Self._actives   = EntityBag.Create()
