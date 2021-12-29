@@ -29,4 +29,5 @@ Module pangolin.particles
 
 Import "src/particles_request.bmx"
 Import "src/particle_bag.bmx"
+Import "src/particle_emitter.bmx"
 Import "src/particles/base_particle.bmx"
