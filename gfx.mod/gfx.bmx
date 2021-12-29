@@ -64,8 +64,9 @@ Import "src/behaviour/sequential_sprite_behaviour.bmx"
 Import "src/behaviour/show_sprite_behaviour.bmx"
 
 ' -- Helper functions
-Import "src/util/hex_util.bmx"
+Import "src/util/color_rgba.bmx"
 Import "src/util/graphics_util.bmx"
+Import "src/util/hex_util.bmx"
+Import "src/util/position.bmx"
 Import "src/util/render_state.bmx"
 Import "src/util/scale_image.bmx"
-Import "src/util/position.bmx"
