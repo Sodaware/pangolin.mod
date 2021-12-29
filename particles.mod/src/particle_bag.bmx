@@ -368,9 +368,9 @@ End Type
 ' ------------------------------------------------------------
 
 Function CompareParticleObjects:Int(obj1:BaseParticle, obj2:BaseParticle)
-	If obj1.x_pos > obj2.x_pos Then
+	If obj1.xPos > obj2.xPos Then
 		Return 1
-	ElseIf obj1.x_pos < obj2.x_pos Then
+	ElseIf obj1.xPos < obj2.xPos Then
 		Return -1
 	Else
 		Return 0

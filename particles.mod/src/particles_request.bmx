@@ -28,10 +28,12 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	' -- Public API
 	' ------------------------------------------------------------
 
+	''' <summary>Get the X position of the emitter. Usually ignored.</summary>
 	Method getX:Float()
 		Return Self._xPos
 	End Method
-	
+
+	''' <summary>Get the Y position of the emitter. Usually ignored.</summary>
 	Method getY:Float()
 		Return Self._yPos
 	End Method
@@ -40,29 +42,30 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	' ------------------------------------------------------------
 	' -- Rendering and updating
 	' ------------------------------------------------------------
-	
+
 	''' <summary>Render basic pixel particles.</summary>
 	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
+		If Self._particles.isEmpty() Then Return
+
 		For Local p:BaseParticle = EachIn Self._particles
-			SetColor p.colorRed, p.colorGreen, p.colorBlue
-			brl.max2d.SetAlpha(p._alpha)
-			DrawRect p.x_pos, p.y_pos, p.width, p.height
+			p.setupRenderValues()
+			DrawRect p.xPos, p.yPos, p.width, p.height
 		Next
 
 		brl.max2d.SetAlpha(1)
 	End Method
-	
+
 	Method update(delta:Float)
-		
+
 	End Method
 
 
 	' ------------------------------------------------------------
 	' -- Creation + Destruction
 	' ------------------------------------------------------------
-	
+
 	Method New()
-		Self._zIndex 	= 1
+		Self._zIndex	= 1
 		Self._isVisible = True
 		Self._particles = ParticleBag.Create()
 	End Method
