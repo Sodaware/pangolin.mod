@@ -52,6 +52,10 @@ Const XBOX_BUTTON_DPAD_RIGHT:Float = 0.25
 Type JoypadControllerInput Extends BaseControllerInput
 	Function build:JoypadControllerInput(name:String)
 		Select name
+			Case "dpad_left"   ; Return JoypadXControllerInput.Create(-1)
+			Case "dpad_right"  ; Return JoypadXControllerInput.Create(1)
+			Case "dpad_up"     ; Return JoypadYControllerInput.Create(-1)
+			Case "dpad_down"   ; Return JoypadYControllerInput.Create(1)
 			Case "yaw_left"    ; Return JoypadYawControllerInput.Create(-1)
 			Case "yaw_right"   ; Return JoypadYawControllerInput.Create(1)
 			Case "pitch_up"    ; Return JoypadPitchControllerInput.Create(-1)
@@ -70,6 +74,47 @@ Type JoypadControllerInput Extends BaseControllerInput
 		End Select
 	End Function
 End Type
+
+Type JoypadXControllerInput Extends JoypadControllerInput
+	Field _direction:Float
+
+	Method _inputDown()
+		Self._isDown = (JoyX() = Self._direction)
+	End Method
+
+	Method _inputUp()
+		Self._isDown = Not(JoyX() = Self._direction)
+	End Method
+
+	Function Create:JoypadXControllerInput(direction:Float)
+		Local this:JoypadXControllerInput = New JoypadXControllerInput
+
+		this._direction = direction
+
+		Return this
+	End Function
+End Type
+
+Type JoypadYControllerInput Extends JoypadControllerInput
+	Field _direction:Float
+
+	Method _inputDown()
+		Self._isDown = (JoyY() = Self._direction)
+	End Method
+
+	Method _inputUp()
+		Self._isDown = Not(JoyY() = Self._direction)
+	End Method
+
+	Function Create:JoypadYControllerInput(direction:Float)
+		Local this:JoypadYControllerInput = New JoypadYControllerInput
+
+		this._direction = direction
+
+		Return this
+	End Function
+End Type
+
 
 Type JoypadButtonControllerInput Extends JoypadControllerInput
 
