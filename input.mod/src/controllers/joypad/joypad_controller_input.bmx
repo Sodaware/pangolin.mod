@@ -13,41 +13,9 @@
 SuperStrict
 
 Import pub.freejoy
+
 Import "../base_controller_input.bmx"
-
-' TODO: Move these to constants file
-
-?win32
-Const XBOX_BUTTON_A:Byte        = 0
-Const XBOX_BUTTON_B:Byte        = 1
-Const XBOX_BUTTON_X:Byte        = 2
-Const XBOX_BUTTON_Y:Byte        = 3
-Const XBOX_BUTTON_LB:Byte       = 4
-Const XBOX_BUTTON_RB:Byte       = 5
-Const XBOX_BUTTON_START:Byte    = 7
-Const XBOX_BUTTON_SELECT:Byte   = 6
-Const XBOX_BUTTON_LS_CLICK:Byte = 8
-Const XBOX_BUTTON_RS_CLICK:Byte = 9
-?
-
-?linux
-Const XBOX_BUTTON_A:Byte        = 0
-Const XBOX_BUTTON_B:Byte        = 1
-Const XBOX_BUTTON_X:Byte        = 2
-Const XBOX_BUTTON_Y:Byte        = 3
-Const XBOX_BUTTON_LB:Byte       = 4
-Const XBOX_BUTTON_RB:Byte       = 5
-Const XBOX_BUTTON_START:Byte    = 7
-Const XBOX_BUTTON_SELECT:Byte   = 6
-Const XBOX_BUTTON_LS_CLICK:Byte = 9
-Const XBOX_BUTTON_RS_CLICK:Byte = 10
-?
-
-' joyhat - windows only?
-Const XBOX_BUTTON_DPAD_UP:Float    = 0
-Const XBOX_BUTTON_DPAD_DOWN:Float  = 0.5
-Const XBOX_BUTTON_DPAD_LEFT:Float  = 0.75
-Const XBOX_BUTTON_DPAD_RIGHT:Float = 0.25
+Import "joypad_controller_constants.bmx"
 
 Type JoypadControllerInput Extends BaseControllerInput
 	Function build:JoypadControllerInput(name:String)
