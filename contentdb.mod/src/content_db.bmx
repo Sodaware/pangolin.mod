@@ -295,6 +295,24 @@ Type ContentDb
 
 
 	' ----------------------------------------------------------------------
+	' -- Clearing Data
+	' ----------------------------------------------------------------------
+
+	''' <summary>
+	''' Clear all templates and schemas stored in the content db.
+	'''
+	''' This does NOT clear the list of file names and directories that were
+	''' registered with the content database.
+	''' </summary>
+	Method reset()
+		Self._objectTemplates.Clear()
+		Self._objectTemplateList.Clear()
+		Self._componentSchemas.Clear()
+		Self._componentSchemaList.Clear()
+	End Method
+
+
+	' ----------------------------------------------------------------------
 	' -- Load Helpers
 	' ----------------------------------------------------------------------
 
