@@ -44,9 +44,6 @@ Type ParallelAction Extends BackgroundAction
 	' ----------------------------------------------------------------------
 
 	Method execute(delta:Float)
-
-		Super.execute(delta)
-
 		' Do nothing if this group contains no actions.
 		If Self._actionCount = 0 Then Return
 
@@ -63,7 +60,6 @@ Type ParallelAction Extends BackgroundAction
 		If Self._actionCount = finishedCount Then
 			Self._isFinished = True
 		End If
-
 	End Method
 
 

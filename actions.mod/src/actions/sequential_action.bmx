@@ -67,9 +67,6 @@ Type SequentialAction Extends BackgroundAction
 	' ------------------------------------------------------------
 
 	Method execute(delta:Float)
-
-		Super.execute(delta)
-
 		' Check we actions to run.
 		If Self._actionCount = 0 Then Return
 
