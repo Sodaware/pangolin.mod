@@ -134,6 +134,7 @@ Type EntityTemplate
 	Method getTemplateString:String(path:String)
 		Local component:ComponentTemplate = Self.getComponentTemplate(Left(path, path.Find(".")))
 		If component = Null Then Throw "Could not find ComponentTemplate ~q" + Left(path, path.Find(".")) + "~q"
+
 		Return component.GetFieldValue(Right(path, path.Length - path.Find(".") - 1))
 	End Method
 

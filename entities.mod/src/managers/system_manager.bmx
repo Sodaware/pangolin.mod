@@ -41,7 +41,6 @@ Type SystemManager Extends BaseManager
 	''' <summary>Add a system to the SystemManager.</summary>
 	''' <param name="system">The System to add.</param>
 	Method addSystem:EntitySystem(system:EntitySystem)
-
 		' TODO: Should there be some hooks here?
 
 		' Check system is valid.
@@ -67,7 +66,6 @@ Type SystemManager Extends BaseManager
 
 		' Return the system.
 		Return system
-
 	End Method
 
 	''' <deprecated>Use addSystem</deprecated>

@@ -341,10 +341,16 @@ Type Entity
 	' ------------------------------------------------------------
 
 	Method dumpComponents()
-		DebugLog "Entity[" + Self.getTag() + "]"
+		DebugLog "Entity " + Self.getId() + " [" + Self.getTag() + "]"
+
 		DebugLog "Attached components:"
 		For Local c:EntityComponent = EachIn Self.getComponents()
-			DebugLog "  - " + TTypeId.ForObject(c).Name()
+			Local ct:TTypeId = TTypeId.ForObject(c)
+			DebugLog "  - " + ct.name()
+
+			For Local f:TField = EachIn ct.EnumFields()
+				DebugLog "    - " + f.Name() + ":" + f.TypeId().name() + " => " + String(f.get(c))
+			Next
 		Next
 	End Method
 

@@ -184,9 +184,6 @@ Type GameKernel
 			Next
 		End If
 
-		' TODO: Use GameServiceCollection.set(service._serviceID, service) to set service - allows much
-		' quicker retrieval (you can retrieve by ID)
-
 		' Initialize the service
 		serviceProvider.onInit()
 

@@ -36,7 +36,7 @@ Type SystemBitManager
 		Local bit:Byte = SystemBitManager._systemBits.get(entitySystemType)
 		If bit > 0 Then Return bit
 
-		' Bit is not in cache, so assign a new one and return it
+		' Bit is not in cache, so assign a new one and return it.
 		SystemBitManager._currentBitPosition :+ 1
 		SystemBitManager._systemBits.set(entitySystemType, Byte(SystemBitManager._currentBitPosition - 1))
 

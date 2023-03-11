@@ -58,6 +58,7 @@ Type Hooks
 			Self._allowedHooks.addLast(name)
 			Self.getHook(name)
 		EndIf
+
 		Return Self
 	End Method
 
@@ -72,6 +73,7 @@ Type Hooks
 				Self.registerHook(name)
 			Next
 		End If
+
 		Return Self
 	End Method
 
@@ -95,6 +97,7 @@ Type Hooks
 
 		Local handlers:EventHandlerBag = Self.getHook(name)
 		handlers.add(handler)
+
 		Return Self
 	End Method
 
@@ -123,6 +126,23 @@ Type Hooks
 		If False = Self.isHookRegistered(name) Then
 			Throw "Invalid hook name in `add`: ~q" + name + "~q"
 		End If
+	End Method
+
+	Method dump:String()
+		Local out:String
+
+		For Local hook:String = EachIn Self._hooks.keys()
+			out :+ hook + " [~n"
+
+			Local handlers:EventHandlerBag = Self.getHook(hook)
+			For Local handler:EventHandler = EachIn handlers
+				out :+ TTypeId.ForObject(handler._caller).name() + "#" + handler._Method.Name() + ",~n"
+			Next
+
+			out :+ "]~n"
+		Next
+
+		Return out
 	End Method
 
 

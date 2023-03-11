@@ -40,7 +40,7 @@ Type SodaContentDbSerializer Extends ContentDbSerializer
 		' Check inputs.
 		If db = Null Then Throw "Attempted to load an invalid database"
 
-		' Load the file
+		' Load the file.
 		Local file:SodaFile = SodaFile.Load(url)
 		If file = Null Then RuntimeError("Couldn't load " + url.ToString())
 
@@ -156,18 +156,6 @@ Type SodaContentDbSerializer Extends ContentDbSerializer
 				If component = Null Then
 					component = ComponentTemplate.Create(templateSchema)
 					template.addComponentTemplate(component)
-				EndIf
-
-				' TODO: Don't think this is actually ever called.
-				' Check for child groups (internal fields / arrays).
-				If childGroup.countChildren() > 0 Then
-					' Load each child group into an array.
-					For Local t:SodaGroup = EachIn childGroup.GetChildren()
-						' Set the property.
-						If component.schemaHasInternal(t.GetIdentifier()) Then
-							component._setFieldValueObject(t.GetIdentifier(), t)
-						End If
-					Next
 				EndIf
 
 				' Set field values.

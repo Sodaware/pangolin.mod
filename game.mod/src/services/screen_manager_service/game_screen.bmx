@@ -154,7 +154,16 @@ Type GameScreen extends IGameScreen
 	' -- Hooks
 	' ------------------------------------------------------------
 
-	''' <summary>Called after a screen has been added to the ScreenManager.</summary>
+	''' <summary>
+	''' Called before a screen has been added to the ScreenManager.
+	''' </summary>
+	Method beforeAdd()
+
+	End Method
+
+	''' <summary>
+	''' Called after a screen has been added to the ScreenManager.
+	''' </summary>
 	Method afterAdd()
 
 	End Method

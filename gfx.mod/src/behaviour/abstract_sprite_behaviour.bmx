@@ -64,7 +64,17 @@ Type AbstractSpriteBehaviour Abstract
 	' -- Easing Helpers
 	' --------------------------------------------------
 
+	''' <summary>
+	''' Set the easing type to use from the built-in options.
+	'''
+	''' There are four easing types available: Linear (the default), ease-in,
+	''' ease-out, and ease-in-out.
+	'''
+	''' Use `setEasingFunction` to pass in a custom easing function instead of
+	''' using a built-in one.
+	''' </summary>
 	Method setEasingType:AbstractSpriteBehaviour(easing:Byte)
+		' TODO: Throw an exception if an invalid easing type is passed in.
 		Self._easingType = easing
 
 		Select easing
