@@ -51,13 +51,13 @@ Const XBOX_BUTTON_DPAD_RIGHT:Float = 0.25
 ' -- Mea Drive/Genesis
 ' ------------------------------------------------------------
 
-Const MEGADRIVE_BUTTON_A:Byte     = 1
-Const MEGADRIVE_BUTTON_B:Byte     = 2
-Const MEGADRIVE_BUTTON_C:Byte     = 4
-Const MEGADRIVE_BUTTON_X:Byte     = 0
-Const MEGADRIVE_BUTTON_Y:Byte     = 3
-Const MEGADRIVE_BUTTON_Z:Byte     = 5
-Const MEGADRIVE_BUTTON_LB:Byte    = 6
-Const MEGADRIVE_BUTTON_RB:Byte    = 7
+Const MEGADRIVE_BUTTON_A:Byte     = 2
+Const MEGADRIVE_BUTTON_B:Byte     = 1
+Const MEGADRIVE_BUTTON_C:Byte     = 7
+Const MEGADRIVE_BUTTON_X:Byte     = 3
+Const MEGADRIVE_BUTTON_Y:Byte     = 0
+Const MEGADRIVE_BUTTON_Z:Byte     = 6
+Const MEGADRIVE_BUTTON_LB:Byte    = 4
+Const MEGADRIVE_BUTTON_RB:Byte    = 5
 Const MEGADRIVE_BUTTON_START:Byte = 9
 Const MEGADRIVE_BUTTON_MODE:Byte  = 8
