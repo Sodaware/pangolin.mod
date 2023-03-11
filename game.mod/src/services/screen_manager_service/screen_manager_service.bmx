@@ -38,6 +38,9 @@ Type ScreenManagerService extends GameService ..
 		' Check screen is valid.
 		Assert screen, "Cannot add a Null screen to the ScreenManager"
 
+		' Call the `beforeAdd` hook for the new screen.
+		screen.beforeAdd()
+
 		' Inject any dependencies.
 		DependencyInjector.addInjectableFields(screen)
 		If DependencyInjector.hasDependencies(screen)
