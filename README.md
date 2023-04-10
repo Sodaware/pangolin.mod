@@ -1,8 +1,21 @@
 # pangolin.mod
 
-## Description
+![LGPLv3](https://img.shields.io/github/license/Sodaware/pangolin.mod.svg)
+![GitHub release](https://img.shields.io/github/release/Sodaware/pangolin.mod.svg)
 
 **pangolin.mod** is a game framework for BlitzMax.
+
+
+## Quick Links
+
+Project Homepage:
+: https://www.sodaware.net/pangolin/
+
+Source Code
+: https://github.com/sodaware/pangolin.mod/
+
+Full Documentation
+: https://docs.sodaware.net/pangolin.mod/latest/
 
 
 ## Installation
@@ -10,7 +23,7 @@
 Clone the repository into your BlitzMax mod directory. 
 
 ```bash
-cd /path/to/blitzmax/mod//
+cd /path/to/blitzmax/mod/
 git clone https://github.com/sodaware/pangolin.mod.git
 ```
 
