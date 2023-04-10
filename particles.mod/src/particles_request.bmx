@@ -47,10 +47,18 @@ Type ParticlesRequest Extends AbstractRenderRequest
 	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		If Self._particles.isEmpty() Then Return
 
-		For Local p:BaseParticle = EachIn Self._particles
-			p.setupRenderValues()
-			DrawRect p.xPos, p.yPos, p.width, p.height
-		Next
+		If isFixed Or camera = Null Or Self.isIgnoringCamera() Then
+			For Local p:BaseParticle = EachIn Self._particles
+				p.setupRenderValues()
+				DrawRect p.xPos, p.yPos, p.width, p.height
+			Next
+		Else
+			For Local p:BaseParticle = EachIn Self._particles
+				p.setupRenderValues()
+
+				DrawRect p.xPos - camera.getX(), p.yPos - camera.getY(), p.width, p.height
+			Next
+		EndIf
 
 		brl.max2d.SetAlpha(1)
 	End Method
