@@ -14,6 +14,19 @@ SuperStrict
 
 Import brl.max2d
 
+Import "rectangle.bmx"
+
+Function DrawFilledRectangle2D(rect:Rectangle2D)
+	DrawRect rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()
+End Function
+
+Function DrawHollowRectangle2D(rect:Rectangle2D)
+	DrawRect rect.getX(), rect.getY(), rect.getWidth(), 1                      ' TOP
+	DrawRect rect.getX(), rect.getY(), 1, rect.getHeight()                     ' LEFT
+	DrawRect rect.getX(), rect.getY() + rect.getHeight(), rect.getWidth(), 1   ' BOTTOM
+	DrawRect rect.getX() + rect.getWidth(), rect.getY(), 1, rect.getHeight()   ' RIGHT
+End Function
+
 ' TODO: Move to the map request.
 Function TileImageScaled(image:TImage, x:Float = 0, y:Float = 0, frame:Int = 0)
 
