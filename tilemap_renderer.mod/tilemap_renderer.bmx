@@ -22,11 +22,10 @@
 ' ------------------------------------------------------------------------------
 
 
-Module pangolin.tilemap_renderer
+SuperStrict
 
+Module pangolin.tilemap_renderer
 ModuleInfo "Tilemap rendering"
 ModuleInfo "Version: 0.0.1.0"
-
-SuperStrict
 
 Import "renderers/tilemap_request.bmx"
