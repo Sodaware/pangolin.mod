@@ -12,30 +12,35 @@
 
 SuperStrict
 
-import pangolin.TileMap
+Import pangolin.tilemap
 Import pangolin.gfx
 
 Import "tile_animation_handler.bmx"
 
+''' <summary>
+''' A RenderRequest to draw a single layer of a tilemap.
+'''
+''' Must be configured with the tile image, tileset, and map.
+''' </summary>
 Type TileMapRequest Extends AbstractSpriteRequest
 	
-	' -- Tilemap and tileset data
+	' -- Tilemap and tileset data.
 	Field _tileImage:TImage	'''< Image to render
 	Field _tileset:TileSet
 	Field _map:Tilemap
 	
-	' -- Used for rendering bounds
+	' -- Used for rendering bounds.
 	Field _screenX:Int = 0
 	Field _screenY:Int = 0
 	Field _screenWidth:Int 
 	Field _screenHeight:Int
 	
-	' -- Animation
+	' -- Animation.
 	Field _frameTime:Float
 	Field _animations:TList
 	Field _animationLookups:TMap
 	
-	' -- Internal stuff
+	' -- Internal stuff.
 	Field _widthInTiles:Int
 	Field _heightInTiles:Int
 	Field _xScale:Float
@@ -51,19 +56,19 @@ Type TileMapRequest Extends AbstractSpriteRequest
 	' -- Updating and Rendering
 	' ------------------------------------------------------------
 	
-	' Update the animation frames
+	''' <summary>Update animated tilemap frames.</summary>
+	''' <param name="delta">Frame delta.</param>
 	Method update(delta:Float)
-		
-		' Do nothing if no animated tiles in this tileset
+		' Do nothing if no animated tiles in this tileset.
 		If False = Self.hasAnimatedTiles() Then Return
 
 		' Update each tileanimator
 		For Local animation:TileAnimationHandler = EachIn Self._animations
 			animation.update(delta)
 		Next
-		
 	End Method
 	
+	''' <summary>Render the tilemap layer.</summary>
 	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False)
 		
 		' Update the camera cache
@@ -170,7 +175,7 @@ Type TileMapRequest Extends AbstractSpriteRequest
 	
 	Method recalculateOffsets()
 		
-		' Calculate width in tileset
+		' Calculate width in tiles.
 		Self._widthInTiles  = 2 + (Self._cachedCamera.getWidth() / Self._tileset.getTileWidth())
 		Self._HeightInTiles = 2 + (Self._cachedCamera.getHeight() / Self._tileset.getTileHeight())		
 		
@@ -212,6 +217,12 @@ Type TileMapRequest Extends AbstractSpriteRequest
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 	
+	''' <summary>Create a new TilemapRequest.</summary>
+	''' <param name="map">The tilemap to render.</param>
+	''' <param name="tileset">The tileset to use.</param>
+	''' <param name="tilesetImage">The image to use.</param>
+	''' <param name="layer">The layer to render.</param>
+	''' <return>The configured tilemap request.</return>
 	Function Create:TilemapRequest(map:Tilemap, tileset:Tileset, tilesetImage:TImage, layer:Int)
 		Local this:TilemapRequest = New TilemapRequest
 		
