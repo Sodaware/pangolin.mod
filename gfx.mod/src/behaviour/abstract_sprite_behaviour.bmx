@@ -25,12 +25,12 @@ Type AbstractSpriteBehaviour Abstract
 	Field _duration:Float
 	Field _isFinished:Byte = False
 
-	' TODO: Replace this with an EventHandlerList/bag
-	Field _whenFinishedHooks:TList = New TList
 
 	Field _easingType:Byte
 	Field _easingFunction:Float(t:Float, s:Float, f:Float, d:Float)
 
+	' Hooks that are called when the behaviour has finished.
+	Field _whenFinishedHooks:EventHandlerBag = New EventHandlerBag
 
 	' --------------------------------------------------
 	' -- Required Methods
@@ -142,13 +142,11 @@ Type AbstractSpriteBehaviour Abstract
 
 	''' <summary>Called when the sprite behaviour has finished.</summary>
 	Method onFinish()
-		For Local hook:EventHandler = EachIn Self._whenFinishedHooks
-			hook.call(Null)
-		Next
+		Self._whenFinishedHooks.runAll(Null)
 	End Method
 
 	Method whenFinished:AbstractSpriteBehaviour(callback:EventHandler)
-		Self._whenFinishedHooks.AddLast(callback)
+		Self._whenFinishedHooks.add(callback)
 
 		Return Self
 	End Method
