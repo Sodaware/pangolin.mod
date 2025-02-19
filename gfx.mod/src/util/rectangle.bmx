@@ -99,6 +99,10 @@ Type Rectangle2D
 		Return (objectPos._xPos >= Self._position._xPos) And (objectPos._xPos <= Self._position._xPos + Self._width)
 	End Method
 
+	Method containsRectangleX:Byte(o:Rectangle2D)
+		Return (o._position._xPos >= Self._position._xPos) And (o._position._xPos + o._width <= Self._position._xPos + Self._width)
+	End Method
+
 	Method containsY:Byte(objectPos:Position2D)
 		Return (objectPos._yPos >= Self._position._yPos) And (objectPos._yPos <= Self._position._yPos + Self._height)
 	End Method
