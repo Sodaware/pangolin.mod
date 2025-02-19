@@ -14,6 +14,7 @@ SuperStrict
 
 Import pangolin.events
 
+Import "../util/exceptions.bmx"
 Type AbstractSpriteBehaviour Abstract
 	' Built-in easing types.
 	Const EASING_LINEAR:Byte        = 1
@@ -73,8 +74,15 @@ Type AbstractSpriteBehaviour Abstract
 	''' Use `setEasingFunction` to pass in a custom easing function instead of
 	''' using a built-in one.
 	''' </summary>
+	''' <param name="easing">The built-in easing type to use.</param>
+	''' <exception cref="Pangolin_Gfx_InvalidEasingFunctionException">
+	''' Thrown if an invalid easing type is passed in.
+	''' </exception>
 	Method setEasingType:AbstractSpriteBehaviour(easing:Byte)
-		' TODO: Throw an exception if an invalid easing type is passed in.
+		If easing < EASING_LINEAR Or easing > EASING_EASE_IN_OUT Then
+			Throw Pangolin_Gfx_InvalidEasingFunctionException.Create(easing)
+		EndIf
+
 		Self._easingType = easing
 
 		Select easing
