@@ -15,6 +15,13 @@ SuperStrict
 Import pangolin.events
 
 Import "../util/exceptions.bmx"
+
+''' <summary>
+''' Abstract base type for all sprite behaviours.
+'''
+''' A sprite behaviour can used to animate movement for any render request. This
+''' movement can be linear, eased, or use a custom easing function.
+''' </summary>
 Type AbstractSpriteBehaviour Abstract
 	' Built-in easing types.
 	Const EASING_LINEAR:Byte        = 1
@@ -22,11 +29,11 @@ Type AbstractSpriteBehaviour Abstract
 	Const EASING_EASE_OUT:Byte      = 3
 	Const EASING_EASE_IN_OUT:Byte   = 4
 
-	Field _elapsedTime:Float
-	Field _duration:Float
-	Field _isFinished:Byte = False
+	Field _elapsedTime:Float            '< The number of milliseconds since the behaviour started.
+	Field _duration:Float               '< The total duration of the behaviour in milliseconds.
+	Field _isFinished:Byte = False      '< Internal flag to store if behaviour has finished.
 
-
+	' Easing type (from constants) and cached/custom easing function.
 	Field _easingType:Byte
 	Field _easingFunction:Float(t:Float, s:Float, f:Float, d:Float)
 
@@ -42,20 +49,23 @@ Type AbstractSpriteBehaviour Abstract
 
 
 	' --------------------------------------------------
-	' -- Standard PI
+	' -- Standard Methods
 	' --------------------------------------------------
 
 	''' <summary>Set the duration of the behaviour.</summary>
+	''' <param name="duration">The duration of the behaviour in milliseconds.</param>
 	Method setDuration:AbstractSpriteBehaviour(duration:Float)
 		Self._duration = duration
 
 		Return Self
 	End Method
 
+	''' <summary>Has this behaviour finished?</summary>
 	Method isFinished:Byte()
 		Return Self._isFinished
 	End Method
 
+	''' <summary>Mark the behaviour as finished.</summary>
 	Method finished()
 		Self._isFinished = True
 	End Method
@@ -121,7 +131,7 @@ Type AbstractSpriteBehaviour Abstract
 	End Method
 
 	''' <summary>
-	''' Tween a value.
+	''' Tween a value using an easing function.
 	'''
 	''' Defaults to a linear easing function if one hasn't been set.
 	''' </summary>
