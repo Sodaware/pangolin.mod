@@ -41,7 +41,7 @@ Type RenderCamera Extends AbstractRenderCamera
 
 
 	' ------------------------------------------------------------
-	' -- Boundary Checks
+	' -- Screen Boundary Checks
 	' ------------------------------------------------------------
 
 	Method isInLeftBounds:Byte()
@@ -49,7 +49,7 @@ Type RenderCamera Extends AbstractRenderCamera
 	End Method
 
 	Method isInRightBounds:Byte()
-		Return (Self._position._xPos + (Self.width Shr 1)) < (Self._bounds._position._xPos + Self._bounds._width)
+		Return (Self._position._xPos + Self.width) < (Self._bounds._position._xPos + Self._bounds._width)
 	End Method
 
 	Method isInTopBounds:Byte()
@@ -57,7 +57,7 @@ Type RenderCamera Extends AbstractRenderCamera
 	End Method
 
 	Method isInBottomBounds:Byte()
-		Return (Self._position._yPos + (Self.height Shr 1)) < (Self._bounds._position._yPos + Self._bounds._height)
+		Return (Self._position._yPos + Self.height) < (Self._bounds._position._yPos + Self._bounds._height)
 	End Method
 
 
