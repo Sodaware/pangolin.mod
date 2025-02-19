@@ -24,5 +24,8 @@ Type AbstractRenderCamera Abstract
 	
 	Method getPosition:Position2D() Abstract
 	Method getBounds:Rectangle2D() Abstract
-	
+
+	Method debugRender()
+		' Ovewrite this in sub-classes.
+	End Method
 End Type

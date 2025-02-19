@@ -38,5 +38,15 @@ Type CameraBehaviour
 		End If
 		
 	End Method
+
+	''' <summary>
+	''' Called when debug rendering is enabled.
+	'''
+	''' This will always be called last, so it can display content over
+	''' everything else.
+	''' </summary>
+	Method debugRender()
+		' Override this in sub-types.
+	End Method
 	
 End Type

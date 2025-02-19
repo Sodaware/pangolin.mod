@@ -27,6 +27,7 @@ Type SpriteRenderingService Extends GameService ..
 	{ implements = "render, update" }
 
 	Field _renderer:RenderQueue
+	Field _debug:Byte
 
 
 	' ------------------------------------------------------------
@@ -95,6 +96,10 @@ Type SpriteRenderingService Extends GameService ..
 
 	Method render(delta:Float)
 		Self._renderer.render(delta)
+
+		If Self._debug Then
+			Self.getCamera().debugRender()
+		EndIf
 	End Method
 
 
@@ -110,6 +115,18 @@ Type SpriteRenderingService Extends GameService ..
 		Return Self._renderer.countItems()
 	End Method
 
+	Method toggleDebugging()
+		Self._debug = Not Self._debug
+	End Method
+
+	Method enableDebugging()
+		Self._debug = True
+	End Method
+
+	Method disableDebugging()
+		Self._debug = False
+	End Method
+
 
 	' ------------------------------------------------------------
 	' -- Construction
@@ -117,6 +134,7 @@ Type SpriteRenderingService Extends GameService ..
 
 	Method New()
 		Self._renderer = New RenderQueue
+		Self._debug    = False
 	End Method
 
 End Type

@@ -188,11 +188,15 @@ Type RenderCamera Extends AbstractRenderCamera
 
 
 	' ------------------------------------------------------------
-	' -- Updating
+	' -- Updating And Debugging
 	' ------------------------------------------------------------
 
 	Method update(delta:Float)
 		Self._behaviour.update(delta)
+	End Method
+
+	Method debugRender()
+		If Self._behaviour Then Self._behaviour.debugRender()
 	End Method
 
 
