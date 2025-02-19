@@ -17,9 +17,11 @@ SuperStrict
 Import "../services/game_service.bmx"
 
 ''' <summary>
-''' A collection of GameService objects. Works exactly the same as an ObjectBag
-''' except it is strongly typed. Much faster than a TList and more flexible
-''' than a standard array. Supports iteration as well as sorting by priority.
+''' A collection of GameService objects.
+'''
+''' Works exactly the same as an ObjectBag except it is strongly typed. This is
+''' much faster than a TList and more flexible than a standard array. Supports
+''' iteration as well as sorting by priority.
 ''' </summary>
 Type GameServiceCollection
 

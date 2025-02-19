@@ -48,9 +48,7 @@ Type ActionQueue Extends BackgroundAction
 	End Method
 
 	Method push:ActionQueue(action:BackgroundAction)
-		Self._actions.addLast(action)
-
-		Return Self
+		Return Self.add(action)
 	End Method
 
 

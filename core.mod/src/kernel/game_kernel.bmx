@@ -378,17 +378,16 @@ Type GameKernel
 	' ------------------------------------------------------------
 
 	''' <summary>
-	''' Add service to a collection if it implements a specific behaviour. This
-	''' is an internal method used to add services to the render/update
+	''' Add service to a collection if it implements a specific behaviour.
+	'''
+	''' This is an internal method used to add services to the render/update
 	''' collections when needed.
 	''' </summary>
 	Method _addIfImplements(serviceProvider:GameService, imp:String, collection:GameServiceCollection)
+		If Not GameKernel.serviceImplements(serviceProvider, imp) Then Return
 
-		If GameKernel.serviceImplements(serviceProvider, imp) Then
-			collection.add(serviceProvider, False)
-			collection.sort(GameServiceCollection.SORT_ASC)
-		End If
-
+		collection.add(serviceProvider, False)
+		collection.sort(GameServiceCollection.SORT_ASC)
 	End Method
 
 
