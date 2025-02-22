@@ -16,9 +16,20 @@ Import pangolin.events
 
 Import "../core/background_action.bmx"
 
+''' <summary>
+''' Action that an `EventHandler` function when started.
+'''
+''' CallbackAction wraps an EventHandler (callback function) inside an action
+''' that can be executed by the background actions service. The callback is
+''' executed once when the action starts, and the action is immediately marked
+''' as finished.
+'''
+''' It's a simple way to run a custom function inside the background action
+''' queue without writing a custom `BackgroundAction`.
+''' </summary>
 Type CallbackAction Extends BackgroundAction
-	Field _callback:EventHandler
 
+	Field _callback:EventHandler
 
 	' ------------------------------------------------------------
 	' -- Start and Finish
