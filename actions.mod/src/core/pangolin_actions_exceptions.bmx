@@ -1,5 +1,5 @@
 ' ------------------------------------------------------------------------------
-' -- src/core/exceptions.bmx
+' -- src/core/pangolin_actions_exceptions.bmx
 ' --
 ' -- Custom exceptions for the actions.mod module.
 ' --
