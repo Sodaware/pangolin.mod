@@ -1,8 +1,10 @@
 ' ------------------------------------------------------------------------------
 ' -- src/driver/virtual_screen_resolution.bmx
 ' --
-' -- Add support for virtual screen resolutions. Used for stretching pixels
-' -- automatically without having to calculate anything
+' -- Add support for virtual screen resolutions.
+' --
+' -- Used for stretching pixels automatically without having to calculate
+' -- anything.
 ' --
 ' -- This file is part of pangolin.mod (https://www.sodaware.net/pangolin/)
 ' -- Copyright (c) 2009-2017 Phil Newton
@@ -14,8 +16,21 @@
 SuperStrict
 
 Import brl.max2d
+
 Import "../util/graphics_util.bmx"
 
+''' <summary>
+''' Add support for virtual screen resolutions.
+'''
+''' This allows you to render things internally at a smaller resolution whilst
+''' displaying them in a larger actual resolution. It automatically handles
+''' scaling pixels and adjusting coordinates.
+'''
+''' Screen ratio must be divisible into a whole number for proper pixel scaling.
+'''
+''' This is automatically set up by PangolinGFX.initGraphics, so doesn't need
+''' to be called unles you're manually setting thinsg up.
+''' </summary>
 Type VirtualScreenResolution
 
 	Global _instance:VirtualScreenResolution
