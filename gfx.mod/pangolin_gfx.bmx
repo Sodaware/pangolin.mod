@@ -50,8 +50,7 @@ Type PangolinGfx
 			.setDriverType(driverType)
 
 		' Set up virtual resolution.
-		VirtualScreenResolution.getInstance()._height = height
-		VirtualScreenResolution.getInstance()._width = width
+		VirtualScreenResolution.getInstance().setDimensions(width, height)
 
 		' Start graphics.
 		GraphicsManager.getInstance().startGraphics()

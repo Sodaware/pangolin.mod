@@ -35,6 +35,16 @@ Type VirtualScreenResolution
 		Return VirtualScreenResolution._instance
 	End Function
 
+	''' <summary>Set the width and height of the virtual screen.</summary>
+	''' <param name="width">The width of the screen in pixels.</param>
+	''' <param name="height">The height of the screen in pixels.</param>
+	Method setDimensions:VirtualScreenResolution(width:Float, height:Float)
+		Self._width = width
+		Self._height = height
+
+		Return Self
+	End Method
+
 	Method getWidth:Float()
 		Return Self._width
 	End Method
