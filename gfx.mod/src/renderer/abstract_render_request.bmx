@@ -40,9 +40,8 @@ Type AbstractRenderRequest Abstract
 	''' <summary>Render the render item.</summary>
 	Method render(tweening:Double, camera:AbstractRenderCamera, isFixed:Byte = False) Abstract
 
-
 	' ------------------------------------------------------------
-	' -- Public API
+	' -- Public Identifiers
 	' ------------------------------------------------------------
 
 	Method setIdentifier(name:String)
@@ -53,44 +52,78 @@ Type AbstractRenderRequest Abstract
 		Return Self._identifier
 	End Method
 
+	' ------------------------------------------------------------
+	' -- Visibility
+	' ------------------------------------------------------------
+
+	''' <summary>Set the visibility of this request.</summary>
+	''' <param name="isVisible">True of make request visible, false to hide it.</param>
 	Method setVisible(isVisible:Byte = True)
 		self._isVisible = isVisible
 	End Method
 
-	Method hide()
-		Self.setVisible(False)
-	End Method
-
+	''' <summary>Make this request visible.</summary>
 	Method show()
 		Self.setVisible(True)
 	End Method
 
+	''' <summary>Hide this request.</summary>
+	Method hide()
+		Self.setVisible(False)
+	End Method
+
+	''' <summary>Is this object visible?</summary>
 	Method isVisible:Byte()
 		Return Self._isVisible
 	EndMethod
+
+	''' <summary>Is this object hidden?</summary>
+	Method isHidden:Byte()
+		Return Not Self._isVisible
+	End Method
+
+	' ------------------------------------------------------------
+	' -- Visibility
+	' ------------------------------------------------------------
+
+	''' <summary>
+	''' Set the sprite's z-index.
+	'''
+	''' Requests with a higher z-index are rendered in front of requests with
+	''' lower numbers,
+	''' </summary>
+	Method setZIndex(zIndex:Short)
+		Self._zIndex = zIndex
+	End Method
 
 	''' <summary>Get the Z-Index of this renderable object.</summary>
 	Method getZIndex:Short()
 		Return Self._zIndex
 	End Method
 
+	' ------------------------------------------------------------
+	' -- Camera
+	' ------------------------------------------------------------
+
 	''' <summary>
-	''' Set the sprite's z-index. Requests with a higher z-index are rendered in
-	''' front of requests with lower numbers,
+	''' Set if this request should ignore the camera or not.
+	'''
+	''' Requests that ignore the camera are drawn at their exact coordinates,
+	''' and requests that use the camera are offset by the camera's position.
+	'''
+	''' Most requests will want to use the camera, but things like UI requests
+	''' or overlays should ignore it.
 	''' </summary>
-	Method setZIndex(zIndex:Short)
-		Self._zIndex = zIndex
+	''' <param name="ignore">If true will ignore the camera.</param>
+	Method ignoreCamera:AbstractRenderRequest(ignore:Byte = True)
+		Self._ignoreCamera = ignore
+
+		Return Self
 	End Method
 
 	Method isIgnoringCamera:Byte()
 		Return Self._ignoreCamera
 	End Method
-
-	Method ignoreCamera:AbstractRenderRequest(ignore:Byte = True)
-		Self._ignoreCamera = ignore
-		Return Self
-	End Method
-
 
 	' ------------------------------------------------------------
 	' -- Stubs
@@ -124,7 +157,6 @@ Type AbstractRenderRequest Abstract
 		Return Self
 	End Method
 
-
 	' ------------------------------------------------------------
 	' -- Hooks
 	' ------------------------------------------------------------
@@ -132,7 +164,6 @@ Type AbstractRenderRequest Abstract
 	Method onRemoved()
 
 	End Method
-
 
 	' ------------------------------------------------------------
 	' -- Sorting Functions
@@ -142,7 +173,6 @@ Type AbstractRenderRequest Abstract
 	Function SortByZIndex:Int(o1:Object, o2:Object)
 		Return AbstractRenderRequest(o1).getZIndex() - AbstractRenderRequest(o2).getZIndex()
 	End Function
-
 
 	' ------------------------------------------------------------
 	' -- Construction / Destruction
