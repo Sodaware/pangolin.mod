@@ -156,7 +156,7 @@ Type GameKernel
 	''' For example, a `TTypeId` of `AbstractRenderService` could then be used
 	''' when setting any of its children, whilst keeping just one service.
 	''' </summary>
-	''' <param name="serviceType">The type (TTypeId) of the service to add.</param>
+	''' <param name="serviceType">The type (TTypeId) of the service to add. Use null to auto-detect.</param>
 	''' <param name="serviceProvider">GameService instance.</param>
 	''' <return>True if the service was added, false if not.</return>
 	Method addService:Byte(serviceType:TTypeId, serviceProvider:GameService)
