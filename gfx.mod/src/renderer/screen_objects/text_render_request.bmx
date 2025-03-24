@@ -371,7 +371,7 @@ Type TextRenderRequest Extends AbstractSpriteRequest
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	Function Create:TextRenderRequest(text:String, xPos:Int, yPos:Int, style:TextRenderStyle = Null)
+	Function Create:TextRenderRequest(text:String, xPos:Float, yPos:Float, style:TextRenderStyle = Null)
 		Local this:TextRenderRequest = New TextRenderRequest
 		this.setText(text)
 		this.setPosition(xPos, yPos)

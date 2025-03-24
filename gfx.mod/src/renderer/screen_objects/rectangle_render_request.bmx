@@ -259,7 +259,7 @@ Type RectangleRenderRequest Extends AbstractSpriteRequest
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	Function Create:RectangleRenderRequest(xPos:Int, yPos:Int, width:Int, height:Int)
+	Function Create:RectangleRenderRequest(xPos:Float, yPos:Float, width:Float, height:Float)
 		Local this:RectangleRenderRequest = New RectangleRenderRequest
 
 		this.setPosition(xPos, yPos)

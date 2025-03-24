@@ -12,7 +12,6 @@
 
 SuperStrict
 
-Import brl.max2d
 Import pangolin.resources
 
 Import "../abstract_sprite_request.bmx"
@@ -157,7 +156,7 @@ Type ImageSprite Extends AbstractSpriteRequest
 	''' <param name="yPos">The initial Y position.</param>
 	''' <param name="frame">Optional frame number to display. Defaults to 0.</param>
 	''' <returns>A new ImageSprite instance.</returns>
-	Function Create:ImageSprite(image:TImage, xPos:Int, yPos:Int, frame:Int = 0)
+	Function Create:ImageSprite(image:TImage, xPos:Float, yPos:Float, frame:Int = 0)
 		Local this:ImageSprite = New ImageSprite
 
 		this.setImage(image)

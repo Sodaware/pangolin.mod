@@ -175,7 +175,7 @@ Type ProgressBarRenderRequest Extends RectangleRenderRequest
 	' -- Creation / Destruction
 	' ------------------------------------------------------------
 
-	Function Create:ProgressBarRenderRequest(xPos:Int, yPos:Int, width:Int, height:Int)
+	Function Create:ProgressBarRenderRequest(xPos:Float, yPos:Float, width:Float, height:Float)
 		Local this:ProgressBarRenderRequest = New ProgressBarRenderRequest
 
 		this.setPosition(xPos, yPos)
